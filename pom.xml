@@ -9,9 +9,9 @@
 	<url>https://github.com/highsource/maven-jaxb2-plugin</url>
 	<licenses>
 		<license>
-			<name>BSD-Style License</name>
-			<url>https://github.com/highsource/maven-jaxb2-plugin/blob/master/LICENSE</url>
-			<distribution>repo</distribution>
+			<name>BSD 3-Clause License</name>
+			<url>https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/LICENSE.md</url>
+			<distribution>repo or manual</distribution>
 			<comments>Maven JAXB2 Plugin license is the 3-clause BSD license which is compatible with GPL. Maven JAXB2 Plugin license does not require you to include any acknowledgments for Maven JAXB2 Plugin in advertising materials for your software.</comments>
 		</license>
 	</licenses>
