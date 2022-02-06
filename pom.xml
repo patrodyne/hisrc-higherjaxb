@@ -21,6 +21,10 @@
 		<developerConnection>scm:svn:https://svn.java.net/svn/maven-jaxb2-plugin~svn/trunk</developerConnection>
 		<url>http://java.net/projects/maven-jaxb2-plugin/sources/svn/show/trunk</url>
 	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/patrodyne/hisrc-higherjaxb/issues</url>
+	</issueManagement>
 	<developers>
 		<developer>
 			<id>lexi</id>
