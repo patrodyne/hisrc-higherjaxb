@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 	<name>Maven JAXB 2.x Plugin Project</name>
 	<description>Maven2 plugin for JAXB 2.x XJC compiler to generate Java sources from XML Schemas.</description>
-	<url>https://github.com/highsource/maven-jaxb2-plugin</url>
+	<url>https://github.com/patrodyne/hisrc-higherjaxb</url>
 	<licenses>
 		<license>
 			<name>BSD 3-Clause License</name>
