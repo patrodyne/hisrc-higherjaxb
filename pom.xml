@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.jvnet.jaxb2.maven2</groupId>
+	<groupId>org.patrodyne.jvnet</groupId>
 	<artifactId>maven-jaxb2-plugin-project</artifactId>
 	<version>0.14.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -17,9 +17,9 @@
 	</licenses>
 	<inceptionYear>2006</inceptionYear>
 	<scm>
-		<connection>scm:svn:https://svn.java.net/svn/maven-jaxb2-plugin~svn/trunk</connection>
-		<developerConnection>scm:svn:https://svn.java.net/svn/maven-jaxb2-plugin~svn/trunk</developerConnection>
-		<url>http://java.net/projects/maven-jaxb2-plugin/sources/svn/show/trunk</url>
+		<connection>scm:git:git@github.com:patrodyne/hisrc-higherjaxb.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/patrodyne/hisrc-higherjaxb.git</developerConnection>
+		<url>https://github.com/patrodyne/hisrc-higherjaxb/tree/master</url>
 	</scm>
 	<issueManagement>
 		<system>GitHub Issues</system>
@@ -27,11 +27,18 @@
 	</issueManagement>
 	<developers>
 		<developer>
-			<id>lexi</id>
-			<name>Aleksei Valikov</name>
-			<email>valikov@gmx.net</email>
+			<id>patrodyne</id>
+			<name>Rick O'Sullivan</name>
+			<email>rick.osullivan@patrodyne.org</email>
 			<roles>
-				<role>project owner</role>
+				<role>maintainer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>highsource</id>
+			<name>Aleksei Valikov</name>
+			<roles>
+				<role>architect (late)</role>
 			</roles>
 		</developer>
 	</developers>
@@ -147,20 +154,15 @@
 			</build>
 		</profile>
 	</profiles>
-	<!--distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement-->
+	<!-- OSS Repository Hosting <https://central.sonatype.org/publish/publish-guide/> -->
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<repository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
 	<dependencies>
