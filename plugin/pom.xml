@@ -1,29 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>maven-jaxb2-plugin</artifactId>
-	<packaging>maven-plugin</packaging>
-	<name>Maven JAXB 2.x Plugin</name>
-	<url>https://github.com/highsource/maven-jaxb2-plugin</url>
 	<parent>
 		<groupId>org.jvnet.jaxb2.maven2</groupId>
 		<artifactId>maven-jaxb2-plugin-project</artifactId>
 		<version>0.14.1-SNAPSHOT</version>
 	</parent>
+	<artifactId>maven-jaxb2-plugin</artifactId>
+	<packaging>maven-plugin</packaging>
+	<name>Maven JAXB 2.x Plugin</name>
+	<url>https://github.com/highsource/maven-jaxb2-plugin</url>
 	<prerequisites>
 		<maven>${maven.version}</maven>
 	</prerequisites>
 	<dependencies>
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.jvnet.jaxb2.maven2</groupId>
 			<artifactId>maven-jaxb2-plugin-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.plexus</groupId>
-			<artifactId>plexus-utils</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.jvnet.jaxb2.maven2</groupId>
 			<artifactId>maven-jaxb23-plugin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
@@ -34,43 +39,60 @@
 			<artifactId>maven-plugin-testing-harness</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-xjc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-artifact</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-artifact-manager</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-project</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-container-default</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-plugin-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</reporting>
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
 			</resource>
 			<resource>
-				<directory>${project.build.directory}/generated-resources/jaxb-xjc-runtime</directory>
 				<filtering>false</filtering>
+				<directory>${project.build.directory}/generated-resources/jaxb-xjc-runtime</directory>
 			</resource>
 		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-plugin-plugin</artifactId>
-			</plugin>
-			<plugin>
-				 <groupId>org.apache.maven.plugins</groupId>
-				 <artifactId>maven-dependency-plugin</artifactId>
-				 <executions>
-					 <execution>
-						 <id>unpack</id>
-						 <phase>generate-resources</phase>
-						 <goals>
-							 <goal>unpack</goal>
-						 </goals>
-						 <configuration>
-							 <artifactItems>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
 								 <artifactItem>
 									<groupId>org.glassfish.jaxb</groupId>
 									<artifactId>jaxb-xjc</artifactId>
@@ -81,18 +103,23 @@
 									<outputDirectory>${project.build.directory}/generated-resources/jaxb-xjc-runtime</outputDirectory>
 									<includes>com/sun/tools/xjc/runtime/*.java</includes>
 								 </artifactItem>
-							 </artifactItems>
-						 </configuration>
-					 </execution>
-				 </executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<ignoredUnusedDeclaredDependencies>
+						<ignoredUnusedDeclaredDependency>org.slf4j:jcl-over-slf4j:jar:</ignoredUnusedDeclaredDependency>
+					</ignoredUnusedDeclaredDependencies>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-plugin-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

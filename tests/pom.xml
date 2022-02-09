@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -13,15 +14,15 @@
 	<modules>
 		<module>catalog</module>
 		<module>catalog-xml</module>
-		<module>episodes</module>
 		<module>issues</module>
-		<module>po</module>
+		<module>episodes</module>
 		<module>p o</module>
-		<module>po-2.0</module>
-		<module>po-2.1</module>
-		<module>po-2.2</module>
-		<module>po-2.3</module>
+		<module>po</module>
 		<module>po-scd</module>
+		<!-- OBS <module>po-2.0</module> -->
+		<!-- OBS <module>po-2.1</module> -->
+		<!-- OBS <module>po-2.2</module> -->
+		<module>po-2.3</module>
 		<module>res</module>
 		<module>tse</module>
 		<module>two</module>
@@ -35,7 +36,7 @@
 		<module>MAVEN_JAXB2_PLUGIN-77</module>
 		<module>MAVEN_JAXB2_PLUGIN-79</module>
 		<module>MAVEN_JAXB2_PLUGIN-82</module>
-		<module>MAVEN_JAXB2_PLUGIN-86</module>
+		<!-- TODO <module>MAVEN_JAXB2_PLUGIN-86</module> -->
 		<module>MAVEN_JAXB2_PLUGIN-87</module>
 		<module>gh-issue-16</module>
 		<module>gh-issue-22</module>
@@ -43,6 +44,13 @@
 		<module>gh-issue-58</module>
 		<module>java-9</module>
 	</modules>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<build>
 		<pluginManagement>
 			<plugins>

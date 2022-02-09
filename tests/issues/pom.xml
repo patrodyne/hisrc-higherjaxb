@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -11,6 +12,10 @@
 	<packaging>jar</packaging>
 	<name>Maven JAXB 2.x Plugin Tests [issues]</name>
 	<dependencies>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
@@ -37,9 +42,9 @@
 							<!-- Issue #81 -->
 							<accessExternalSchema>file</accessExternalSchema>
 							<!-- Issue #99 -->
-							<otherDepends>
+							<otherDependsIncludes>
 								<file>src/main/resources/depends.txt</file>
-							</otherDepends>
+							</otherDependsIncludes>
 							<otherDependsIncludes>
 								<pattern>src/main/resources/*.dep</pattern>
 							</otherDependsIncludes>

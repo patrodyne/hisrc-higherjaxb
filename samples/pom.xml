@@ -1,14 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.jvnet.jaxb2.maven2</groupId>
-	<artifactId>maven-jaxb2-plugin-samples</artifactId>
-	<packaging>pom</packaging>
-	<name>Maven JAXB 2.X Plugin Samples</name>
 	<parent>
 		<groupId>org.jvnet.jaxb2.maven2</groupId>
 		<artifactId>maven-jaxb2-plugin-project</artifactId>
 		<version>0.14.1-SNAPSHOT</version>
 	</parent>
+	<artifactId>maven-jaxb2-plugin-samples</artifactId>
+	<packaging>pom</packaging>
+	<name>Maven JAXB 2.X Plugin Samples</name>
 	<modules>
 		<module>catalog</module>
 		<module>dtd</module>
@@ -17,22 +17,23 @@
 		<module>po</module>
 	</modules>
 	<build>
+		<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptors>
-						<descriptor>src/main/assembly/maven-src.xml</descriptor>
-					</descriptors>
-				</configuration>
 				<executions>
 					<execution>
 						<id>maven-assembly</id>
 						<!--phase>package</phase-->
 						<phase>none</phase>
 						<goals>
-							 <goal>attached</goal>
+							 <goal>single</goal>
 						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>../src/main/assembly/maven-src.xml</descriptor>
+							</descriptors>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -43,21 +44,20 @@
 						<id>maven-unpack</id>
 						<!--phase>pre-integration-test</phase-->
 						<phase>none</phase>
-						<configuration>
-							<tasks>
-								<mkdir dir="target/test-maven-repository" />
-								<unzip src="target/${project.artifactId}-${project.version}-maven-src.zip" dest="${basedir}/target/test-maven-assembly" />
-							</tasks>
-						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>
+						<configuration>
+							<target>
+								<mkdir dir="target/test-maven-repository" />
+								<unzip src="target/${project.artifactId}-${project.version}-maven-src.zip" dest="${basedir}/target/test-maven-assembly" />
+							</target>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<artifactId>maven-invoker-plugin</artifactId>
-				<version>2.0.0</version>
 				<executions>
 					<execution>
 						<id>maven-integration-test</id>
@@ -69,19 +69,18 @@
 						<configuration>
 							<debug>true</debug>
 							<projectsDirectory>${basedir}/target/test-maven-assembly</projectsDirectory>
+							<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<configuration>
 					<skip>true</skip>
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<skip>true</skip>
