@@ -1,81 +1,60 @@
-# JAXB2 Maven Plugin #
+# HiSrc HigherJAXB
 
-Welcome to the `org.jvnet.jaxb2.maven2:maven-jaxb2-plugin`, the most advanced and feature-full Maven plugin for XML Schema compilation.
+Maven plugin to generated Java source from XML Schema.
 
-This Maven plugin wraps and enhances the [JAXB](https://jaxb.java.net/) [Schema Compiler (XJC)](http://docs.oracle.com/javase/6/docs/technotes/tools/share/xjc.html) and allows
-compiling XML Schemas (as well as WSDL, DTDs, RELAX NG) into Java classes in Maven builds.
+## Description
 
-> If you are interested in the Mojohaus JAXB2 Maven Plugin (`org.codehaus.mojo:jaxb2-maven-plugin`),
-> please follow [this link](https://github.com/mojohaus/jaxb2-maven-plugin) to the corresponding website.
+This repository is a fork of [maven-jaxb2-plugin][23]. The original project was developed by the admirable
+Alexey Valikov (a.k.a. [Highsource][2]). This repository contains Java projects to build Maven artifact(s)
+related to the Java Architecture for XML Binding (JAXB) framework. It is one of a family of repositories
+forked from [Highsource][2] that provide tools for JAXB and JPA processing. Repo and artifact names have
+been changed to reflect the familial connection between the repositories and to fix a conformance issue
+with the original `maven-jaxb2-plugin` name.
 
-## Quick start ##
+### List of repositories in this family
 
-* Put your schemas (`*.xsd`) and bindings (`*.xjb`) into the `src/main/resources` folder.
-* Add the plugin to your `pom.xml`:
+| Patrodyne                   | Highsource                  | Purpose                                                |
+| --------------------------- | --------------------------- | ------------------------------------------------------ |
+| [hisrc-basicjaxb-annox][11] | [annox][21]                 | Parse XML Schema to find Java annotation declarations. |
+| [hisrc-basicjaxb][12]       | [jaxb2-basics][22]          | A library of XJC plugins and tools to extend JAXB.     |
+| [hisrc-higherjaxb][13]      | [maven-jaxb2-plugin][23]    | Maven plugin to generated Java source from XML Schema. |
+| [hisrc-hyperjaxb-annox][14] | [jaxb2-annotate-plugin][24] | XJC plugin to add arbitrary Java annotations to JAXB.  |
+| [hisrc-hyperjaxb][15]       | [hyperjaxb3][25]            | Maven and XJC plugins to add JPA annotations to JAXB.  |
 
-```xml
-<project ...>
-	...
-	<build>
-		<plugins>
-			...
-			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.14.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			...
-		</plugins>
-	</build>
-	...
-</project>
-```
+### Graph of repositories relationships
 
-### JAXB Versions
+![Patrodyne-Highsource Graph][1]
 
-If you need a specific JAXB version, you can explicitly use one of the following variants:
+### Goals
 
-* `org.jvnet.jaxb2.maven2:maven-jaxb20-plugin` - JAXB 2.0.
-* `org.jvnet.jaxb2.maven2:maven-jaxb21-plugin` - JAXB 2.1.
-* `org.jvnet.jaxb2.maven2:maven-jaxb22-plugin` - JAXB 2.2.
-* `org.jvnet.jaxb2.maven2:maven-jaxb23-plugin` - JAXB 2.3.
-* `org.jvnet.jaxb2.maven2:maven-jaxb2-plugin` - "most actual version", at the moment same as `org.jvnet.jaxb2.maven2:maven-jaxb23-plugin`.
+The initial goals of this fork are:
 
-### Java versions
+* Produce a (mostly) warning and error free build under Java 8 and Java 11.
+* Provide new build scripts to facilitate installation, deployment and release.
+* Release fresh artifacts to Maven Central in the `org.patrodyne.jvnet` group.
 
-Supported Java versions are `1.7`, `1.8`, `9` (only `maven-jaxb2-plugin` and `maven-jaxb23-plugin`).
+### Status
 
-Java version `1.6` is no longer supported (since version `0.14.0`).
+In progress,
 
-## [Documentation](https://github.com/highsource/maven-jaxb2-plugin/wiki) ##
+* Obsolete build scripts have been removed.
+* New build scripts have been added.
+* POMs have been refactored with renamed artifacts.
+* POMs have been updated to reduce warnings and errors.
+* Changes to Java sources is in progress.
+* Verification of unit and integration tests is in progress.
 
-Please refer to the [wiki](https://github.com/highsource/maven-jaxb2-plugin/wiki) for the full documentation.
+<!-- References -->
 
-
-* [User Guide](https://github.com/highsource/maven-jaxb2-plugin/wiki/User-Guide)
-* Maven Documentation  (Work in progress)
-* [Configuration Cheat Sheet](https://github.com/highsource/maven-jaxb2-plugin/wiki/Configuration-Cheat-Sheet)
-* [Common Pitfalls and Problems](https://github.com/highsource/maven-jaxb2-plugin/wiki/Common-Pitfalls-and-Problems) (Work in progress)
-* [Best Practices](https://github.com/highsource/maven-jaxb2-plugin/wiki/Best-Practices) (Work in progress)
-* [FAQ](https://github.com/highsource/maven-jaxb2-plugin/wiki/FAQ)
-* [Sample Projects](https://github.com/highsource/maven-jaxb2-plugin/wiki/Sample-Projects)
-* [Support](https://github.com/highsource/maven-jaxb2-plugin/wiki/Support)
-* [License](https://github.com/highsource/maven-jaxb2-plugin/blob/master/LICENSE)
-
-
-## Disclaimer ##
-
-This project is not developed, supported or in any other way affiliated with Apache. The `org.jvnet.jaxb2.maven2:maven-jaxb2-plugin` is not an Apache product (and does not pretend to be one), it is a completely independent development.
-
-This project is also *not* developed by or affiliated with Oracle or Sun. Even if it is featured on [https://jaxb.java.net/](https://jaxb.java.net) pages, 
-
-**This plugin is in no way _official_ JAXB2 Maven plugin by Sun or Oracle.**
-
-This is a completely indepentent development. [I](https://github.com/highsource) am *not* an Oracle employee.
+  [1]: https://raw.githubusercontent.com/patrodyne/hisrc-hyperjaxb/master/etc/hisrc-repositories.svg
+  [2]: https://github.com/highsource
+  [11]: https://github.com/patrodyne/hisrc-hyperjaxb-annox
+  [12]: https://github.com/patrodyne/hisrc-hyperjaxb
+  [13]: https://github.com/patrodyne/hisrc-higherjaxb
+  [14]: https://github.com/patrodyne/hisrc-hyperjaxb-annox
+  [15]: https://github.com/patrodyne/hisrc-hyperjaxb
+  [21]: https://github.com/highsource/annox
+  [22]: https://github.com/highsource/jaxb2-basics
+  [23]: https://github.com/highsource/maven-jaxb2-plugin
+  [24]: https://github.com/highsource/hyperjaxb3
+  [25]: https://github.com/highsource/jaxb2-annotate-plugin
