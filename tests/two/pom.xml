@@ -4,14 +4,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jvnet.jaxb2.maven2</groupId>
-		<artifactId>maven-jaxb2-plugin-tests</artifactId>
+		<groupId>org.patrodyne.jvnet</groupId>
+		<artifactId>hisrc-higherjaxb-maven-plugin-tests</artifactId>
 		<version>0.14.1-SNAPSHOT</version>
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>org.jvnet.jaxb2_commons</groupId>
-			<artifactId>jaxb2-basics-runtime</artifactId>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-runtime</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
@@ -24,15 +24,15 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<artifactId>maven-jaxb2-plugin-tests-two</artifactId>
+	<artifactId>hisrc-higherjaxb-plugin-tests-two</artifactId>
 	<packaging>jar</packaging>
 	<name>Maven JAXB 2.x Plugin Tests [two]</name>
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<plugins>
 			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-higherjaxb2-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>generate</id>
@@ -61,9 +61,9 @@
 							</args>
 							<plugins>
 								<plugin>
-									<groupId>org.jvnet.jaxb2_commons</groupId>
-									<artifactId>jaxb2-basics</artifactId>
-									<version>${jaxb2-basics.version}</version>
+									<groupId>org.patrodyne.jvnet</groupId>
+									<artifactId>hisrc-basicjaxb</artifactId>
+									<version>${hisrc-basicjaxb.version}</version>
 								</plugin>
 							</plugins>
 						</configuration>

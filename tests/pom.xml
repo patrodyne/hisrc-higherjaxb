@@ -3,12 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>maven-jaxb2-plugin-tests</artifactId>
+	<artifactId>hisrc-higherjaxb-plugin-tests</artifactId>
 	<packaging>pom</packaging>
 	<name>Maven JAXB 2.x Plugin Tests</name>
 	<parent>
-		<groupId>org.jvnet.jaxb2.maven2</groupId>
-		<artifactId>maven-jaxb2-plugin-project</artifactId>
+		<groupId>org.patrodyne.jvnet</groupId>
+		<artifactId>hisrc-higherjaxb-maven-plugin-project</artifactId>
 		<version>0.14.1-SNAPSHOT</version>
 	</parent>
 	<modules>
@@ -55,8 +55,8 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.jvnet.jaxb2.maven2</groupId>
-					<artifactId>maven-jaxb2-plugin</artifactId>
+					<groupId>org.patrodyne.jvnet</groupId>
+					<artifactId>hisrc-higherjaxb2-maven-plugin</artifactId>
 					<version>${project.version}</version>
 					<executions>
 						<execution>
@@ -69,8 +69,8 @@
 					</executions>
 				</plugin>
 				<plugin>
-					<groupId>org.jvnet.jaxb2.maven2</groupId>
-					<artifactId>maven-jaxb20-plugin</artifactId>
+					<groupId>org.patrodyne.jvnet</groupId>
+					<artifactId>hisrc-higherjaxb20-maven-plugin</artifactId>
 					<version>${project.version}</version>
 					<executions>
 						<execution>
@@ -82,8 +82,8 @@
 					</executions>
 				</plugin>
 				<plugin>
-					<groupId>org.jvnet.jaxb2.maven2</groupId>
-					<artifactId>maven-jaxb21-plugin</artifactId>
+					<groupId>org.patrodyne.jvnet</groupId>
+					<artifactId>hisrc-higherjaxb21-maven-plugin</artifactId>
 					<version>${project.version}</version>
 					<executions>
 						<execution>
@@ -95,8 +95,8 @@
 					</executions>
 				</plugin>
 				<plugin>
-					<groupId>org.jvnet.jaxb2.maven2</groupId>
-					<artifactId>maven-jaxb22-plugin</artifactId>
+					<groupId>org.patrodyne.jvnet</groupId>
+					<artifactId>hisrc-higherjaxb22-maven-plugin</artifactId>
 					<version>${project.version}</version>
 					<executions>
 						<execution>
@@ -108,8 +108,8 @@
 					</executions>
 				</plugin>
 				<plugin>
-					<groupId>org.jvnet.jaxb2.maven2</groupId>
-					<artifactId>maven-jaxb23-plugin</artifactId>
+					<groupId>org.patrodyne.jvnet</groupId>
+					<artifactId>hisrc-higherjaxb23-maven-plugin</artifactId>
 					<version>${project.version}</version>
 					<executions>
 						<execution>

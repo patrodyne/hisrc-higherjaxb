@@ -3,8 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.jvnet.jaxb2.maven2</groupId>
-	<artifactId>maven-jaxb2-plugin-sample-jaxbplugins-maven</artifactId>
+	<groupId>org.patrodyne.jvnet</groupId>
+	<artifactId>hisrc-higherjaxb-maven-plugin-sample-jaxbplugins-maven</artifactId>
 	<version>${project.version}</version>
 	<packaging>jar</packaging>
 	<name>Maven JAXB 2.x Plugin Sample [jaxbplugins|maven]</name>
@@ -21,9 +21,9 @@
 			<version>${jaxb.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jvnet.jaxb2_commons</groupId>
-			<artifactId>jaxb2-basics-runtime</artifactId>
-			<version>${jaxb2-basics.version}</version>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-runtime</artifactId>
+			<version>${hisrc-basicjaxb.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -87,8 +87,8 @@
 				<version>3.10.0</version>
 			</plugin>
 			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-higherjaxb2-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
 					<execution>
@@ -104,9 +104,9 @@
 							</args>
 							<plugins>
 								<plugin>
-									<groupId>org.jvnet.jaxb2_commons</groupId>
-									<artifactId>jaxb2-basics</artifactId>
-									<version>${jaxb2-basics.version}</version>
+									<groupId>org.patrodyne.jvnet</groupId>
+									<artifactId>hisrc-basicjaxb</artifactId>
+									<version>${hisrc-basicjaxb.version}</version>
 								</plugin>
 							</plugins>
 						</configuration>

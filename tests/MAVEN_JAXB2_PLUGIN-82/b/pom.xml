@@ -4,17 +4,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jvnet.jaxb2.maven2</groupId>
-		<artifactId>maven-jaxb2-plugin-tests-MAVEN_JAXB2_PLUGIN-82</artifactId>
+		<groupId>org.patrodyne.jvnet</groupId>
+		<artifactId>hisrc-higherjaxb-maven-plugin-tests-MAVEN_JAXB2_PLUGIN-82</artifactId>
 		<version>0.14.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>maven-jaxb2-plugin-tests-MAVEN_JAXB2_PLUGIN-82-b</artifactId>
+	<artifactId>hisrc-higherjaxb-plugin-tests-MAVEN_JAXB2_PLUGIN-82-b</artifactId>
 	<packaging>jar</packaging>
 	<name>Maven JAXB 2.x Plugin Tests [MAVEN_JAXB2_PLUGIN-82:b]</name>
 	<dependencies>
 		<dependency>
-			<groupId>org.jvnet.jaxb2.maven2</groupId>
-			<artifactId>maven-jaxb2-plugin-tests-MAVEN_JAXB2_PLUGIN-82-a</artifactId>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-higherjaxb-maven-plugin-tests-MAVEN_JAXB2_PLUGIN-82-a</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
@@ -22,15 +22,15 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-higherjaxb2-maven-plugin</artifactId>
 				<configuration>
 					<catalog>src/main/resources/catalog.cat</catalog>
 					<strict>false</strict>
 					<episodes>
 						<episode>
-							<groupId>org.jvnet.jaxb2.maven2</groupId>
-							<artifactId>maven-jaxb2-plugin-tests-MAVEN_JAXB2_PLUGIN-82-a</artifactId>
+							<groupId>org.patrodyne.jvnet</groupId>
+							<artifactId>hisrc-higherjaxb-maven-plugin-tests-MAVEN_JAXB2_PLUGIN-82-a</artifactId>
 						</episode>
 					</episodes>
 				</configuration>
