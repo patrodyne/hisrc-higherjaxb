@@ -19,6 +19,7 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
 import com.sun.tools.xjc.ModelLoader;
 import com.sun.tools.xjc.Options;
+import com.sun.tools.xjc.Plugin;
 import com.sun.tools.xjc.model.Model;
 import com.sun.tools.xjc.outline.Outline;
 
@@ -63,6 +64,12 @@ public class XJC20Mojo extends RawXJC2Mojo<Options> {
 			throws MojoExecutionException {
 		if (getVerbose()) {
 			getLog().info("Compiling input schema(s)...");
+		}
+
+		if ( getLog().isDebugEnabled() )
+		{
+			for ( Plugin plugin : model.options.activePlugins )
+				getLog().debug("Active plugin: "+plugin.getClass().getName());
 		}
 
 		final Outline outline = model.generateCode(model.options,
@@ -146,6 +153,9 @@ public class XJC20Mojo extends RawXJC2Mojo<Options> {
 	}
 
 	private boolean isRelevantPackage(JPackage _package) {
+		if ( "META-INF".equals(_package.name()) ) {
+			return false;
+		}
 		if (_package.propertyFiles().hasNext()) {
 			return true;
 		}
