@@ -7,7 +7,7 @@
 		<artifactId>hisrc-higherjaxb-maven-plugin-tests-MAVEN_JAXB2_PLUGIN-77</artifactId>
 		<version>0.14.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>hisrc-higherjaxb-plugin-tests-MAVEN_JAXB2_PLUGIN-77-service</artifactId>
+	<artifactId>hisrc-higherjaxb-maven-plugin-tests-MAVEN_JAXB2_PLUGIN-77-service</artifactId>
 	<name>Maven JAXB 2.x Plugin Tests [MAVEN_JAXB2_PLUGIN-77:service]</name>
 	<dependencies>
 		<dependency>
@@ -25,7 +25,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
-				<artifactId>hisrc-higherjaxb2-maven-plugin</artifactId>
+				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
 				<configuration>
 					<schemaDirectory>src/main/resources/META-INF/project/schemas</schemaDirectory>
 					<generatePackage>com.company.project.service.types</generatePackage>

@@ -8,7 +8,7 @@
 		<artifactId>hisrc-higherjaxb-maven-plugin-tests</artifactId>
 		<version>0.14.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>hisrc-higherjaxb-plugin-tests-catalog</artifactId>
+	<artifactId>hisrc-higherjaxb-maven-plugin-tests-catalog</artifactId>
 	<packaging>jar</packaging>
 	<name>Maven JAXB 2.x Plugin Tests [catalog]</name>
 	<dependencies>
@@ -27,7 +27,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
-				<artifactId>hisrc-higherjaxb2-maven-plugin</artifactId>
+				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>generate</id>

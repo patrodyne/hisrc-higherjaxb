@@ -6,7 +6,7 @@
 		<artifactId>hisrc-higherjaxb-maven-plugin-project</artifactId>
 		<version>0.14.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>hisrc-higherjaxb22-plugin</artifactId>
+	<artifactId>hisrc-higherjaxb22-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>Maven JAXB 2.2.x Plugin</name>
 	<prerequisites>

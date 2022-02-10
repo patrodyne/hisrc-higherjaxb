@@ -8,7 +8,7 @@
 		<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-22</artifactId>
 		<version>0.14.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>hisrc-higherjaxb-plugin-tests-gh-issue-22-b</artifactId>
+	<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-22-b</artifactId>
 	<packaging>jar</packaging>
 	<name>Maven JAXB 2.x Plugin Tests [GitHub Issue #22:b]</name>
 	<dependencies>
@@ -23,13 +23,13 @@
 		<plugins>
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
-				<artifactId>hisrc-higherjaxb2-maven-plugin</artifactId>
+				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
 				<configuration>
 					<schemas>
 						<schema>
 							<dependencyResource>
 								<groupId>${project.groupId}</groupId>
-								<artifactId>hisrc-higherjaxb-plugin-tests-gh-issue-22-a</artifactId>
+								<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-22-a</artifactId>
 								<version>${project.version}</version>
 								<resource>a.xsd</resource>
 							</dependencyResource>
