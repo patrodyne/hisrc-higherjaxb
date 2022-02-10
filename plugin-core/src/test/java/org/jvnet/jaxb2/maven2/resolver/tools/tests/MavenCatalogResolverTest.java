@@ -15,7 +15,7 @@ public class MavenCatalogResolverTest {
 	@Test
 	public void checkReenterability() throws IOException {
 		CatalogManager cma = new CatalogManager();
-		cma.setIgnoreMissingProperties(true);
+		cma.setIgnoreMissingProperties(false);
 		cma.setUseStaticCatalog(false);
 		final CatalogResolver cra = new CatalogResolver(cma);
 		URL a = getClass().getResource("a/catalog.cat");
