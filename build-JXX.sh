@@ -27,3 +27,7 @@ fi
 # BUILD_OPTS="--fail-at-end -DskipTests=true $@"
   BUILD_OPTS="--fail-at-end $@"
   mvn ${DEBUG_OPTS} ${BUILD_OPTS}
+# mvn -DskipTests=true -Dxml.catalog.ignoreMissing -Pnexus-deploy clean deploy
+# mvn -DskipTests=true -DdryRun=true release:clean
+# mvn -DskipTests=true -DdryRun=true release:prepare
+# mvn -DskipTests=true -DdryRun=true release:perform
