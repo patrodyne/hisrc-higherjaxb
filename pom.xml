@@ -591,10 +591,12 @@
 						</executions>
 						<!-- Skip staging the components locally when connecting to the repository manager -->
 						<!-- We do not need staging for a simple deployment of -SNAPSHOT artifacts to Nexus -->
+						<!-- Auto close the staging repository and release -->
 						<configuration>
 							<serverId>ossrh</serverId>
 							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 							<skipStaging>true</skipStaging>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
 						</configuration>
 					</plugin>
 				</plugins>
