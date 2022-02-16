@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.patrodyne.jvnet</groupId>
 		<artifactId>hisrc-higherjaxb-maven-plugin-tests</artifactId>
-		<version>0.14.1-SNAPSHOT</version>
+		<version>0.14.2-SNAPSHOT</version>
 	</parent>
 	<packaging>jar</packaging>
 	<name>Maven JAXB 2.x Plugin Tests [xjc-simple]</name>
