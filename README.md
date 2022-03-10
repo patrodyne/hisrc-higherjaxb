@@ -25,18 +25,38 @@ with the original `maven-jaxb2-plugin` name.
 
 ![Patrodyne-Highsource Graph][1]
 
+### Releases
+
+#### Maven Central Repository
+
+* [Maven Central Repository Search](https://search.maven.org/search?q=g:org.patrodyne.jvnet)
+* [Maven Central Repository Index](https://repo1.maven.org/maven2/org/patrodyne/jvnet/)
+
+#### GitHub Zip Releases
+
+* TBD
+
 ### Goals
 
-The initial goals for this fork are:
+The new goals for this fork are:
 
-* Produce a (mostly) warning and error free build under Java 8 and Java 11.
-* Provide new build scripts to facilitate installation, deployment and release.
-* Use the SLF4J API and SimpleLogger implementation everywhere.
-* Release fresh artifacts to Maven Central in the `org.patrodyne.jvnet` group.
+* Add sample projects to GitHub releases.
+* Update dependencies with newer versions *excluding* the Jakarta namespace.
+* Update dependencies with newer versions *including* the Jakarta namespace.
 
 ### Status
 
 #### Completed
+
+* Planning for next release.
+
+#### In Progress
+
+* Adding sample projects to GitHub releases.
+
+### Fork History
+
+#### Version 0.14.1
 
 * Obsolete build scripts have been removed.
 * New build scripts have been added.
@@ -45,13 +65,6 @@ The initial goals for this fork are:
 * Configured SLF4J with SimpleLogger as the log framework.
 * Updated Java sources to resolve warnings/errors.
 * Verification of unit and integration tests.
-* Released to Maven Central
-	* [Maven Central Repository Search](https://search.maven.org/search?q=g:org.patrodyne.jvnet)
-	* [Maven Central Repository Index](https://repo1.maven.org/maven2/org/patrodyne/jvnet/)
-
-#### In Progress
-
-* Planning for next release.
 
 <!-- References -->
 
