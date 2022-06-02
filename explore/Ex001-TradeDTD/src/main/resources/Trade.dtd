@@ -1,0 +1,24 @@
+<!-- Document Type Definition: Trade                             -->
+<!-- Trade.dtd - from http://xml.coverpages.org/jaxb0530spec.pdf -->
+
+<!ELEMENT symbol (#PCDATA) >
+<!ELEMENT quantity (#PCDATA) >
+<!ELEMENT limitPrice (#PCDATA) >
+<!ELEMENT stopPrice (#PCDATA) >
+<!ELEMENT completed (#PCDATA) >
+
+<!ELEMENT trade ( symbol, quantity, stopPrice?, limitPrice?, completed ) >
+<!ATTLIST trade
+          account CDATA #REQUIRED
+          action ( buy | buy-to-cover | sell | sell-short ) #REQUIRED
+          duration ( immediate | day | good-til-canceled ) "day" 
+		  created CDATA #REQUIRED >
+
+
+<!ELEMENT transfer ( symbol, quantity, completed ) >
+<!ATTLIST transfer
+          account CDATA #REQUIRED
+          to-account CDATA #REQUIRED
+		  created CDATA #REQUIRED >
+
+<!ELEMENT transaction-batch ( trade | transfer )+ >
