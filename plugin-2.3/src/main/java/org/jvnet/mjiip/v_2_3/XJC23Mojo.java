@@ -1,10 +1,17 @@
 package org.jvnet.mjiip.v_2_3;
 
+import static com.sun.tools.xjc.Language.DTD;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -15,11 +22,17 @@ import com.sun.codemodel.CodeWriter;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
+import com.sun.tools.xjc.Language;
 import com.sun.tools.xjc.ModelLoader;
 import com.sun.tools.xjc.Options;
 import com.sun.tools.xjc.Plugin;
+import com.sun.tools.xjc.model.CClassInfo;
+import com.sun.tools.xjc.model.CPropertyInfo;
+import com.sun.tools.xjc.model.CValuePropertyInfo;
 import com.sun.tools.xjc.model.Model;
+import com.sun.tools.xjc.model.nav.NClass;
 import com.sun.tools.xjc.outline.Outline;
+import com.sun.tools.xjc.generator.bean.ImplStructureStrategy;
 
 /**
  * JAXB 2.x Mojo.
@@ -52,9 +65,42 @@ public class XJC23Mojo extends RawXJC2Mojo<Options> {
 				new LoggingErrorReceiver("Error while parsing schema(s).",
 						getLog(), getVerbose()));
 
-		if (model == null)
-			throw new MojoExecutionException(
-					"Unable to parse input schema(s). Error messages should have been provided.");
+		if (model != null)
+		{
+			// Ensure DTD 'value' property name(s) conforms to a get/set name.
+			if (  options.getSchemaLanguage() == DTD )
+			{
+				for ( Entry<NClass, CClassInfo> beanEntry : model.beans().entrySet() )
+				{
+					if ( beanEntry.getValue() != null )
+					{
+						for ( CPropertyInfo property : beanEntry.getValue().getProperties() )
+						{
+							if ( property instanceof CValuePropertyInfo )
+								property.setName(true, StringUtils.capitalize(property.getName(true)));
+						}
+					}
+				}
+			}
+			
+			// Verbose: list the model's beans.
+			if (getVerbose())
+			{
+				getLog().info("Model Strategy: " + model.strategy);
+				for ( Entry<NClass, CClassInfo> beanEntry : model.beans().entrySet() )
+				{
+					String beanKey = (beanEntry.getKey() != null ) ? beanEntry.getKey().toString() : "";
+					String beanVal = (beanEntry.getValue() != null ) ? beanEntry.getValue().toString() : "";
+					if ( beanKey.equals(beanVal) )
+						getLog().info("Bean: [" + beanVal + "]");
+					else
+						getLog().info("Bean: [key=" + beanEntry.getKey() + ", value=" + beanEntry.getValue() + "]");
+				}
+			}
+		}
+		else
+			throw new MojoExecutionException("Unable to parse input schema(s). Error messages should have been provided.");
+		
 		return model;
 	}
 
