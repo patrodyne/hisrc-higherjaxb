@@ -326,10 +326,25 @@
 				<artifactId>jcl-over-slf4j</artifactId>
 				<version>${slf4j.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
 			<!-- JAXB2 Basics -->
 			<dependency>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-basicjaxb-runtime</artifactId>
+				<version>${hisrc-basicjaxb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-basicjaxb-plugins</artifactId>
+				<version>${hisrc-basicjaxb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-basicjaxb-testing</artifactId>
 				<version>${hisrc-basicjaxb.version}</version>
 			</dependency>
 		</dependencies>
