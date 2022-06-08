@@ -1,0 +1,13 @@
+digraph SR {
+	fontcolor=red
+	labelloc="t"
+	label="Schema Relationships"
+
+	"xjs.dtd"	[ shape=box ]
+	"Model.xjs" [ shape=hexagon ]
+	"Model.dtd" [ shape=box ]
+	"Model.xml" [ shape=hexagon ]
+
+	"xjs.dtd" -> "Model.xjs"
+	"Model.dtd" -> "Model.xml"
+}

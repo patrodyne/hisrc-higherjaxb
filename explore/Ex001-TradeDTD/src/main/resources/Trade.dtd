@@ -3,8 +3,8 @@
 
 <!ELEMENT symbol (#PCDATA) >
 <!ELEMENT quantity (#PCDATA) >
-<!ELEMENT limitPrice (#PCDATA) >
 <!ELEMENT stopPrice (#PCDATA) >
+<!ELEMENT limitPrice (#PCDATA) >
 <!ELEMENT completed (#PCDATA) >
 
 <!ELEMENT trade ( symbol, quantity, stopPrice?, limitPrice?, completed ) >

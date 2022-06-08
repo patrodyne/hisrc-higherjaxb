@@ -54,7 +54,7 @@ import org.jvnet.jaxb2_commons.test.Bogus;
 import org.xml.sax.SAXException;
 
 /**
- * A Swing application to explore features of the HiSrc BasicJAXB Runtime library.
+ * A Swing application to explore features of the HiSrc HigherJAXB Runtime library.
  * 
  * Projects create their own custom Explorer by extending AbstractExplorer and
  * providing an HTML lesson page then adding JMenuItem(s) to trigger exploratory code.
@@ -198,23 +198,6 @@ public class Explorer extends AbstractExplorer
 		}
 	}
 	
-	public Trade createTrade(int account, Action action, String symbol, int qty,
-		XMLGregorianCalendar created, XMLGregorianCalendar completed)
-	{
-		Quantity quantity = getObjectFactory().createQuantity(qty);
-		Trade trade = getObjectFactory().createTrade(account, action, symbol, quantity);
-		trade.setCreated(created);
-		trade.setCompleted(getObjectFactory().createCompleted(completed));
-		
-		if ( action == Action.BUY )
-		{
-			trade.setStopPrice(getObjectFactory().createStopPrice(BigDecimal.ONE));
-			trade.setLimitPrice(getObjectFactory().createLimitPrice(BigDecimal.TEN));
-		}
-		
-		return trade;
-	}
-	
 	public void marshalTrade1()
 	{
 		marshal("Trade1", getTrade1());
@@ -242,16 +225,6 @@ public class Explorer extends AbstractExplorer
 		TransactionBatch batch = new TransactionBatch();
 		batch.getTradeOrTransfer().addAll(getTransferList());
 		marshal("Transfers", batch);
-	}
-
-	private void marshal(String label, Serializable instance)
-	{
-		String phc = toHexString(instance.hashCode());
-		String ihc = toHexString(identityHashCode(instance));
-		String tradeXml = marshalToString(instance);
-		// Element Hash vs Object Hash
-		println(label + " XML: (E#=" + phc + ", O#=" + ihc + ")\n\n" +tradeXml);
-		println();
 	}
 	
 	public void compareHashCodes()
@@ -321,9 +294,10 @@ public class Explorer extends AbstractExplorer
 
 	public void searchTrades()
 	{
-		Trade trade = Bogus.randomItem(getTradeList());
-		int index = getTradeList().indexOf(trade);
-		println("Search: " + trade);
+		Trade trade1 = Bogus.randomItem(getTradeList());
+		Trade trade2 = unmarshalFromString(marshalToString(trade1), Trade.class);
+		int index = getTradeList().indexOf(trade2);
+		println("Search: " + trade2);
 		println("Found.: " + getTradeList().get(index));
 		println("Index.: " + index);
 		println();
@@ -331,9 +305,10 @@ public class Explorer extends AbstractExplorer
 
 	public void searchTransfers()
 	{
-		Transfer transfer = Bogus.randomItem(getTransferList());
-		int index = getTransferList().indexOf(transfer);
-		println("Search: " + transfer);
+		Transfer transfer1 = Bogus.randomItem(getTransferList());
+		Transfer transfer2 = unmarshalFromString(marshalToString(transfer1), Transfer.class);
+		int index = getTransferList().indexOf(transfer2);
+		println("Search: " + transfer2);
 		println("Found.: " + getTransferList().get(index));
 		println("Index.: " + index);
 		println();
@@ -545,7 +520,24 @@ public class Explorer extends AbstractExplorer
 		setTransferList(createTransferList());
 	}
 	
-	private List<Trade> createTradeList()
+	public Trade createTrade(int account, Action action, String symbol, int qty,
+		XMLGregorianCalendar created, XMLGregorianCalendar completed)
+	{
+		Quantity quantity = getObjectFactory().createQuantity(qty);
+		Trade trade = getObjectFactory().createTrade(account, action, symbol, quantity);
+		trade.setCreated(created);
+		trade.setCompleted(getObjectFactory().createCompleted(completed));
+		
+		if ( action == Action.BUY )
+		{
+			trade.setStopPrice(getObjectFactory().createStopPrice(BigDecimal.ONE));
+			trade.setLimitPrice(getObjectFactory().createLimitPrice(BigDecimal.TEN));
+		}
+		
+		return trade;
+	}
+	
+	public List<Trade> createTradeList()
 	{
 		XMLGregorianCalendar created = newXMLGregorianCalendar("-P1D");
 		XMLGregorianCalendar completed = newXMLGregorianCalendar();
@@ -573,7 +565,7 @@ public class Explorer extends AbstractExplorer
 		return new ArrayList<Trade>(trades.values());
 	}
 	
-	private List<Transfer> createTransferList()
+	public List<Transfer> createTransferList()
 	{
 		XMLGregorianCalendar created = newXMLGregorianCalendar("-P1D");
 		XMLGregorianCalendar completed = newXMLGregorianCalendar();
@@ -655,6 +647,16 @@ public class Explorer extends AbstractExplorer
 		return unmarshaller;
 	}
 
+	private void marshal(String label, Serializable instance)
+	{
+		String ehc = toHexString(instance.hashCode());
+		String ihc = toHexString(identityHashCode(instance));
+		String tradeXml = marshalToString(instance);
+		// Element Hash vs Object Hash
+		println(label + " XML: (E#=" + ehc + ", O#=" + ihc + ")\n\n" +tradeXml);
+		println();
+	}
+	
 	private String marshalToString(Object instance)
 	{
 		String xml = null;
