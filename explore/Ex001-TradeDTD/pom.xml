@@ -4,12 +4,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>hisrc-higherjaxb-ex001</artifactId>
+	<artifactId>hisrc-higherjaxb-maven-plugin-explore-ex001</artifactId>
 	<packaging>pom</packaging>
-	<name>HiSrc HigherJAXB - Ex001 - TradeDTD</name>
+	<name>HiSrc HigherJAXB Explore - Ex001 - TradeDTD</name>
 	<parent>
 		<groupId>org.patrodyne.jvnet</groupId>
-		<artifactId>hisrc-higherjaxb-explore</artifactId>
+		<artifactId>hisrc-higherjaxb-maven-plugin-explore</artifactId>
 		<version>0.14.2-SNAPSHOT</version>
 	</parent>
 	<dependencies>
@@ -44,6 +44,7 @@
 	</dependencies>
 	<build>
 		<defaultGoal>package</defaultGoal>
+		<finalName>hisrc-higherjaxb-ex001-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
