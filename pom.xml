@@ -506,6 +506,7 @@
 				</property>
 			</activation>
 			<modules>
+				<module>explore</module>
 				<module>samples</module>
 			</modules>
 		</profile>
@@ -528,6 +529,7 @@
 				</property>
 			</activation>
 			<modules>
+				<module>explore</module>
 				<module>samples</module>
 				<module>tests</module>
 			</modules>
