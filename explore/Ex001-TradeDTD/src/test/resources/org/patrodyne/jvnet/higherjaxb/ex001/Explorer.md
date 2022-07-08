@@ -1,6 +1,6 @@
 # HiSrc HigherJAXB Ex001 Trade DTD
 
-This project is the first exploration of the HiSrc HigherJAXB library. It includes a Swing application named *Explorer* to demonstrate two features of the HiSrc Higher plug-ins. This *Explorer* application is designed to present a narrative lesson together with dynamic output for real-time experimentation. Feel free to modify your [Explorer.java][4] source file to add or modify the action methods with your own investigative code. The `Explorer` class is an extension of `AbstractExplorer` which contains the more boring mechanics of this implementation. Feel free to create an `Explorer` class in your own projects to help explain the purpose of your work too.
+This project is the first exploration of the HiSrc HigherJAXB library. It includes a Swing application named *Explorer* to demonstrate features of the HiSrc Higher plug-ins. This *Explorer* application is designed to present a narrative lesson together with dynamic output for real-time experimentation. Feel free to modify your copy of the [Explorer.java][4] source file by adding or modifying the action methods with your own investigative code. The `Explorer` class is an extension of `AbstractExplorer` which contains the more boring mechanics of this implementation. Feel free to create an `Explorer` class in your own projects to help explain the purpose of your work too.
 
 > **About AbstractExplorer:** Projects can create their own custom Explorer by extending `AbstractExplorer` and providing an HTML lesson page plus `JMenuItem`(s) to trigger exploratory code.
 
