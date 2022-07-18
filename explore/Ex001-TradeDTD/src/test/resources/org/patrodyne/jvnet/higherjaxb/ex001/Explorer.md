@@ -16,7 +16,7 @@ Nevertheless, the *HiSrc HigherJAXB* Maven plug-in supports DTD schemas and ther
 
 In [this exploration][4], you will [model][5] a simple stock trade with a [DTD schema][6] and its related [XJC binding file][7]. Your [POM][3] configures the `hisrc-higherjaxb-maven-plugin` to use `<schemaLanguage>dtd</schemaLanguage>`.
 
-> **Note:** [XJC][10] uses different binding files based on the schema language being used, for DTD schemas the binding file is known as an *xml-java-binding-schema* binding and it has its own DTD schema, [xjs.dtd][8]. The XLC compiler is available in several forms: as a CLI tool, a Ant task, a Maven plug-in and a library API. Your POM invokes the XJC compiler as a Maven plug-in. Although this exploration highlights the historic DTD schema-language, you should consider the XML schema-language for modern use.
+> **Note:** [XJC][10] uses different binding files based on the schema language being used, for DTD schemas the binding file is known as an *xml-java-binding-schema* binding and it has its own DTD schema, [xjs.dtd][8]. The XJC compiler is available in several forms: as a CLI tool, a Ant task, a Maven plug-in and a library API. Your POM invokes the XJC compiler as a Maven plug-in. Although this exploration highlights the historic DTD schema-language, you should consider the XML schema-language for modern use.
 
 Your [Trade.dtd][6] uses these DTD building blocks:
 
