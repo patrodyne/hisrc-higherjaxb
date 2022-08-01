@@ -19,15 +19,22 @@
 #     Step #2 packages the shared, test and sample projects.
 #     Step #3 unit test the shared, test and sample projects.
 #
+
 if [ ! -d "${JAVA_HOME}" ]; then
 	echo "Please configure Java home path."
 	exit 1
 fi
-# DEBUG_OPTS="-X -Dorg.slf4j.simpleLogger.showLogName=true"
-# BUILD_OPTS="--fail-at-end -DskipTests=true $@"
-  BUILD_OPTS="--fail-at-end $@"
-  mvn ${DEBUG_OPTS} ${BUILD_OPTS}
-# mvn -DskipTests=true -Dxml.catalog.ignoreMissing -Pnexus-deploy clean deploy
-# mvn -DskipTests=true -Dxml.catalog.ignoreMissing -DdryRun=false release:clean
-# mvn -DskipTests=true -Dxml.catalog.ignoreMissing -DdryRun=true release:prepare
-# mvn -DskipTests=true -Dxml.catalog.ignoreMissing -DdryRun=true release:perform
+
+BASEDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+source ${BASEDIR}/build-INC.sh
+
+if [ $# -eq 0 ]; then
+  ${BASEDIR}/build.sh
+else
+  mvn --fail-at-end ${JVM_SYS_PROPS} "$@"
+fi
+
+# mvn -DskipTests=true -Dxml.catalog.ignoreMissing=true -Pnexus-deploy clean deploy
+# mvn -DskipTests=true -Dxml.catalog.ignoreMissing=true -DdryRun=false release:clean
+# mvn -DskipTests=true -Dxml.catalog.ignoreMissing=true -DdryRun=true release:prepare
+# mvn -DskipTests=true -Dxml.catalog.ignoreMissing=true -DdryRun=true release:perform

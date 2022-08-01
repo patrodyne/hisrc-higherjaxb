@@ -9,7 +9,8 @@
 #		from the sub-project to invoke this script.
 
 BASEDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-BUILDER="output mvn"
+source ${BASEDIR}/build-inc.sh
+BUILDER="output mvn ${JVM_SYS_PROPS}"
 FGTITLE="$(basename $(pwd))"
 BGTITLE="$(date --rfc-3339=sec) $(pwd)"
 
