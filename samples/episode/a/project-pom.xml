@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-sample-episode-a-maven</artifactId>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Sample [episode-a|maven]</name>
+	<name>HiSrc HigherJAXB Plugin Sample [episode-a|maven]</name>
 	<dependencies>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>

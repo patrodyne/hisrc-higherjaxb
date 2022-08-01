@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-23-one-non-strict</artifactId>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Tests [GitHub Issue #23:one-non-strict]</name>
+	<name>HiSrc HigherJAXB Plugin Tests [GitHub Issue #23:one-non-strict]</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>

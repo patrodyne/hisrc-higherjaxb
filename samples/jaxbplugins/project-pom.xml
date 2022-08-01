@@ -7,7 +7,7 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-sample-jaxbplugins-maven</artifactId>
 	<version>${project.version}</version>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Sample [jaxbplugins|maven]</name>
+	<name>HiSrc HigherJAXB Plugin Sample [jaxbplugins|maven]</name>
 	<properties>
 		<maven.compiler.source>8</maven.compiler.source>
 		<maven.compiler.target>8</maven.compiler.target>

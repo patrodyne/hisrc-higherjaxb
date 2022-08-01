@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-episodes-a</artifactId>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Tests [episodes:a]</name>
+	<name>HiSrc HigherJAXB Plugin Tests [episodes:a]</name>
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<plugins>

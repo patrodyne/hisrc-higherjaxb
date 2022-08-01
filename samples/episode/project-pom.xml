@@ -7,7 +7,7 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-sample-episode-maven</artifactId>
 	<version>${project.version}</version>
 	<packaging>pom</packaging>
-	<name>Maven JAXB 2.x Plugin Sample [episode|maven]</name>
+	<name>HiSrc HigherJAXB Plugin Sample [episode|maven]</name>
 	<modules>
 		<module>a</module>
 		<module>b</module>

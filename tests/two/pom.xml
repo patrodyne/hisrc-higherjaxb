@@ -26,7 +26,7 @@
 	</dependencies>
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-two</artifactId>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Tests [two]</name>
+	<name>HiSrc HigherJAXB Plugin Tests [two]</name>
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<plugins>

@@ -5,7 +5,7 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-project</artifactId>
 	<version>0.14.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Maven JAXB 2.x Plugin Project</name>
+	<name>HiSrc HigherJAXB Plugin Project</name>
 	<description>Maven2 plugin for JAXB 2.x XJC compiler to generate Java sources from XML Schemas.</description>
 	<url>https://github.com/patrodyne/hisrc-higherjaxb</url>
 	<inceptionYear>2006</inceptionYear>
@@ -14,7 +14,7 @@
 			<name>BSD 3-Clause License</name>
 			<url>https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/LICENSE.md</url>
 			<distribution>repo or manual</distribution>
-			<comments>Maven JAXB2 Plugin license is the 3-clause BSD license which is compatible with GPL. Maven JAXB2 Plugin license does not require you to include any acknowledgments for Maven JAXB2 Plugin in advertising materials for your software.</comments>
+			<comments>HiSrc HigherJAXB Plugin license is the 3-clause BSD license which is compatible with GPL. HiSrc HigherJAXB Plugin license does not require you to include any acknowledgments for HiSrc HigherJAXB Plugin in advertising materials for your software.</comments>
 		</license>
 	</licenses>
 	<developers>
@@ -69,27 +69,28 @@
 	<properties>
 		<activation.version>1.2.0</activation.version>
 		<annotation.version>1.3.2</annotation.version>
-		<dtd-parser.version>1.2</dtd-parser.version>
-		<fastinfoset.version>1.2.13</fastinfoset.version>
+		<dtd-parser.version>1.5.0</dtd-parser.version>
+		<fastinfoset.version>2.1.0</fastinfoset.version>
 		<hisrc-basicjaxb.version>0.12.2-SNAPSHOT</hisrc-basicjaxb.version>
-		<istack.version>3.0.5</istack.version>
-		<jaxb-api.version>2.3.1</jaxb-api.version>
+		<istack.version>4.1.1</istack.version>
 		<jaxb-core.version>2.3.0.1</jaxb-core.version>
 		<jaxb.version>${jaxb23.version}</jaxb.version>
 		<jaxb20.version>2.0.5</jaxb20.version>
 		<jaxb21.version>2.1.13</jaxb21.version>
 		<jaxb22.version>2.2.11</jaxb22.version>
 		<jaxb23.version>2.3.1</jaxb23.version>
+		<jaxb30.version>3.0.2</jaxb30.version>
+		<jaxb40.version>4.0.0</jaxb40.version>
 		<junit.version>4.13.2</junit.version>
 		<maven.compiler.source>8</maven.compiler.source>
 		<maven.compiler.target>8</maven.compiler.target>
 		<maven.plugin.plugin.version>3.6.4</maven.plugin.plugin.version>
 		<maven.plugin.testing.version>3.3.0</maven.plugin.testing.version>
-		<maven.version>2.0.9</maven.version>
+		<maven.version>3.8.4</maven.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<slf4j.version>1.7.33</slf4j.version>
-		<stax-ex.version>1.7.8</stax-ex.version>
+		<slf4j.version>1.7.36</slf4j.version>
+		<stax-ex.version>2.1.0</stax-ex.version>
 		<xsom.version>20140925</xsom.version>
 	</properties>
 	<dependencyManagement>
@@ -108,7 +109,7 @@
 			<dependency>
 				<groupId>javax.xml.bind</groupId>
 				<artifactId>jaxb-api</artifactId>
-				<version>${jaxb-api.version}</version>
+				<version>${jaxb.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jaxb</groupId>
@@ -237,11 +238,13 @@
 				<artifactId>maven-plugin-api</artifactId>
 				<version>${maven.version}</version>
 			</dependency>
+			<!--
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-project</artifactId>
-				<version>${maven.version}</version>
+				<version>2.0.11</version>
 			</dependency>
+			-->
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-model</artifactId>
@@ -249,14 +252,21 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-compat</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
 				<version>${maven.version}</version>
 			</dependency>
+			<!--
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact-manager</artifactId>
 				<version>${maven.version}</version>
 			</dependency>
+			-->
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-repository-metadata</artifactId>
@@ -290,30 +300,30 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.codehaus.plexus</groupId>
-				<artifactId>plexus-interpolation</artifactId>
-				<version>1.9</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.sonatype.plexus</groupId>
 				<artifactId>plexus-build-api</artifactId>
 				<version>0.0.7</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-interpolation</artifactId>
+				<version>1.26</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-utils</artifactId>
-				<version>1.5.15</version>
+				<version>3.4.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-container-default</artifactId>
-				<version>1.0-alpha-9-stable-1</version>
+				<version>2.1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.2.1</version>
+				<version>3.12.0</version>
 			</dependency>
 			<!-- SLF4J -->
 			<dependency>
@@ -425,6 +435,23 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
+			  <groupId>org.commonjava.maven.plugins</groupId>
+			  <artifactId>directory-maven-plugin</artifactId>
+			  <version>0.1</version>
+			  <executions>
+				<execution>
+				  <id>directories</id>
+				  <goals>
+					<goal>highest-basedir</goal>
+				  </goals>
+				  <phase>initialize</phase>
+				  <configuration>
+					<property>main.basedir</property>
+				  </configuration>
+				</execution>
+			  </executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.1.0</version>
 			</plugin>
@@ -443,6 +470,9 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M5</version>
+				<configuration>
+					<systemPropertiesFile>${main.basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-install-plugin</artifactId>

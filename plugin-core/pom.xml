@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-core</artifactId>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Core</name>
+	<name>HiSrc HigherJAXB Plugin Core</name>
 	<dependencies>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
@@ -44,7 +44,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-project</artifactId>
+			<artifactId>maven-compat</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>

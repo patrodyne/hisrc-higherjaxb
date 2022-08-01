@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-episodes-c</artifactId>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Tests [episodes:c]</name>
+	<name>HiSrc HigherJAXB Plugin Tests [episodes:c]</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>

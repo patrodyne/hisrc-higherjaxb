@@ -10,7 +10,7 @@
 		<version>0.14.2-SNAPSHOT</version>
 	</parent>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Tests [wsdl]</name>
+	<name>HiSrc HigherJAXB Plugin Tests [wsdl]</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>

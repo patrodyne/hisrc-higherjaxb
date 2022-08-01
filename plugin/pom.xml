@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<name>Maven JAXB 2.x Plugin</name>
+	<name>HiSrc HigherJAXB Plugin</name>
 	<url>https://github.com/highsource/maven-jaxb2-plugin</url>
 	<prerequisites>
 		<maven>${maven.version}</maven>
@@ -48,14 +48,16 @@
 			<artifactId>maven-artifact</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-artifact-manager</artifactId>
 			<scope>test</scope>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-project</artifactId>
+			<artifactId>maven-compat</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

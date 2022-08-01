@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-19-b</artifactId>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Tests [GitHub Issue #19:b]</name>
+	<name>HiSrc HigherJAXB Plugin Tests [GitHub Issue #19:b]</name>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

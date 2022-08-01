@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-explore</artifactId>
 	<packaging>pom</packaging>
-	<name>HiSrc HigherJAXB - Explore</name>
+	<name>HiSrc HigherJAXB Explore</name>
 	<modules>
 		<module>Ex001-TradeDTD</module>
 		<!--

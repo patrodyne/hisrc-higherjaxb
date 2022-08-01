@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-sample-catalog</artifactId>
 	<packaging>pom</packaging>
-	<name>Maven JAXB 2.x Plugin Sample [catalog]</name>
+	<name>HiSrc HigherJAXB Plugin Sample [catalog]</name>
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<plugins>

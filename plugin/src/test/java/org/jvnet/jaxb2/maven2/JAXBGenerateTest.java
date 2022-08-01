@@ -36,8 +36,12 @@ public abstract class JAXBGenerateTest extends AbstractMojoTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
+//		mavenProjectBuilder = (MavenProjectBuilder) getContainer().lookup(
+//				MavenProjectBuilder.ROLE);
+		
+		// KLUDGE - Rick - 2022-07-19
 		mavenProjectBuilder = (MavenProjectBuilder) getContainer().lookup(
-				MavenProjectBuilder.ROLE);
+			"ROLE");
 	}
 
 	protected static File getBaseDir() {

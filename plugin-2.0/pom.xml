@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb20-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<name>Maven JAXB 2.0.x Plugin</name>
+	<name>HiSrc HigherJAXB 2.0.x Plugin</name>
 	<prerequisites>
 		<maven>${maven.version}</maven>
 	</prerequisites>

@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-22</artifactId>
 	<packaging>pom</packaging>
-	<name>Maven JAXB 2.x Plugin Tests [GitHub Issue #22]</name>
+	<name>HiSrc HigherJAXB Plugin Tests [GitHub Issue #22]</name>
 	<modules>
 		<module>a</module>
 		<module>b</module>

@@ -10,7 +10,7 @@
 		<version>0.14.2-SNAPSHOT</version>
 	</parent>
 	<packaging>jar</packaging>
-	<name>Maven JAXB 2.x Plugin Tests [po-2.0]</name>
+	<name>HiSrc HigherJAXB Plugin Tests [po-2.0]</name>
 	<dependencies>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
