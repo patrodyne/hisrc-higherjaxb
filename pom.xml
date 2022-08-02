@@ -71,7 +71,7 @@
 		<annotation.version>1.3.2</annotation.version>
 		<dtd-parser.version>1.5.0</dtd-parser.version>
 		<fastinfoset.version>2.1.0</fastinfoset.version>
-		<hisrc-basicjaxb.version>0.12.2-SNAPSHOT</hisrc-basicjaxb.version>
+		<hisrc-basicjaxb.version>0.12.2</hisrc-basicjaxb.version>
 		<istack.version>4.1.1</istack.version>
 		<jaxb-core.version>2.3.0.1</jaxb-core.version>
 		<jaxb.version>${jaxb23.version}</jaxb.version>
