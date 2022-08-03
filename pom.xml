@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.patrodyne.jvnet</groupId>
 	<artifactId>hisrc-higherjaxb-maven-plugin-project</artifactId>
-	<version>0.14.2-SNAPSHOT</version>
+	<version>0.14.2</version>
 	<packaging>pom</packaging>
 	<name>HiSrc HigherJAXB Plugin Project</name>
 	<description>Maven2 plugin for JAXB 2.x XJC compiler to generate Java sources from XML Schemas.</description>
@@ -49,7 +49,7 @@
 		<connection>scm:git:git@github.com:patrodyne/hisrc-higherjaxb.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/patrodyne/hisrc-higherjaxb.git</developerConnection>
 		<url>https://github.com/patrodyne/hisrc-higherjaxb/tree/master</url>
-	  <tag>HEAD</tag>
+	  <tag>0.14.2</tag>
   </scm>
 	<issueManagement>
 		<system>GitHub Issues</system>

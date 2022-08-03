@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.patrodyne.jvnet</groupId>
 		<artifactId>hisrc-higherjaxb-maven-plugin-project</artifactId>
-		<version>0.14.2-SNAPSHOT</version>
+		<version>0.14.2</version>
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
