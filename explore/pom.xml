@@ -11,6 +11,10 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-explore</artifactId>
 	<packaging>pom</packaging>
 	<name>HiSrc HigherJAXB Explore</name>
+	<properties>
+		<hisrc-basicjaxb.version>0.12.2</hisrc-basicjaxb.version>
+		<hisrc-higherjaxb-maven-plugin.version>0.14.2</hisrc-higherjaxb-maven-plugin.version>
+	</properties>
 	<modules>
 		<module>Ex001-TradeDTD</module>
 		<!--

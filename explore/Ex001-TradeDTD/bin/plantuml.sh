@@ -10,7 +10,7 @@ IMGTYPE="svg"
 PLANTUML_HOME="/opt/java/plantuml"
 PLANTUML_TEMP="target/generated-docs/TradeDTDTemp.puml"
 PLANTUML_FILE="target/generated-docs/TradeDTD.puml"
-PLANTUML_DEST="src/test/resources/TradeDTD.${IMGTYPE}"
+PLANTUML_DEST="src/main/resources/TradeDTD.${IMGTYPE}"
 # Configure END
 
 # Pre-process PUML

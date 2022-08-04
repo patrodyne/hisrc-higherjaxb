@@ -44,7 +44,7 @@
 	</dependencies>
 	<build>
 		<defaultGoal>package</defaultGoal>
-		<finalName>hisrc-higherjaxb-ex001-${project.version}</finalName>
+		<finalName>hisrc-higherjaxb-ex001-${hisrc-higherjaxb-maven-plugin.version}</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>

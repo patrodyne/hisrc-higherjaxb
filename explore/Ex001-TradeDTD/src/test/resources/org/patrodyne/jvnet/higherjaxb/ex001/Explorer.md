@@ -508,7 +508,7 @@ When you configure your logger to trace level for the equals strategy, your log 
 [2]: http://xml.coverpages.org/jaxb0530spec.pdf
 [3]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/project-pom.xml?ts=4
 [4]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/src/test/java/org/patrodyne/jvnet/higherjaxb/ex001/Explorer.java?ts=4
-[5]: https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/explore/Ex001-TradeDTD/src/test/resources/TradeDTD.svg
+[5]: https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/explore/Ex001-TradeDTD/src/main/resources/TradeDTD.svg
 [6]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/src/main/resources/Trade.dtd?ts=4
 [7]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/src/main/resources/Trade.xjs?ts=4
 [8]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/doc/xjs.dtd?ts=4
