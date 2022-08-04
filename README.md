@@ -38,8 +38,6 @@ with the original `maven-jaxb2-plugin` name.
 
 ### Goals
 
-### Goals
-
 New goals for the next release are:
 
 * Update dependencies with newer versions *including* the Jakarta namespace.
