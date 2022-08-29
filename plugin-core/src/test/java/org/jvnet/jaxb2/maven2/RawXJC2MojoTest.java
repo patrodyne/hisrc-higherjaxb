@@ -45,15 +45,41 @@ public class RawXJC2MojoTest {
     public void collectsBindingUrisFromArtifact() throws Exception {
         List<URI> bindings = new ArrayList<>();
         
-        final RawXJC2Mojo<Void> mojo = new RawXJC2Mojo<Void>() {
-			
+        final RawXJC2Mojo<Void> mojo = new RawXJC2Mojo<Void>()
+        {
 			@Override
-			protected OptionsFactory<Void> getOptionsFactory() {
+			protected OptionsFactory<Void> getOptionsFactory()
+			{
 				throw new UnsupportedOperationException();
 			}
 			
 			@Override
-			public void doExecute(Void options) throws MojoExecutionException {
+			public void doExecute(Void options) throws MojoExecutionException
+			{
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			protected String getJaxbNamespaceURI()
+			{
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			protected String[] getXmlSchemaNames(Class<?> packageInfoClass)
+			{
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			protected String getEpisodePackageName()
+			{
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			protected String[] getXmlNamespaceNames(Class<?> packageInfoClass)
+			{
 				throw new UnsupportedOperationException();
 			}
 		}; 

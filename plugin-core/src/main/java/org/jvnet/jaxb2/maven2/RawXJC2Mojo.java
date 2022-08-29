@@ -1,17 +1,3 @@
-/*
- * Copyright [2006] java.net
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
- * you may not use this file except in compliance with the License. 
- * You may obtain a copy of the License at 
- * 		http://www.apache.org/licenses/LICENSE-2.0 
- * Unless required by applicable law or agreed to in writing, 
- * software distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
- */
-
 package org.jvnet.jaxb2.maven2;
 
 import java.io.File;
@@ -34,7 +20,6 @@ import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import javax.xml.bind.annotation.XmlSchema;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -78,7 +63,6 @@ import org.xml.sax.SAXException;
 
 import com.sun.org.apache.xml.internal.resolver.CatalogManager;
 import com.sun.org.apache.xml.internal.resolver.tools.CatalogResolver;
-import com.sun.xml.txw2.annotation.XmlNamespace;
 
 /**
  * Maven JAXB 2.x Mojo.
@@ -86,8 +70,6 @@ import com.sun.xml.txw2.annotation.XmlNamespace;
  * @author Aleksei Valikov (valikov@gmx.net)
  */
 public abstract class RawXJC2Mojo<O> extends AbstractXJC2Mojo<O> {
-
-	private static final String JAXB_NSURI = "http://java.sun.com/xml/ns/jaxb";
 
 	public static final String ADD_IF_EXISTS_TO_EPISODE_SCHEMA_BINDINGS_TRANSFORMATION_RESOURCE_NAME = "/"
 			+ RawXJC2Mojo.class.getPackage().getName().replace('.', '/') + "/addIfExistsToEpisodeSchemaBindings.xslt";
@@ -487,58 +469,76 @@ public abstract class RawXJC2Mojo<O> extends AbstractXJC2Mojo<O> {
 		}
 	}
 
-	private void setupBindInfoPackage() {
+	abstract protected String getJaxbNamespaceURI();
+	abstract protected String[] getXmlSchemaNames(final Class<?> packageInfoClass);
+
+	protected void setupBindInfoPackage()
+	{
 		String packageInfoClassName = "com.sun.tools.xjc.reader.xmlschema.bindinfo.package-info";
-		try {
+		try
+		{
 			final Class<?> packageInfoClass = Class.forName(packageInfoClassName);
-			final XmlSchema xmlSchema = packageInfoClass.getAnnotation(XmlSchema.class);
-			if (xmlSchema == null) {
+			final String[] xmlSchemaNames = getXmlSchemaNames(packageInfoClass);
+			final String xmlSchemaNamespace = xmlSchemaNames[0];
+			final String xmlSchemaClassname = xmlSchemaNames[1];
+			if (xmlSchemaClassname == null)
+			{
 				getLog().warn(MessageFormat.format(
-						"Class [{0}] is missing the [{1}] annotation. Processing bindings will probably fail.",
-						packageInfoClassName, XmlSchema.class.getName()));
-			} else {
-				final String namespace = xmlSchema.namespace();
-				if (!JAXB_NSURI.equals(namespace)) {
+					"Class [{0}] is missing the [{1}] annotation. Processing bindings will probably fail.",
+					packageInfoClassName, xmlSchemaClassname));
+			}
+			else
+			{
+				if (!getJaxbNamespaceURI().equals(xmlSchemaNamespace))
+				{
 					getLog().warn(MessageFormat.format(
-							"Namespace of the [{0}] annotation is [{1}] and does not match [{2}]. Processing bindings will probably fail.",
-							namespace, XmlSchema.class.getName(), JAXB_NSURI));
+						"Namespace of the [{0}] annotation is [{1}] and does not match [{2}]. Processing bindings will probably fail.",
+						xmlSchemaClassname, xmlSchemaNamespace, getJaxbNamespaceURI()));
 				}
 			}
-
-		} catch (ClassNotFoundException cnfex) {
-			getLog().warn(
-					MessageFormat.format("Class [{0}] could not be found. Processing bindings will probably faile.",
-							packageInfoClassName),
-					cnfex);
 		}
-
+		catch (ClassNotFoundException cnfex)
+		{
+			getLog()
+				.warn(MessageFormat.format("Class [{0}] could not be found. Processing bindings will probably fail.",
+					packageInfoClassName), cnfex);
+		}
 	}
 
-	private void setupEpisodePackage() {
-		String packageInfoClassName = "com.sun.xml.bind.v2.schemagen.episode.package-info";
-		try {
-			final Class<?> packageInfoClass = Class.forName(packageInfoClassName);
-			final XmlNamespace xmlNamespace = packageInfoClass.getAnnotation(XmlNamespace.class);
-			if (xmlNamespace == null) {
+	abstract protected String getEpisodePackageName();
+	abstract protected String[] getXmlNamespaceNames(final Class<?> packageInfoClass);
+	
+	private void setupEpisodePackage()
+	{
+		String packageInfoClassName = "org.glassfish.jaxb.core.v2.schemagen.episode.package-info";
+		try
+		{
+			final Class<?> packageInfoClass = Class.forName(getEpisodePackageName());
+			final String[] xmlSchemaNames = getXmlNamespaceNames(packageInfoClass);
+			final String xmlSchemaNamespace = xmlSchemaNames[0];
+			final String xmlSchemaClassname = xmlSchemaNames[1];
+			if (xmlSchemaNamespace == null)
+			{
 				getLog().warn(MessageFormat.format(
-						"Class [{0}] is missing the [{1}] annotation. Processing bindings will probably fail.",
-						packageInfoClassName, XmlNamespace.class.getName()));
-			} else {
-				final String namespace = xmlNamespace.value();
-				if (!JAXB_NSURI.equals(namespace)) {
+					"Class [{0}] is missing the [{1}] annotation. Processing bindings will probably fail.",
+					packageInfoClassName, xmlSchemaClassname));
+			}
+			else
+			{
+				if (!getJaxbNamespaceURI().equals(xmlSchemaNamespace))
+				{
 					getLog().warn(MessageFormat.format(
-							"Namespace of the [{0}] annotation is [{1}] and does not match [{2}]. Processing bindings will probably fail.",
-							XmlNamespace.class.getName(), namespace, JAXB_NSURI));
+						"Namespace of the [{0}] annotation is [{1}] and does not match [{2}]. Processing bindings will probably fail.",
+						xmlSchemaClassname, xmlSchemaNamespace, getJaxbNamespaceURI()));
 				}
 			}
-
-		} catch (ClassNotFoundException cnfex) {
-			getLog().warn(
-					MessageFormat.format("Class [{0}] could not be found. Processing bindings will probably faile.",
-							packageInfoClassName),
-					cnfex);
 		}
-
+		catch (ClassNotFoundException cnfex)
+		{
+			getLog()
+				.warn(MessageFormat.format("Class [{0}] could not be found. Processing bindings will probably fail.",
+					packageInfoClassName), cnfex);
+		}
 	}
 
 	private void addIfExistsToEpisodeSchemaBindings() throws MojoExecutionException {

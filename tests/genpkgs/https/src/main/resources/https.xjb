@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bindings version="3.0" xmlns="https://jakarta.ee/xml/ns/jaxb">
+	<!--
+		Note: The spec does not check for "https"!!!
+		Appendix D: Binding XML Names to Java Identifiers
+		  Jakarta XML Binding Specification
+			Generating a Java package name
+			  Mapping from a Namespace URI
+		Remove the scheme and ":" part from the beginning of the URI, if present.
+		Since there is no formal syntax to identify the optional URI scheme, restrict the schemes to be
+		removed to case insensitive checks for schemes "http" and "urn".
+	-->
+	<bindings scd="x-schema::tns" xmlns:tns="https://example.org/demo">
+		<schemaBindings>
+			<package name="org.example.demo" />
+		</schemaBindings>
+	</bindings>
+</bindings>

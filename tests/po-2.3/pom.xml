@@ -13,8 +13,9 @@
 	<name>HiSrc HigherJAXB Plugin Tests [po-2.3]</name>
 	<dependencies>
 		<dependency>
-			<groupId>org.glassfish.jaxb</groupId>
-			<artifactId>jaxb-runtime</artifactId>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>${jaxb-api23.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

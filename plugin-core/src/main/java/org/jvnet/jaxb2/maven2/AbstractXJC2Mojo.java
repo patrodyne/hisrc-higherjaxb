@@ -1033,10 +1033,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	}
 
 	/**
-	 * Version of the JAXB specification (ex. 2.0, 2.1 or 2.2).
+	 * Version of the JAXB specification (ex. 2.0, 2.1, 2.2, 2.3 or 3.0).
 	 */
-	@Parameter(defaultValue = "2.2")
-	private String specVersion = "2.2";
+	@Parameter(defaultValue = "3.0")
+	private String specVersion = "3.0";
 
 	public String getSpecVersion() {
 		return specVersion;
@@ -1109,7 +1109,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 		this.project = project;
 	}
 
-	private static final String XML_SCHEMA_CLASS_QNAME = "javax.xml.bind.annotation."
+	private static final String XML_SCHEMA_CLASS_QNAME = "jakarta.xml.bind.annotation."
 			+ XML_SCHEMA_CLASS_NAME;
 
 	public ArtifactResolver getArtifactResolver() {
@@ -1132,7 +1132,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 		this.artifactMetadataSource = artifactMetadataSource;
 	}
 
-	private static final String XML_SCHEMA_RESOURCE_QNAME = "/javax/xml/bind/annotation/"
+	private static final String XML_SCHEMA_RESOURCE_QNAME = "/jakarta/xml/bind/annotation/"
 			+ XML_SCHEMA_RESOURCE_NAME;
 
 	public ArtifactFactory getArtifactFactory() {
@@ -1153,7 +1153,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 		this.localRepository = localRepository;
 	}
 
-	private static final String XML_ELEMENT_REF_CLASS_QNAME = "javax.xml.bind.annotation."
+	private static final String XML_ELEMENT_REF_CLASS_QNAME = "jakarta.xml.bind.annotation."
 			+ XML_ELEMENT_REF_CLASS_NAME;
 
 	public MavenProjectBuilder getMavenProjectBuilder() {

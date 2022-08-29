@@ -33,6 +33,7 @@
 							<descriptors>
 								<descriptor>../src/main/assembly/maven-src.xml</descriptor>
 							</descriptors>
+							<escapeString>\</escapeString>
 						</configuration>
 					</execution>
 				</executions>

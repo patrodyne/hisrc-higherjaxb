@@ -13,8 +13,8 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
@@ -25,11 +25,14 @@
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<plugins>
+			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+			<!-- mvn hisrc-higherjaxb:generate -->
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
 				<configuration>
 					<extension>true</extension>
+					<strict>false</strict>
 					<catalogs>
 						<catalog>
 							<dependencyResource>                                                            

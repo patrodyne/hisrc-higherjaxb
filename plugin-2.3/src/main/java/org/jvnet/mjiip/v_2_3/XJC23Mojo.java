@@ -4,12 +4,15 @@ import static com.sun.tools.xjc.Language.DTD;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.xml.bind.annotation.XmlSchema;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -32,7 +35,10 @@ import com.sun.tools.xjc.model.CValuePropertyInfo;
 import com.sun.tools.xjc.model.Model;
 import com.sun.tools.xjc.model.nav.NClass;
 import com.sun.tools.xjc.outline.Outline;
+
 import com.sun.tools.xjc.generator.bean.ImplStructureStrategy;
+
+import com.sun.xml.txw2.annotation.XmlNamespace;
 
 /**
  * JAXB 2.x Mojo.
@@ -42,8 +48,16 @@ import com.sun.tools.xjc.generator.bean.ImplStructureStrategy;
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
 public class XJC23Mojo extends RawXJC2Mojo<Options> {
 
-	private final org.jvnet.jaxb2.maven2.OptionsFactory<Options> optionsFactory = new OptionsFactory();
+	private static final String JAXB_NSURI = "http://java.sun.com/xml/ns/jaxb";
+	private static final String JAXB_EPISODE_PKG_NAME = "com.sun.xml.bind.v2.schemagen.episode.package-info";
 
+	@Override
+	public String getSpecVersion()
+	{
+		return "2.3";
+	}
+	
+	private final org.jvnet.jaxb2.maven2.OptionsFactory<Options> optionsFactory = new OptionsFactory();
 	@Override
 	protected org.jvnet.jaxb2.maven2.OptionsFactory<Options> getOptionsFactory() {
 		return optionsFactory;
@@ -56,7 +70,51 @@ public class XJC23Mojo extends RawXJC2Mojo<Options> {
 		writeCode(outline);
 
 	}
+	
+	@Override
+	protected String getJaxbNamespaceURI()
+	{
+		return JAXB_NSURI;
+	}
 
+	@Override
+	protected String[] getXmlSchemaNames(final Class<?> packageInfoClass)
+	{
+		String[] xmlSchemaNames = null;
+		String xmlSchemaClassName = XmlSchema.class.getName();
+		final XmlSchema xmlSchema = packageInfoClass.getAnnotation(XmlSchema.class);
+		if ( xmlSchema != null )
+		{
+			String xmlSchemaNamespace = xmlSchema.namespace();
+			xmlSchemaNames = new String[] { xmlSchemaNamespace, xmlSchemaClassName };
+		}
+		else
+			xmlSchemaNames = new String[] { null, xmlSchemaClassName };
+		return xmlSchemaNames;
+	}
+	
+	@Override
+	protected String getEpisodePackageName()
+	{
+		return JAXB_EPISODE_PKG_NAME;
+	}
+	
+	@Override
+	protected String[] getXmlNamespaceNames(final Class<?> packageInfoClass)
+	{
+		String xmlNamespaceClassName = XmlNamespace.class.getName();
+		String[] xmlNamespaceNames = null;
+		final XmlNamespace xmlNamespace = packageInfoClass.getAnnotation(XmlNamespace.class);
+		if ( xmlNamespace != null )
+		{
+			String xmlNamespaceValue = xmlNamespace.value();
+			xmlNamespaceNames = new String[] { xmlNamespaceValue, xmlNamespaceClassName };
+		}
+		else
+			xmlNamespaceNames = new String[] { null, xmlNamespaceClassName };
+		return xmlNamespaceNames;
+	}
+	
 	protected Model loadModel(Options options) throws MojoExecutionException {
 		if (getVerbose()) {
 			getLog().info("Parsing input schema(s)...");

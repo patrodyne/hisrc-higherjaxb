@@ -1,11 +1,11 @@
-<xsd:schema
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema jaxb:version="3.0" elementFormDefault="qualified"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:episode_a="http://maven-jaxb2-plugin/samples/episode/a"
 	xmlns:b="http://maven-jaxb2-plugin/samples/episode/b"
-	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-    jaxb:version="2.0"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
     targetNamespace="http://maven-jaxb2-plugin/samples/episode/b"
-	elementFormDefault="qualified">
+>
 
 	<!-- See JAXB-942 -->
 	<!-- TODO MAVEN-JAXB2-PLUGIN-53 -->

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema
+<xsd:schema jaxb:version="3.0" elementFormDefault="qualified"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0"
-    targetNamespace="no_pack" elementFormDefault="qualified">
+    xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+    targetNamespace="no_pack"
+>
 
 <!-- The following binding does not work on Java 9, which means that the resulting
             class shows up in the package `wtf.java9.xml_generation.no.pack` (as per

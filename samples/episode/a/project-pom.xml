@@ -13,12 +13,14 @@
 	<name>HiSrc HigherJAXB Plugin Sample [episode-a|maven]</name>
 	<dependencies>
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>test</defaultGoal>
+		<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+		<!-- mvn hisrc-higherjaxb:generate -->
 		<plugins>
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>

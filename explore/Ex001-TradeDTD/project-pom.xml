@@ -17,20 +17,37 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<hisrc-basicjaxb.version>${hisrc-basicjaxb.version}</hisrc-basicjaxb.version>
 		<hisrc-higherjaxb-maven-plugin.version>${hisrc-higherjaxb-maven-plugin.version}</hisrc-higherjaxb-maven-plugin.version>
+		<jaxb-api.version>${jaxb-api.version}</jaxb-api.version>
+		<jaxb-imp.version>${jaxb-imp.version}</jaxb-imp.version>
+		<junit.version>${junit.version}</junit.version>
 		<slf4j.version>${slf4j.version}</slf4j.version>
 	</properties>
 
 	<dependencies>
 		<!-- JAXB -->
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>${jaxb.version}</version>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>\${jaxb-api.version}</version>
+			<exclusions>
+				<!-- In favor of jakarta.activation:jakarta.activation-api -->
+				<exclusion>
+					<groupId>com.sun.activation</groupId>
+					<artifactId>jakarta.activation</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
-			<version>${jaxb.version}</version>
+			<version>\${jaxb-imp.version}</version>
+			<exclusions>
+				<!-- In favor of jakarta.activation:jakarta.activation-api -->
+				<exclusion>
+					<groupId>com.sun.activation</groupId>
+					<artifactId>jakarta.activation</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
@@ -47,7 +64,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
+			<version>\${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Logging -->
@@ -170,6 +187,8 @@
 					</ignoredUnusedDeclaredDependencies>
 				</configuration>
 			</plugin>
+			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+			<!-- mvn hisrc-higherjaxb:generate -->
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
@@ -180,10 +199,10 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
+							<verbose>false</verbose>
 							<debug>false</debug>
 							<extension>true</extension>
-							<verbose>true</verbose>
-							<schemaLanguage>dtd</schemaLanguage>
+							<schemaLanguage>DTD</schemaLanguage>
 							<schemaIncludes>
 								<schemaInclude>*.dtd</schemaInclude>
 							</schemaIncludes>

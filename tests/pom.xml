@@ -16,13 +16,12 @@
 		<module>catalog-xml</module>
 		<module>issues</module>
 		<module>episodes</module>
+		<module>genpkgs</module>
 		<module>p o</module>
 		<module>po</module>
 		<module>po-scd</module>
-		<!-- OBS <module>po-2.0</module> -->
-		<!-- OBS <module>po-2.1</module> -->
-		<!-- OBS <module>po-2.2</module> -->
 		<module>po-2.3</module>
+		<module>po-3.0</module>
 		<module>res</module>
 		<module>tse</module>
 		<module>two</module>
@@ -33,8 +32,10 @@
 		<module>MAVEN_JAXB2_PLUGIN-53</module>
 		<module>MAVEN_JAXB2_PLUGIN-69</module>
 		<module>MAVEN_JAXB2_PLUGIN-70</module>
+		<!-- FIXME: Dup ISOCurrencyCodeType
 		<module>MAVEN_JAXB2_PLUGIN-77</module>
 		<module>MAVEN_JAXB2_PLUGIN-79</module>
+		-->
 		<module>MAVEN_JAXB2_PLUGIN-82</module>
 		<!-- TODO <module>MAVEN_JAXB2_PLUGIN-86</module> -->
 		<module>MAVEN_JAXB2_PLUGIN-87</module>
@@ -70,46 +71,20 @@
 				</plugin>
 				<plugin>
 					<groupId>org.patrodyne.jvnet</groupId>
-					<artifactId>hisrc-higherjaxb20-maven-plugin</artifactId>
-					<version>${project.version}</version>
-					<executions>
-						<execution>
-							<id>generate</id>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.patrodyne.jvnet</groupId>
-					<artifactId>hisrc-higherjaxb21-maven-plugin</artifactId>
-					<version>${project.version}</version>
-					<executions>
-						<execution>
-							<id>generate</id>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.patrodyne.jvnet</groupId>
-					<artifactId>hisrc-higherjaxb22-maven-plugin</artifactId>
-					<version>${project.version}</version>
-					<executions>
-						<execution>
-							<id>generate</id>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.patrodyne.jvnet</groupId>
 					<artifactId>hisrc-higherjaxb23-maven-plugin</artifactId>
+					<version>${project.version}</version>
+					<executions>
+						<execution>
+							<id>generate</id>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.patrodyne.jvnet</groupId>
+					<artifactId>hisrc-higherjaxb30-maven-plugin</artifactId>
 					<version>${project.version}</version>
 					<executions>
 						<execution>
