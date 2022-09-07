@@ -3,7 +3,7 @@ package net.webservicex.test;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import junit.framework.Assert;
 import net.webservicex.GetWeather;
@@ -15,8 +15,8 @@ public class JAXBContextTest {
 	@Test
 	public void successfullyCreatesMarshallerAndUnmarshaller() throws JAXBException {
 		final JAXBContext context = JAXBContext.newInstance(CONTEXT_PATH);
-		Assert.assertNotNull(context.createMarshaller());
-		Assert.assertNotNull(context.createUnmarshaller());
+		assertNotNull(context.createMarshaller());
+		assertNotNull(context.createUnmarshaller());
 
 	}
 

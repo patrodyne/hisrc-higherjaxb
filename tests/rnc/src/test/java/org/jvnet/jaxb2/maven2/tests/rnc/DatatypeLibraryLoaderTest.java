@@ -1,6 +1,6 @@
 package org.jvnet.jaxb2.maven2.tests.rnc;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.rngom.dt.builtin.BuiltinDatatypeLibraryFactory;
 import org.relaxng.datatype.DatatypeLibraryFactory;
 import org.relaxng.datatype.helpers.DatatypeLibraryLoader;

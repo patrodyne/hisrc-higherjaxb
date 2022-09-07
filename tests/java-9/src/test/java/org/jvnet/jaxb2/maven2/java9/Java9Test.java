@@ -1,9 +1,9 @@
 //Copyright (c) 2017 by Disy Informationssysteme GmbH
 package org.jvnet.jaxb2.maven2.java9;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 // NOT_PUBLISHED
 public class Java9Test {

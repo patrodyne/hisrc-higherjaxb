@@ -1,11 +1,11 @@
 package org.jvnet.jaxb2.maven2.util.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Arrays;
 import java.util.Comparator;
 
-import junit.framework.Assert;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.jaxb2.maven2.util.CollectionUtils;
 import org.jvnet.jaxb2.maven2.util.CollectionUtils.Function;
 
@@ -24,15 +24,15 @@ public class CollectionsUtilsTests {
 				.<String> gtWithNullAsGreatest();
 		final Comparator<String> lt = CollectionUtils
 				.<String> ltWithNullAsSmallest();
-		Assert.assertEquals("b", CollectionUtils.bestValue(
+		assertEquals("b", CollectionUtils.bestValue(
 				Arrays.<String> asList("a", "b"), identity, gt));
-		Assert.assertEquals("a", CollectionUtils.bestValue(
+		assertEquals("a", CollectionUtils.bestValue(
 				Arrays.<String> asList("a", "b"), identity, lt));
-		Assert.assertEquals(
+		assertEquals(
 				null,
 				CollectionUtils.bestValue(
 						Arrays.<String> asList("a", null, "b"), identity, gt));
-		Assert.assertEquals(
+		assertEquals(
 				null,
 				CollectionUtils.bestValue(
 						Arrays.<String> asList("a", null, "b"), identity, lt));

@@ -1,10 +1,9 @@
 package org.jvnet.jaxb2.maven2;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,18 +16,17 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RawXJC2MojoTest {
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
+	@TempDir
+	private File temporaryFolder;
     private File testJarFile;
 
-    @Before
+    @BeforeEach
     public void createJarFile() throws Exception {
-        testJarFile = temporaryFolder.newFile("test.jar");
+        testJarFile = new File(temporaryFolder, "test.jar");
         try (JarOutputStream out = new JarOutputStream(new FileOutputStream(testJarFile))) {
             out.putNextEntry(new JarEntry("dir/"));
             out.closeEntry();

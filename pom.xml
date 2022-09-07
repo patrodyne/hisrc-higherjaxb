@@ -76,7 +76,8 @@
 		<jaxb-imp30.version>3.0.2</jaxb-imp30.version>
 		<jaxb-imp40.version>4.0.0</jaxb-imp40.version>
 		<jaxb-imp.version>${jaxb-imp30.version}</jaxb-imp.version>
-		<junit.version>4.13.2</junit.version>
+		<junit-jupiter.version>5.9.0</junit-jupiter.version>
+		<junit-platform.version>1.9.0</junit-platform.version>
 		<maven.compiler.source>8</maven.compiler.source>
 		<maven.compiler.target>8</maven.compiler.target>
 		<maven.plugin.plugin.version>3.6.4</maven.plugin.plugin.version>
@@ -224,9 +225,28 @@
 				<version>${maven.plugin.plugin.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>${junit-jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit-jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-params</artifactId>
+				<version>${junit-jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-suite</artifactId>
+				<version>${junit-platform.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugin-testing</groupId>
@@ -312,9 +332,9 @@
 					<version>3.0.0</version>
 					<dependencies>
 						<dependency>
-							<groupId>junit</groupId>
-							<artifactId>junit</artifactId>
-							<version>${junit.version}</version>
+							<groupId>org.junit.jupiter</groupId>
+							<artifactId>junit-jupiter-api</artifactId>
+							<version>${junit-jupiter.version}</version>
 							<scope>runtime</scope>
 						</dependency>
 						<dependency>
@@ -335,6 +355,18 @@
 				<plugin>
 					<artifactId>maven-invoker-plugin</artifactId>
 					<version>3.2.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-report-plugin</artifactId>
+					<version>3.0.0-M5</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>3.1.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>3.4.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -467,6 +499,16 @@
 			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jxr-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 	<profiles>
 		<profile>
 			<id>samples</id>

@@ -9,6 +9,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
+import org.junit.jupiter.api.Test;
 import org.jvnet.mjiip.v_2.XJC2Mojo;
 
 public abstract class JAXBGenerateTest extends AbstractMojoTestCase {
@@ -45,6 +46,7 @@ public abstract class JAXBGenerateTest extends AbstractMojoTestCase {
 	 * 
 	 * @throws MojoExecutionException
 	 */
+	@Test
 	public void testExecute() throws Exception {
 
 		final File pom = new File(getBaseDir(),

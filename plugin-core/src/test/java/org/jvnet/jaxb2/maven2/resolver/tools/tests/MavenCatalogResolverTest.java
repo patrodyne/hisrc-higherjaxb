@@ -1,10 +1,11 @@
 package org.jvnet.jaxb2.maven2.resolver.tools.tests;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.io.IOException;
 import java.net.URL;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.InputSource;
 
 import com.sun.org.apache.xml.internal.resolver.CatalogManager;
@@ -22,7 +23,7 @@ public class MavenCatalogResolverTest {
 		cra.getCatalog().parseCatalog(a);
 		InputSource ea = cra.resolveEntity(null,
 				"http://www.w3.org/1999/xlink.xsd");
-		Assert.assertNotNull(ea);
+		assertNotNull(ea);
 
 		CatalogManager cmb = new CatalogManager();
 		cmb.setIgnoreMissingProperties(true);
@@ -32,7 +33,7 @@ public class MavenCatalogResolverTest {
 		crb.getCatalog().parseCatalog(b);
 		InputSource eb = crb.resolveEntity(null,
 				"http://www.w3.org/2005/atom-author-link.xsd");
-		Assert.assertNotNull(eb);
+		assertNotNull(eb);
 
 	}
 }

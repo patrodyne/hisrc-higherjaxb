@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import org.apache.maven.plugin.Mojo;
 import org.apache.maven.project.MavenProject;
@@ -19,12 +19,13 @@ import org.slf4j.LoggerFactory;
  * @author Aleksei Valikov
  */
 
-public class RunXJC2Mojo extends TestCase {
+public class RunXJC2Mojo {
 	/**
 	 * Logger.
 	 */
 	protected Logger log = LoggerFactory.getLogger(RunXJC2Mojo.class);
 
+	@Test
 	public void testExecute() throws Exception {
 		final Mojo mojo = initMojo();
 		mojo.execute();
