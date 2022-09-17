@@ -16,6 +16,9 @@
 		<module>jaxbplugins</module>
 		<module>po</module>
 	</modules>
+	<properties>
+		<root.basedir>${basedir}/..</root.basedir>
+	</properties>
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<plugins>

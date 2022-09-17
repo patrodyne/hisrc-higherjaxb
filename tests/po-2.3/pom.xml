@@ -11,6 +11,9 @@
 	</parent>
 	<packaging>jar</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [po-2.3]</name>
+	<properties>
+		<root.basedir>${basedir}/../..</root.basedir>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>

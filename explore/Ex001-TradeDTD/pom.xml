@@ -12,6 +12,9 @@
 		<artifactId>hisrc-higherjaxb-maven-plugin-explore</artifactId>
 		<version>0.14.3-SNAPSHOT</version>
 	</parent>
+	<properties>
+		<root.basedir>${basedir}/../..</root.basedir>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>

@@ -43,6 +43,7 @@ New goals for the next release are:
 * Update dependencies with newer versions *including* the Jakarta namespace.
 * Convert DOS line endings to Unix newlines.
 * Update JUnit v4 to JUnit v5.
+* Replace `org.apache.maven:maven-compat` with Maven 3 dependencies.
 * Rename packages:
     * BasicJAXB Annotations
         * `OLD: org.jvnet.annox`
@@ -69,7 +70,9 @@ New goals for the next release are:
     * HyperJAXB Persistence
         * `OLD: http://hyperjaxb3.jvnet.org/ejb/schemas/customizations`
         * `NEW: http://jvnet.org/hyperjaxb/jpa`
-* Replace `org.apache.maven:maven-compat` with Maven 3 dependencies.
+* Rename parameter property prifix:
+    * `OLD: maven.xjc2`
+    * `NEW: org.jvnet.higherjaxb.mojo.xjc`
 
 ### Status
 

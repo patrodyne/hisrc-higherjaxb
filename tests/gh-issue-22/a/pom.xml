@@ -11,6 +11,9 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-22-a</artifactId>
 	<packaging>jar</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [GitHub Issue #22:a]</name>
+	<properties>
+		<root.basedir>${basedir}/../../..</root.basedir>
+	</properties>
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<plugins>

@@ -11,6 +11,9 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-22-b</artifactId>
 	<packaging>jar</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [GitHub Issue #22:b]</name>
+	<properties>
+		<root.basedir>${basedir}/../../..</root.basedir>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>

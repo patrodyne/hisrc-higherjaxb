@@ -11,6 +11,9 @@
 	</parent>
 	<packaging>jar</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [GitHub Issue #58]</name>
+	<properties>
+		<root.basedir>${basedir}/../..</root.basedir>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>

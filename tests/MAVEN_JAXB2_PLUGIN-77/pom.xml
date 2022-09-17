@@ -11,6 +11,9 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-MAVEN_JAXB2_PLUGIN-77</artifactId>
 	<packaging>pom</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [MAVEN_JAXB2_PLUGIN-77]</name>
+	<properties>
+		<root.basedir>${basedir}/../..</root.basedir>
+	</properties>
 	<modules>
 		<module>common-types</module>
 		<module>service</module>

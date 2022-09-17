@@ -11,6 +11,9 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-genpkgs-https</artifactId>
 	<packaging>jar</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [genpkgs:https]</name>
+	<properties>
+		<root.basedir>${basedir}/../../..</root.basedir>
+	</properties>
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<plugins>

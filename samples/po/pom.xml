@@ -9,6 +9,9 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-sample-po</artifactId>
 	<packaging>pom</packaging>
 	<name>HiSrc HigherJAXB Plugin Sample [po]</name>
+	<properties>
+		<root.basedir>${basedir}/../..</root.basedir>
+	</properties>
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<plugins>

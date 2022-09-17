@@ -9,6 +9,9 @@
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-MAVEN_JAXB2_PLUGIN-77-common-types</artifactId>
 	<name>HiSrc HigherJAXB Plugin Tests [MAVEN_JAXB2_PLUGIN-77:common-types]</name>
+	<properties>
+		<root.basedir>${basedir}/../../..</root.basedir>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>

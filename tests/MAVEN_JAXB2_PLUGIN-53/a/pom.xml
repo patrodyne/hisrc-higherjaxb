@@ -11,6 +11,9 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-MAVEN_JAXB2_PLUGIN-53-a</artifactId>
 	<packaging>jar</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [MAVEN_JAXB2_PLUGIN-53:a]</name>
+	<properties>
+		<root.basedir>${basedir}/../../..</root.basedir>
+	</properties>
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<plugins>

@@ -12,6 +12,9 @@
 	<prerequisites>
 		<maven>${maven.version}</maven>
 	</prerequisites>
+	<properties>
+		<root.basedir>${basedir}/..</root.basedir>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>

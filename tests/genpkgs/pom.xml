@@ -11,6 +11,9 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-genpkgs</artifactId>
 	<packaging>pom</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [genpkgs]</name>
+	<properties>
+		<root.basedir>${basedir}/../..</root.basedir>
+	</properties>
 	<modules>
 		<module>http</module>
 		<module>https</module>

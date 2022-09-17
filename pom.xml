@@ -406,19 +406,18 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
-				<groupId>org.commonjava.maven.plugins</groupId>
-				<artifactId>directory-maven-plugin</artifactId>
-				<version>0.1</version>
+				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<?m2e ignore?>
-						<id>directories</id>
+						<phase>validate</phase>
 						<goals>
-							<goal>highest-basedir</goal>
+							<goal>run</goal>
 						</goals>
-						<phase>initialize</phase>
 						<configuration>
-							<property>main.basedir</property>
+							<target>
+								<echoproperties destfile="${project.build.directory}/build.properties"/>
+								<echo level="info">Generated ${project.build.directory}/build.properties</echo>
+							</target>
 						</configuration>
 					</execution>
 				</executions>
@@ -443,7 +442,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M5</version>
 				<configuration>
-					<systemPropertiesFile>${main.basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
+					<systemPropertiesFile>${root.basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
 				</configuration>
 			</plugin>
 			<plugin>

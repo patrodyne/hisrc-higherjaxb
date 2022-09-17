@@ -11,6 +11,9 @@
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-23-two-non-strict</artifactId>
 	<packaging>jar</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [GitHub Issue #23:two-non-strict]</name>
+	<properties>
+		<root.basedir>${basedir}/../../..</root.basedir>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
