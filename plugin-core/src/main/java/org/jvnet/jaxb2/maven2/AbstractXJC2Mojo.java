@@ -38,19 +38,21 @@ import org.jvnet.jaxb2.maven2.util.IOUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
 import org.sonatype.plexus.build.incremental.DefaultBuildContext;
 
-public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
-		DependencyResourceResolver {
+public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
+	implements DependencyResourceResolver
+{
+	public static final String PROPERTY_PREFIX = "org.jvnet.higherjaxb.mojo.xjc";
+
+	/**
+	 * Creates and initializes an instance of XJC options.
+	 * @return An OptionsFactory to create XJC options per specification.
+	 */
+	protected abstract OptionsFactory<O> getOptionsFactory();
 
 	@Parameter(defaultValue = "${settings}", readonly = true)
 	private Settings settings;
-
-	public Settings getSettings() {
-		return settings;
-	}
-
-	public void setSettings(Settings settings) {
-		this.settings = settings;
-	}
+	public Settings getSettings() { return settings; }
+	public void setSettings(Settings settings) { this.settings = settings; }
 
 	/**
 	 * If set to <code>true</code>, passes Maven's active proxy settings to XJC.
@@ -59,60 +61,30 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * <code>[user[:password]@]proxyHost[:proxyPort]</code>. This sets both HTTP
 	 * as well as HTTPS proxy.
 	 */
-	@Parameter(property = "maven.xjc2.useActiveProxyAsHttpproxy", defaultValue = "false")
+	@Parameter(property = PROPERTY_PREFIX + ".useActiveProxyAsHttpproxy", defaultValue = "false")
 	private boolean useActiveProxyAsHttpproxy = false;
+	public boolean isUseActiveProxyAsHttpproxy() { return this.useActiveProxyAsHttpproxy; }
+	public void setUseActiveProxyAsHttpproxy(boolean useActiveProxyAsHttpproxy) { this.useActiveProxyAsHttpproxy = useActiveProxyAsHttpproxy; }
 
-	public boolean isUseActiveProxyAsHttpproxy() {
-		return this.useActiveProxyAsHttpproxy;
-	}
-
-	public void setUseActiveProxyAsHttpproxy(boolean useActiveProxyAsHttpproxy) {
-		this.useActiveProxyAsHttpproxy = useActiveProxyAsHttpproxy;
-	}
-
-	@Parameter(property = "maven.xjc2.proxyHost")
+	@Parameter(property = PROPERTY_PREFIX + ".proxyHost")
 	private String proxyHost;
+	public void setProxyHost(String proxyHost) { this.proxyHost = proxyHost; }
+	public String getProxyHost() { return this.proxyHost; }
 
-	public void setProxyHost(String proxyHost) {
-		this.proxyHost = proxyHost;
-	}
-
-	public String getProxyHost() {
-		return this.proxyHost;
-	}
-
-	@Parameter(property = "maven.xjc2.proxyPort")
+	@Parameter(property = PROPERTY_PREFIX + ".proxyPort")
 	private int proxyPort;
+	public void setProxyPort(int proxyPort) { this.proxyPort = proxyPort; }
+	public int getProxyPort() { return this.proxyPort; }
 
-	public void setProxyPort(int proxyPort) {
-		this.proxyPort = proxyPort;
-	}
-
-	public int getProxyPort() {
-		return this.proxyPort;
-	}
-
-	@Parameter(property = "maven.xjc2.proxyUsername")
+	@Parameter(property = PROPERTY_PREFIX + ".proxyUsername")
 	private String proxyUsername;
+	public void setProxyUsername(String proxyUsername) { this.proxyUsername = proxyUsername; }
+	public String getProxyUsername() { return this.proxyUsername; }
 
-	public void setProxyUsername(String proxyUsername) {
-		this.proxyUsername = proxyUsername;
-	}
-
-	public String getProxyUsername() {
-		return this.proxyUsername;
-	}
-
-	@Parameter(property = "maven.xjc2.proxyPassword")
+	@Parameter(property = PROPERTY_PREFIX + ".proxyPassword")
 	private String proxyPassword;
-
-	public void setProxyPassword(String proxyPassword) {
-		this.proxyPassword = proxyPassword;
-	}
-
-	public String getProxyPassword() {
-		return this.proxyPassword;
-	}
+	public void setProxyPassword(String proxyPassword) { this.proxyPassword = proxyPassword; }
+	public String getProxyPassword() { return this.proxyPassword; }
 
 	/**
 	 * Encoding for the generated sources, defaults to
@@ -120,59 +92,35 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter(property = "encoding", defaultValue = "${project.build.sourceEncoding}")
 	private String encoding;
-
-	public String getEncoding() {
-		return encoding;
-	}
-
-	public void setEncoding(String encoding) {
-		this.encoding = encoding;
-	}
+	public String getEncoding() { return encoding; }
+	public void setEncoding(String encoding) { this.encoding = encoding; }
 
 	/**
 	 * Locale for the generated sources.
 	 */
 	@Parameter(property = "locale")
 	private String locale;
-
-	public String getLocale() {
-		return locale;
-	}
-
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
+	public String getLocale() { return locale; }
+	public void setLocale(String locale) { this.locale = locale; }
 
 	/**
 	 * Type of input schema language. One of: DTD, XMLSCHEMA, RELAXNG,
 	 * RELAXNG_COMPACT, WSDL, AUTODETECT. If unspecified, it is assumed
 	 * AUTODETECT.
 	 */
-	@Parameter(property = "maven.xjc2.schemaLanguage")
+	@Parameter(property = PROPERTY_PREFIX + ".schemaLanguage")
 	private String schemaLanguage;
-
-	public String getSchemaLanguage() {
-		return schemaLanguage;
-	}
-
-	public void setSchemaLanguage(String schemaLanguage) {
-		this.schemaLanguage = schemaLanguage;
-	}
+	public String getSchemaLanguage() { return schemaLanguage; }
+	public void setSchemaLanguage(String schemaLanguage) { this.schemaLanguage = schemaLanguage; }
 
 	/**
 	 * The source directory containing *.xsd schema files. Notice that binding
 	 * files are searched by default in this directory.
 	 */
-	@Parameter(defaultValue = "src/main/resources", property = "maven.xjc2.schemaDirectory", required = true)
+	@Parameter(property = PROPERTY_PREFIX + ".schemaDirectory", defaultValue = "src/main/resources", required = true)
 	private File schemaDirectory;
-
-	public File getSchemaDirectory() {
-		return schemaDirectory;
-	}
-
-	public void setSchemaDirectory(File schemaDirectory) {
-		this.schemaDirectory = schemaDirectory;
-	}
+	public File getSchemaDirectory() { return schemaDirectory; }
+	public void setSchemaDirectory(File schemaDirectory) { this.schemaDirectory = schemaDirectory; }
 
 	/**
 	 * <p>
@@ -187,14 +135,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private String[] schemaIncludes = new String[] { "*.xsd" };
-
-	public String[] getSchemaIncludes() {
-		return schemaIncludes;
-	}
-
-	public void setSchemaIncludes(String[] schemaIncludes) {
-		this.schemaIncludes = schemaIncludes;
-	}
+	public String[] getSchemaIncludes() { return schemaIncludes; }
+	public void setSchemaIncludes(String[] schemaIncludes) { this.schemaIncludes = schemaIncludes; }
 
 	/**
 	 * A list of regular expression file search patterns to specify the schemas
@@ -203,14 +145,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private String[] schemaExcludes;
-
-	public String[] getSchemaExcludes() {
-		return schemaExcludes;
-	}
-
-	public void setSchemaExcludes(String[] schemaExcludes) {
-		this.schemaExcludes = schemaExcludes;
-	}
+	public String[] getSchemaExcludes() { return schemaExcludes; }
+	public void setSchemaExcludes(String[] schemaExcludes) { this.schemaExcludes = schemaExcludes; }
 
 	/**
 	 * A list of schema resources which could includes file sets, URLs, Maven
@@ -218,14 +154,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private ResourceEntry[] schemas = new ResourceEntry[0];
-
-	public ResourceEntry[] getSchemas() {
-		return schemas;
-	}
-
-	public void setSchemas(ResourceEntry[] schemas) {
-		this.schemas = schemas;
-	}
+	public ResourceEntry[] getSchemas() { return schemas; }
+	public void setSchemas(ResourceEntry[] schemas) { this.schemas = schemas; }
 
 	/**
 	 * <p>
@@ -235,32 +165,18 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * If left undefined, then the <code>schemaDirectory</code> is assumed.
 	 * </p>
 	 */
-	@Parameter(property = "maven.xjc2.bindingDirectory")
+	@Parameter(property = PROPERTY_PREFIX + ".bindingDirectory")
 	private File bindingDirectory;
-
-	public void setBindingDirectory(File bindingDirectory) {
-		this.bindingDirectory = bindingDirectory;
-	}
-
-	public File getBindingDirectory() {
-		return bindingDirectory != null ? bindingDirectory
-				: getSchemaDirectory();
-	}
+	public void setBindingDirectory(File bindingDirectory) { this.bindingDirectory = bindingDirectory; }
+	public File getBindingDirectory() { return bindingDirectory != null ? bindingDirectory : getSchemaDirectory(); }
 
 	/**
 	 * The source directory containing <code>*.cat</code> catalog files. Defaults to the <code>schemaDirectory</code>.
 	 */
-	@Parameter(property = "maven.xjc2.catalogDirectory")
+	@Parameter(property = PROPERTY_PREFIX + ".catalogDirectory")
 	private File catalogDirectory;
-
-	public void setCatalogDirectory(File catalogDirectory) {
-		this.catalogDirectory = catalogDirectory;
-	}
-
-	public File getCatalogDirectory() {
-		return catalogDirectory != null ? catalogDirectory
-				: getSchemaDirectory();
-	}
+	public void setCatalogDirectory(File catalogDirectory) { this.catalogDirectory = catalogDirectory; }
+	public File getCatalogDirectory() { return catalogDirectory != null ? catalogDirectory : getSchemaDirectory(); }
 
 	/**
 	 * <p>
@@ -275,14 +191,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private String[] bindingIncludes = new String[] { "*.xjb" };
-
-	public String[] getBindingIncludes() {
-		return bindingIncludes;
-	}
-
-	public void setBindingIncludes(String[] bindingIncludes) {
-		this.bindingIncludes = bindingIncludes;
-	}
+	public String[] getBindingIncludes() { return bindingIncludes; }
+	public void setBindingIncludes(String[] bindingIncludes) { this.bindingIncludes = bindingIncludes; }
 
 	/**
 	 * A list of regular expression file search patterns to specify the binding
@@ -291,14 +201,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private String[] bindingExcludes;
-
-	public String[] getBindingExcludes() {
-		return bindingExcludes;
-	}
-
-	public void setBindingExcludes(String[] bindingExcludes) {
-		this.bindingExcludes = bindingExcludes;
-	}
+	public String[] getBindingExcludes() { return bindingExcludes; }
+	public void setBindingExcludes(String[] bindingExcludes) { this.bindingExcludes = bindingExcludes; }
 
 	/**
 	 * A list of binding resources which could includes file sets, URLs, Maven
@@ -306,29 +210,17 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private ResourceEntry[] bindings = new ResourceEntry[0];
-
-	public ResourceEntry[] getBindings() {
-		return bindings;
-	}
-
-	public void setBindings(ResourceEntry[] bindings) {
-		this.bindings = bindings;
-	}
+	public ResourceEntry[] getBindings() { return bindings; }
+	public void setBindings(ResourceEntry[] bindings) { this.bindings = bindings; }
 
 	/**
 	 * If 'true', maven's default exludes are NOT added to all the excludes
 	 * lists.
 	 */
-	@Parameter(defaultValue = "false", property = "maven.xjc2.disableDefaultExcludes")
+	@Parameter(property = PROPERTY_PREFIX + ".disableDefaultExcludes", defaultValue = "false")
 	private boolean disableDefaultExcludes;
-
-	public boolean getDisableDefaultExcludes() {
-		return disableDefaultExcludes;
-	}
-
-	public void setDisableDefaultExcludes(boolean disableDefaultExcludes) {
-		this.disableDefaultExcludes = disableDefaultExcludes;
-	}
+	public boolean getDisableDefaultExcludes() { return disableDefaultExcludes; }
+	public void setDisableDefaultExcludes(boolean disableDefaultExcludes) { this.disableDefaultExcludes = disableDefaultExcludes; }
 
 	/**
 	 * Specify the catalog file to resolve external entity references (xjc's
@@ -338,16 +230,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * catalog-resolver sample and this article for details.
 	 * </p>
 	 */
-	@Parameter(property = "maven.xjc2.catalog")
+	@Parameter(property = PROPERTY_PREFIX + ".catalog")
 	private File catalog;
-
-	public File getCatalog() {
-		return catalog;
-	}
-
-	public void setCatalog(File catalog) {
-		this.catalog = catalog;
-	}
+	public File getCatalog() { return catalog; }
+	public void setCatalog(File catalog) { this.catalog = catalog; }
 
 	/**
 	 * <p>
@@ -362,14 +248,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private String[] catalogIncludes = new String[] { "*.cat" };
-
-	public String[] getCatalogIncludes() {
-		return catalogIncludes;
-	}
-
-	public void setCatalogIncludes(String[] catalogIncludes) {
-		this.catalogIncludes = catalogIncludes;
-	}
+	public String[] getCatalogIncludes() { return catalogIncludes; }
+	public void setCatalogIncludes(String[] catalogIncludes) { this.catalogIncludes = catalogIncludes; }
 
 	/**
 	 * A list of regular expression file search patterns to specify the catalogs
@@ -378,14 +258,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private String[] catalogExcludes;
-
-	public String[] getCatalogExcludes() {
-		return catalogExcludes;
-	}
-
-	public void setCatalogExcludes(String[] catalogExcludes) {
-		this.catalogExcludes = catalogExcludes;
-	}
+	public String[] getCatalogExcludes() { return catalogExcludes; }
+	public void setCatalogExcludes(String[] catalogExcludes) { this.catalogExcludes = catalogExcludes; }
 
 	/**
 	 * A list of catalog resources which could includes file sets, URLs, Maven
@@ -393,24 +267,20 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private ResourceEntry[] catalogs = new ResourceEntry[0];
+	public ResourceEntry[] getCatalogs() { return catalogs; }
+	public void setCatalogs(ResourceEntry[] catalogs) { this.catalogs = catalogs; }
 
-	public ResourceEntry[] getCatalogs() {
-		return catalogs;
-	}
-
-	public void setCatalogs(ResourceEntry[] catalogs) {
-		this.catalogs = catalogs;
-	}
-
-	protected List<URI> createCatalogURIs() throws MojoExecutionException {
+	protected List<URI> createCatalogURIs() throws MojoExecutionException
+	{
 		final File catalog = getCatalog();
 		final ResourceEntry[] catalogs = getCatalogs();
-		final List<URI> catalogUris = new ArrayList<URI>((catalog == null ? 0
-				: 1) + catalogs.length);
-		if (catalog != null) {
+		final List<URI> catalogUris = new ArrayList<URI>((catalog == null ? 0 : 1) + catalogs.length);
+
+		if (catalog != null)
 			catalogUris.add(getCatalog().toURI());
-		}
-		for (ResourceEntry resourceEntry : catalogs) {
+
+		for (ResourceEntry resourceEntry : catalogs)
+		{
 			catalogUris.addAll(createResourceEntryUris(resourceEntry,
 					getCatalogDirectory().getAbsolutePath(),
 					getCatalogIncludes(), getCatalogExcludes()));
@@ -421,16 +291,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	/**
 	 * Provides the class name of the catalog resolver.
 	 */
-	@Parameter(property = "maven.xjc2.catalogResolver")
+	@Parameter(property = PROPERTY_PREFIX + ".catalogResolver")
 	protected String catalogResolver = null;
-
-	public String getCatalogResolver() {
-		return catalogResolver;
-	}
-
-	public void setCatalogResolver(String catalogResolver) {
-		this.catalogResolver = catalogResolver;
-	}
+	public String getCatalogResolver() { return catalogResolver; }
+	public void setCatalogResolver(String catalogResolver) { this.catalogResolver = catalogResolver; }
 
 	/**
 	 * <p>
@@ -441,16 +305,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * If left unspecified, the package will be derived from the schemas only.
 	 * </p>
 	 */
-	@Parameter(property = "maven.xjc2.generatePackage")
+	@Parameter(property = PROPERTY_PREFIX + ".generatePackage")
 	private String generatePackage;
-
-	public String getGeneratePackage() {
-		return generatePackage;
-	}
-
-	public void setGeneratePackage(String generatePackage) {
-		this.generatePackage = generatePackage;
-	}
+	public String getGeneratePackage() { return generatePackage; }
+	public void setGeneratePackage(String generatePackage) { this.generatePackage = generatePackage; }
 
 	/**
 	 * <p>
@@ -462,19 +320,15 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * <code>doe/ray/org/here</code>.
 	 * </p>
 	 */
-	@Parameter(defaultValue = "${project.build.directory}/generated-sources/xjc", property = "maven.xjc2.generateDirectory", required = true)
+	@Parameter(property = PROPERTY_PREFIX + ".generateDirectory", defaultValue = "${project.build.directory}/generated-sources/xjc", required = true)
 	private File generateDirectory;
-
-	public File getGenerateDirectory() {
-		return generateDirectory;
-	}
-
-	public void setGenerateDirectory(File generateDirectory) {
+	public File getGenerateDirectory() { return generateDirectory; }
+	public void setGenerateDirectory(File generateDirectory)
+	{
 		this.generateDirectory = generateDirectory;
-
-		if (getEpisodeFile() == null) {
-			final File episodeFile = new File(getGenerateDirectory(),
-					"META-INF" + File.separator + "sun-jaxb.episode");
+		if (getEpisodeFile() == null)
+		{
+			final File episodeFile = new File(getGenerateDirectory(), "META-INF" + File.separator + "sun-jaxb.episode");
 			setEpisodeFile(episodeFile);
 		}
 	}
@@ -483,106 +337,64 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * If set to true (default), adds target directory as a compile source root
 	 * of this Maven project.
 	 */
-	@Parameter(defaultValue = "true", property = "maven.xjc2.addCompileSourceRoot", required = false)
+	@Parameter(property = PROPERTY_PREFIX + ".addCompileSourceRoot", defaultValue = "true", required = false)
 	private boolean addCompileSourceRoot = true;
-
-	public boolean getAddCompileSourceRoot() {
-		return addCompileSourceRoot;
-	}
-
-	public void setAddCompileSourceRoot(boolean addCompileSourceRoot) {
-		this.addCompileSourceRoot = addCompileSourceRoot;
-	}
+	public boolean getAddCompileSourceRoot() { return addCompileSourceRoot; }
+	public void setAddCompileSourceRoot(boolean addCompileSourceRoot) { this.addCompileSourceRoot = addCompileSourceRoot; }
 
 	/**
 	 * If set to true, adds target directory as a test compile source root of
 	 * this Maven project. Default value is false.
 	 */
-	@Parameter(defaultValue = "false", property = "maven.xjc2.addTestCompileSourceRoot", required = false)
+	@Parameter(property = PROPERTY_PREFIX + ".addTestCompileSourceRoot", defaultValue = "false", required = false)
 	private boolean addTestCompileSourceRoot = false;
-
-	public boolean getAddTestCompileSourceRoot() {
-		return addTestCompileSourceRoot;
-	}
-
-	public void setAddTestCompileSourceRoot(boolean addTestCompileSourceRoot) {
-		this.addTestCompileSourceRoot = addTestCompileSourceRoot;
-	}
+	public boolean getAddTestCompileSourceRoot() { return addTestCompileSourceRoot; }
+	public void setAddTestCompileSourceRoot(boolean addTestCompileSourceRoot) { this.addTestCompileSourceRoot = addTestCompileSourceRoot; }
 
 	/**
 	 * If 'true', the generated Java source files are set as read-only (xjc's
 	 * -readOnly option).
 	 */
-	@Parameter(defaultValue = "false", property = "maven.xjc2.readOnly")
+	@Parameter(property = PROPERTY_PREFIX + ".readOnly", defaultValue = "false")
 	private boolean readOnly;
-
-	public boolean getReadOnly() {
-		return readOnly;
-	}
-
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-	}
+	public boolean getReadOnly() { return readOnly; }
+	public void setReadOnly(boolean readOnly) { this.readOnly = readOnly; }
 
 	/**
 	 * If 'false', suppresses generation of package level annotations
 	 * (package-info.java), xjc's -npa option.
 	 */
-	@Parameter(defaultValue = "true", property = "maven.xjc2.packageLevelAnnotations")
+	@Parameter(property = PROPERTY_PREFIX + ".packageLevelAnnotations", defaultValue = "true")
 	private boolean packageLevelAnnotations = true;
-
-	public boolean getPackageLevelAnnotations() {
-		return packageLevelAnnotations;
-	}
-
-	public void setPackageLevelAnnotations(boolean packageLevelAnnotations) {
-		this.packageLevelAnnotations = packageLevelAnnotations;
-	}
+	public boolean getPackageLevelAnnotations() { return packageLevelAnnotations; }
+	public void setPackageLevelAnnotations(boolean packageLevelAnnotations) { this.packageLevelAnnotations = packageLevelAnnotations; }
 
 	/**
 	 * If 'true', suppresses generation of a file header with timestamp, xjc's
 	 * -no-header option.
 	 */
-	@Parameter(defaultValue = "false", property = "maven.xjc2.noFileHeader")
+	@Parameter(property = PROPERTY_PREFIX + ".noFileHeader", defaultValue = "false")
 	private boolean noFileHeader = false;
-
-	public boolean getNoFileHeader() {
-		return noFileHeader;
-	}
-
-	public void setNoFileHeader(boolean noFileHeader) {
-		this.noFileHeader = noFileHeader;
-	}
+	public boolean getNoFileHeader() { return noFileHeader; }
+	public void setNoFileHeader(boolean noFileHeader) { this.noFileHeader = noFileHeader; }
 
 	/**
 	 * If 'true', enables correct generation of Boolean getters/setters to
 	 * enable Bean Introspection apis; xjc's -enableIntrospection option.
 	 */
-	@Parameter(defaultValue = "false", property = "maven.xjc2.enableIntrospection")
+	@Parameter(property = PROPERTY_PREFIX + ".enableIntrospection", defaultValue = "false")
 	private boolean enableIntrospection = false;
-
-	public boolean getEnableIntrospection() {
-		return enableIntrospection;
-	}
-
-	public void setEnableIntrospection(boolean enableIntrospection) {
-		this.enableIntrospection = enableIntrospection;
-	}
+	public boolean getEnableIntrospection() { return enableIntrospection; }
+	public void setEnableIntrospection(boolean enableIntrospection) { this.enableIntrospection = enableIntrospection; }
 
 	/**
 	 * If 'true', disables XML security features when parsing XML documents;
 	 * xjc's -disableXmlSecurity option.
 	 */
-	@Parameter(defaultValue = "true", property = "maven.xjc2.disableXmlSecurity")
+	@Parameter(property = PROPERTY_PREFIX + ".disableXmlSecurity", defaultValue = "true")
 	private boolean disableXmlSecurity = true;
-
-	public boolean getDisableXmlSecurity() {
-		return disableXmlSecurity;
-	}
-
-	public void setDisableXmlSecurity(boolean disableXmlSecurity) {
-		this.disableXmlSecurity = disableXmlSecurity;
-	}
+	public boolean getDisableXmlSecurity() { return disableXmlSecurity; }
+	public void setDisableXmlSecurity(boolean disableXmlSecurity) { this.disableXmlSecurity = disableXmlSecurity; }
 
 	/**
 	 * Restrict access to the protocols specified for external reference set by
@@ -592,16 +404,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * scheme portion separated by colon. The keyword "all" grants permission to
 	 * all protocols.
 	 */
-	@Parameter(defaultValue = "all", property = "maven.xjc2.accessExternalSchema")
+	@Parameter(property = PROPERTY_PREFIX + ".accessExternalSchema", defaultValue = "all")
 	private String accessExternalSchema = "all";
-
-	public String getAccessExternalSchema() {
-		return accessExternalSchema;
-	}
-
-	public void setAccessExternalSchema(String accessExternalSchema) {
-		this.accessExternalSchema = accessExternalSchema;
-	}
+	public String getAccessExternalSchema() { return accessExternalSchema; }
+	public void setAccessExternalSchema(String accessExternalSchema) { this.accessExternalSchema = accessExternalSchema; }
 
 	/**
 	 * Restricts access to external DTDs and external Entity References to the
@@ -610,30 +416,18 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * of the JAR protocol, "jar" plus the scheme portion separated by colon.
 	 * The keyword "all" grants permission to all protocols.
 	 */
-	@Parameter(defaultValue = "all", property = "maven.xjc2.accessExternalDTD")
+	@Parameter(property = PROPERTY_PREFIX + ".accessExternalDTD", defaultValue = "all")
 	private String accessExternalDTD = "all";
-
-	public String getAccessExternalDTD() {
-		return accessExternalDTD;
-	}
-
-	public void setAccessExternalDTD(String accessExternalDTD) {
-		this.accessExternalDTD = accessExternalDTD;
-	}
+	public String getAccessExternalDTD() { return accessExternalDTD; }
+	public void setAccessExternalDTD(String accessExternalDTD) { this.accessExternalDTD = accessExternalDTD; }
 	
 	/**
 	 * Enables external entity processing.
 	 */
-	@Parameter(defaultValue = "true", property = "maven.xjc2.enableExternalEntityProcessing")
+	@Parameter(property = PROPERTY_PREFIX + ".enableExternalEntityProcessing", defaultValue = "true")
 	private boolean enableExternalEntityProcessing;
-	
-	public boolean isEnableExternalEntityProcessing() {
-		return enableExternalEntityProcessing;
-	}
-	
-	public void setEnableExternalEntityProcessing(boolean enableExternalEntityProcessing) {
-		this.enableExternalEntityProcessing = enableExternalEntityProcessing;
-	}
+	public boolean isEnableExternalEntityProcessing() { return enableExternalEntityProcessing; }
+	public void setEnableExternalEntityProcessing(boolean enableExternalEntityProcessing) { this.enableExternalEntityProcessing = enableExternalEntityProcessing; }
 
 	/**
 	 * If <code>true</code>, generates content property for types with multiple <code>xs:any</code>
@@ -641,59 +435,35 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter(defaultValue="false")
 	private boolean contentForWildcard;
-
-	public boolean getContentForWildcard() {
-		return contentForWildcard;
-	}
-
-	public void setContentForWildcard(boolean contentForWildcard) {
-		this.contentForWildcard = contentForWildcard;
-	}
+	public boolean getContentForWildcard() { return contentForWildcard; }
+	public void setContentForWildcard(boolean contentForWildcard) { this.contentForWildcard = contentForWildcard; }
 
 	/**
 	 * If 'true', the XJC binding compiler will run in the extension mode (xjc's
 	 * -extension option). Otherwise, it will run in the strict conformance
 	 * mode.
 	 */
-	@Parameter(defaultValue = "true", property = "maven.xjc2.extension")
+	@Parameter(property = PROPERTY_PREFIX + ".extension", defaultValue = "true")
 	private boolean extension;
-
-	public boolean getExtension() {
-		return extension;
-	}
-
-	public void setExtension(boolean extension) {
-		this.extension = extension;
-	}
+	public boolean getExtension() { return extension; }
+	public void setExtension(boolean extension) { this.extension = extension; }
 
 	/**
 	 * If 'true' (default), Perform strict validation of the input schema
 	 * (disabled by the xjc's -nv option).
 	 */
-	@Parameter(defaultValue = "true", property = "maven.xjc2.strict")
+	@Parameter(property = PROPERTY_PREFIX + ".strict", defaultValue = "true")
 	private boolean strict = true;
-
-	public boolean getStrict() {
-		return strict;
-	}
-
-	public void setStrict(boolean strict) {
-		this.strict = strict;
-	}
+	public boolean getStrict() { return strict; }
+	public void setStrict(boolean strict) { this.strict = strict; }
 
 	/**
 	 * If 'false', the plugin will not write the generated code to disk.
 	 */
-	@Parameter(defaultValue = "true", property = "maven.xjc2.writeCode")
+	@Parameter(property = PROPERTY_PREFIX + ".writeCode", defaultValue = "true")
 	private boolean writeCode = true;
-
-	public boolean getWriteCode() {
-		return writeCode;
-	}
-
-	public void setWriteCode(boolean writeCode) {
-		this.writeCode = writeCode;
-	}
+	public boolean getWriteCode() { return writeCode; }
+	public void setWriteCode(boolean writeCode) { this.writeCode = writeCode; }
 
 	/**
 	 * <p>
@@ -705,16 +475,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * -X option).
 	 * </p>
 	 */
-	@Parameter(defaultValue = "false", property = "maven.xjc2.verbose")
+	@Parameter(property = PROPERTY_PREFIX + ".verbose", defaultValue = "false")
 	private boolean verbose;
-
-	public boolean getVerbose() {
-		return verbose;
-	}
-
-	public void setVerbose(boolean verbose) {
-		this.verbose = verbose;
-	}
+	public boolean getVerbose() { return verbose; }
+	public void setVerbose(boolean verbose) { this.verbose = verbose; }
 
 	/**
 	 * <p>
@@ -725,16 +489,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * -X option).
 	 * </p>
 	 */
-	@Parameter(defaultValue = "false", property = "maven.xjc2.debug")
+	@Parameter(property = PROPERTY_PREFIX + ".debug", defaultValue = "false")
 	private boolean debug;
-
-	public boolean getDebug() {
-		return debug;
-	}
-
-	public void setDebug(boolean debug) {
-		this.debug = debug;
-	}
+	public boolean getDebug() { return debug; }
+	public void setDebug(boolean debug) { this.debug = debug; }
 
 	/**
 	 * <p>
@@ -747,14 +505,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private List<String> args = new LinkedList<String>();
-
-	public List<String> getArgs() {
-		return args;
-	}
-
-	public void setArgs(List<String> args) {
-		this.args.addAll(args);
-	}
+	public List<String> getArgs() { return args; }
+	public void setArgs(List<String> args) { this.args.addAll(args); }
 
 	/**
 	 * If true, no up-to-date check is performed and the XJC always re-generates
@@ -762,16 +514,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * changed.
 	 *
 	 */
-	@Parameter(defaultValue = "false", property = "maven.xjc2.forceRegenerate")
+	@Parameter(property = PROPERTY_PREFIX + ".forceRegenerate", defaultValue = "false")
 	private boolean forceRegenerate;
-
-	public boolean getForceRegenerate() {
-		return forceRegenerate;
-	}
-
-	public void setForceRegenerate(boolean forceRegenerate) {
-		this.forceRegenerate = forceRegenerate;
-	}
+	public boolean getForceRegenerate() { return forceRegenerate; }
+	public void setForceRegenerate(boolean forceRegenerate) { this.forceRegenerate = forceRegenerate; }
 
 	/**
 	 * <p>
@@ -785,16 +531,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * </p>
 	 *
 	 */
-	@Parameter(defaultValue = "false", property = "maven.xjc2.removeOldOutput")
+	@Parameter(property = PROPERTY_PREFIX + ".removeOldOutput", defaultValue = "false")
 	private boolean removeOldOutput;
-
-	public boolean getRemoveOldOutput() {
-		return removeOldOutput;
-	}
-
-	public void setRemoveOldOutput(boolean removeOldOutput) {
-		this.removeOldOutput = removeOldOutput;
-	}
+	public boolean getRemoveOldOutput() { return removeOldOutput; }
+	public void setRemoveOldOutput(boolean removeOldOutput) { this.removeOldOutput = removeOldOutput; }
 
 	/**
 	 * <p>
@@ -803,16 +543,10 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * </p>
 	 *
 	 */
-	@Parameter(defaultValue = "true", property = "maven.xjc2.removeOldPackages")
+	@Parameter(property = PROPERTY_PREFIX + ".removeOldPackages", defaultValue = "true")
 	private boolean cleanPackageDirectories = true;
-
-	public boolean getCleanPackageDirectories() {
-		return cleanPackageDirectories;
-	}
-
-	public void setCleanPackageDirectories(boolean removeOldPackages) {
-		this.cleanPackageDirectories = removeOldPackages;
-	}
+	public boolean getCleanPackageDirectories() { return cleanPackageDirectories; }
+	public void setCleanPackageDirectories(boolean removeOldPackages) { this.cleanPackageDirectories = removeOldPackages; }
 
 	/**
 	 * Specifies patterns of files produced by this plugin. This is used to
@@ -820,90 +554,49 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * /*.java, ** /bgm.ser, ** /jaxb.properties.
 	 */
 	@Parameter
-	private String[] produces = new String[] { "**/*.*", "**/*.java",
-			"**/bgm.ser", "**/jaxb.properties" };
-
-	public String[] getProduces() {
-		return produces;
-	}
-
-	public void setProduces(String[] produces) {
-		this.produces = produces;
-	}
+	private String[] produces = new String[] { "**/*.*", "**/*.java", "**/bgm.ser", "**/jaxb.properties" };
+	public String[] getProduces() { return produces; }
+	public void setProduces(String[] produces) { this.produces = produces; }
 
 	/**
 	 * A list of of input files or URLs to consider during the up-to-date. By
 	 * default it always considers: 1. schema files, 2. binding files, 3.
-	 * catalog file, and 4. the pom.xml file of the project executing this
-	 * plugin. Deprecated, use {@link #otherDependsIncludes} and {@link #otherDependsExcludes} instead.
+	 * catalog file, and 4. the pom.xml file of the project executing this plugin.
+	 * Deprecated, use {@link #otherDependsIncludes} and {@link #otherDependsExcludes} instead.
 	 */
-	@Deprecated
-	@Parameter
-	private File[] otherDepends;
-
-	@Deprecated
-	public File[] getOtherDepends() {
-		return otherDepends;
-	}
-
-	@Deprecated
-	public void setOtherDepends(File[] otherDepends) {
-		this.otherDepends = otherDepends;
-	}
+	@Deprecated @Parameter private File[] otherDepends;
+	@Deprecated public File[] getOtherDepends() { return otherDepends; }
+	@Deprecated public void setOtherDepends(File[] otherDepends) { this.otherDepends = otherDepends; }
 	
 	@Parameter
 	private String[] otherDependsIncludes;
-
-	public String[] getOtherDependsIncludes() {
-		return otherDependsIncludes;
-	}
-
-	public void setOtherDependsIncludes(String[] otherDependsIncludes) {
-		this.otherDependsIncludes = otherDependsIncludes;
-	}
+	public String[] getOtherDependsIncludes() { return otherDependsIncludes; }
+	public void setOtherDependsIncludes(String[] otherDependsIncludes) { this.otherDependsIncludes = otherDependsIncludes; }
 
 	@Parameter
 	private String[] otherDependsExcludes;
-
-	public String[] getOtherDependsExcludes() {
-		return otherDependsExcludes;
-	}
-
-	public void setOtherDependsExcludes(String[] otherDependsExcludes) {
-		this.otherDependsExcludes = otherDependsExcludes;
-	}
+	public String[] getOtherDependsExcludes() { return otherDependsExcludes; }
+	public void setOtherDependsExcludes(String[] otherDependsExcludes) { this.otherDependsExcludes = otherDependsExcludes; }
 
 	/**
 	 * Target location of the episode file. By default it is
 	 * target/generated-sources/xjc/META-INF/sun-jaxb.episode so that the
-	 * episode file will appear as META-INF/sun-jaxb.episode in the JAR - just
-	 * as XJC wants it.
+	 * episode file will appear as META-INF/sun-jaxb.episode in the JAR -
+	 * just as XJC wants it.
 	 */
-	@Parameter(property = "maven.xjc2.episodeFile")
+	@Parameter(property = PROPERTY_PREFIX + ".episodeFile")
 	private File episodeFile;
-
-	public File getEpisodeFile() {
-		return episodeFile;
-	}
-
-	public void setEpisodeFile(File episodeFile) {
-		this.episodeFile = episodeFile;
-	}
+	public File getEpisodeFile() { return episodeFile; }
+	public void setEpisodeFile(File episodeFile) { this.episodeFile = episodeFile; }
 
 	/**
 	 * If true, the episode file (describing mapping of elements and types to
 	 * classes for the compiled schema) will be generated.
 	 */
-	@Parameter(property = "maven.xjc2.episode", defaultValue = "true")
+	@Parameter(property = PROPERTY_PREFIX + ".episode", defaultValue = "true")
 	private boolean episode = true;
-
-	public boolean getEpisode() {
-		return episode;
-	}
-
-	public void setEpisode(boolean episode) {
-		this.episode = episode;
-	}
+	public boolean getEpisode() { return episode; }
+	public void setEpisode(boolean episode) { this.episode = episode; }
 
 	/**
 	 * If <code>true</code> (default), adds <code>if-exists="true"</code>
@@ -912,32 +605,19 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 * This is necessary to avoid the annoying `SCD "x-schema::tns" didn't
 	 * match any schema component` errors.
 	 */
-	@Parameter(property = "maven.xjc2.addIfExistsToEpisodeSchemaBindings", defaultValue = "true")
+	@Parameter(property = PROPERTY_PREFIX + ".addIfExistsToEpisodeSchemaBindings", defaultValue = "true")
 	private boolean addIfExistsToEpisodeSchemaBindings = true;
-
-	public boolean isAddIfExistsToEpisodeSchemaBindings() {
-		return this.addIfExistsToEpisodeSchemaBindings;
-	}
-
-	public void setAddIfExistsToEpisodeSchemaBindings(
-			boolean addIfExistsToEpisodeSchemaBindings) {
-		this.addIfExistsToEpisodeSchemaBindings = addIfExistsToEpisodeSchemaBindings;
-	}
+	public boolean isAddIfExistsToEpisodeSchemaBindings() { return this.addIfExistsToEpisodeSchemaBindings; }
+	public void setAddIfExistsToEpisodeSchemaBindings(boolean addIfExistsToEpisodeSchemaBindings) { this.addIfExistsToEpisodeSchemaBindings = addIfExistsToEpisodeSchemaBindings; }
 
 	/**
 	 * If true, marks generated classes using a @Generated annotation - i.e.
 	 * turns on XJC -mark-generated option. Default is false.
 	 */
-	@Parameter(property = "maven.xjc2.markGenerated", defaultValue = "false")
+	@Parameter(property = PROPERTY_PREFIX + ".markGenerated", defaultValue = "false")
 	private boolean markGenerated = false;
-
-	public boolean getMarkGenerated() {
-		return markGenerated;
-	}
-
-	public void setMarkGenerated(boolean markGenerated) {
-		this.markGenerated = markGenerated;
-	}
+	public boolean getMarkGenerated() { return markGenerated; }
+	public void setMarkGenerated(boolean markGenerated) { this.markGenerated = markGenerated; }
 
 	/**
 	 * XJC plugins to be made available to XJC. They still need to be activated
@@ -945,44 +625,28 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	protected Dependency[] plugins;
-
-	public Dependency[] getPlugins() {
-		return plugins;
-	}
-
-	public void setPlugins(Dependency[] plugins) {
-		this.plugins = plugins;
-	}
-
-	@Component
-	private ArtifactResolver artifactResolver;
-
-	@Component
-	private ArtifactMetadataSource artifactMetadataSource;
-
-	@Component
-	private ArtifactFactory artifactFactory;
+	public Dependency[] getPlugins() { return plugins; }
+	public void setPlugins(Dependency[] plugins) { this.plugins = plugins; }
 
 	/**
 	 * Location of the local repository.
 	 */
 	@Parameter(defaultValue = "${localRepository}", required = true)
 	private ArtifactRepository localRepository;
-
-	/**
-	 * Artifact factory, needed to download source jars.
-	 */
-	@Component(role = org.apache.maven.project.MavenProjectBuilder.class)
-	private MavenProjectBuilder mavenProjectBuilder;
-
-	@Component
-	private BuildContext buildContext = new DefaultBuildContext();
+	public ArtifactRepository getLocalRepository() { return localRepository; }
+	public void setLocalRepository(ArtifactRepository localRepository) { this.localRepository = localRepository; }
 
 	/**
 	 * Plugin artifacts.
+	 *
+	 * Plugins can inspect their effective runtime class path via the expressions
+	 * ${plugin.artifacts} or ${plugin.artifactMap} to have a list or map, respectively,
+	 * of resolved artifacts injected from the PluginDescriptor.
 	 */
 	@Parameter(defaultValue = "${plugin.artifacts}", required = true)
 	private List<org.apache.maven.artifact.Artifact> pluginArtifacts;
+	public List<org.apache.maven.artifact.Artifact> getPluginArtifacts() { return pluginArtifacts; }
+	public void setPluginArtifacts(List<org.apache.maven.artifact.Artifact> plugingArtifacts) { this.pluginArtifacts = plugingArtifacts; }
 
 	/**
 	 * If you want to use existing artifacts as episodes for separate
@@ -992,14 +656,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private Dependency[] episodes;
-
-	public Dependency[] getEpisodes() {
-		return episodes;
-	}
-
-	public void setEpisodes(Dependency[] episodes) {
-		this.episodes = episodes;
-	}
+	public Dependency[] getEpisodes() { return episodes; }
+	public void setEpisodes(Dependency[] episodes) { this.episodes = episodes; }
 
 	/**
 	 * Use all of the compile-scope project dependencies as episode artifacts.
@@ -1008,46 +666,27 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	 */
 	@Parameter
 	private boolean useDependenciesAsEpisodes = false;
-
-	public boolean getUseDependenciesAsEpisodes() {
-		return useDependenciesAsEpisodes;
-	}
-
-	public void setUseDependenciesAsEpisodes(boolean useDependenciesAsEpisodes) {
-		this.useDependenciesAsEpisodes = useDependenciesAsEpisodes;
-	}
+	public boolean getUseDependenciesAsEpisodes() { return useDependenciesAsEpisodes; }
+	public void setUseDependenciesAsEpisodes(boolean useDependenciesAsEpisodes) { this.useDependenciesAsEpisodes = useDependenciesAsEpisodes; }
 
 	/**
 	 * Scan all compile-scoped project dependencies for XML binding files.
 	 */
 	@Parameter(defaultValue = "false")
 	private boolean scanDependenciesForBindings = false;
-
-	public boolean getScanDependenciesForBindings() {
-		return scanDependenciesForBindings;
-	}
-
-	public void setScanDependenciesForBindings(
-			boolean scanDependenciesForBindings) {
-		this.scanDependenciesForBindings = scanDependenciesForBindings;
-	}
+	public boolean getScanDependenciesForBindings() { return scanDependenciesForBindings; }
+	public void setScanDependenciesForBindings( boolean scanDependenciesForBindings) { this.scanDependenciesForBindings = scanDependenciesForBindings; }
 
 	/**
 	 * Version of the JAXB specification (ex. 2.0, 2.1, 2.2, 2.3 or 3.0).
 	 */
 	@Parameter(defaultValue = "3.0")
 	private String specVersion = "3.0";
+	public String getSpecVersion() { return specVersion; }
+	public void setSpecVersion(String specVersion) { this.specVersion = specVersion; }
 
-	public String getSpecVersion() {
-		return specVersion;
-	}
-
-	public void setSpecVersion(String specVersion) {
-		this.specVersion = specVersion;
-	}
-
-	protected void logConfiguration() throws MojoExecutionException {
-
+	protected void logConfiguration() throws MojoExecutionException
+	{
 		logApiConfiguration();
 
 		getLog().info("pluginArtifacts:" + getPluginArtifacts());
@@ -1060,10 +699,8 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 		getLog().info("schemaExcludes:" + Arrays.toString(getSchemaExcludes()));
 		getLog().info("schemas:" + Arrays.toString(getSchemas()));
 		getLog().info("bindingDirectory:" + getBindingDirectory());
-		getLog().info(
-				"bindingIncludes:" + Arrays.toString(getBindingIncludes()));
-		getLog().info(
-				"bindingExcludes:" + Arrays.toString(getBindingExcludes()));
+		getLog().info("bindingIncludes:" + Arrays.toString(getBindingIncludes()));
+		getLog().info("bindingExcludes:" + Arrays.toString(getBindingExcludes()));
 		getLog().info("bindings:" + Arrays.toString(getBindings()));
 		getLog().info("disableDefaultExcludes:" + getDisableDefaultExcludes());
 		getLog().info("catalog:" + getCatalog());
@@ -1087,151 +724,107 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 		getLog().info("episode:" + getEpisode());
 		getLog().info("plugins:" + Arrays.toString(getPlugins()));
 		getLog().info("episodes:" + Arrays.toString(getEpisodes()));
-		getLog().info(
-				"useDependenciesAsEpisodes:" + getUseDependenciesAsEpisodes());
-		getLog().info(
-				"scanDependenciesForBindings:"
-						+ getScanDependenciesForBindings());
+		getLog().info( "useDependenciesAsEpisodes:" + getUseDependenciesAsEpisodes());
+		getLog().info( "scanDependenciesForBindings:" + getScanDependenciesForBindings());
 		getLog().info("xjcPlugins:" + Arrays.toString(getPlugins()));
 		getLog().info("episodes:" + Arrays.toString(getEpisodes()));
 	}
 
-	private static final String XML_SCHEMA_CLASS_NAME = "XmlSchema";
-
 	@Parameter( defaultValue = "${project}", readonly = true )
 	private MavenProject project;
+	public MavenProject getProject() { return project; }
+	public void setProject(MavenProject project) { this.project = project; }
 
-	public MavenProject getProject() {
-		return project;
-	}
-
-	public void setProject(MavenProject project) {
-		this.project = project;
-	}
-
-	private static final String XML_SCHEMA_CLASS_QNAME = "jakarta.xml.bind.annotation."
-			+ XML_SCHEMA_CLASS_NAME;
-
-	public ArtifactResolver getArtifactResolver() {
-		return artifactResolver;
-	}
-
-	public void setArtifactResolver(ArtifactResolver artifactResolver) {
-		this.artifactResolver = artifactResolver;
-	}
-
-	private static final String XML_SCHEMA_RESOURCE_NAME = XML_SCHEMA_CLASS_NAME
-			+ ".class";
-
-	public ArtifactMetadataSource getArtifactMetadataSource() {
-		return artifactMetadataSource;
-	}
-
-	public void setArtifactMetadataSource(
-			ArtifactMetadataSource artifactMetadataSource) {
-		this.artifactMetadataSource = artifactMetadataSource;
-	}
-
-	private static final String XML_SCHEMA_RESOURCE_QNAME = "/jakarta/xml/bind/annotation/"
-			+ XML_SCHEMA_RESOURCE_NAME;
-
-	public ArtifactFactory getArtifactFactory() {
-		return artifactFactory;
-	}
-
-	public void setArtifactFactory(ArtifactFactory artifactFactory) {
-		this.artifactFactory = artifactFactory;
-	}
-
+	private static final String XML_SCHEMA_CLASS_NAME = "XmlSchema";
+	private static final String XML_SCHEMA_CLASS_QNAME = "jakarta.xml.bind.annotation." + XML_SCHEMA_CLASS_NAME;
+	private static final String XML_SCHEMA_RESOURCE_NAME = XML_SCHEMA_CLASS_NAME + ".class";
+	private static final String XML_SCHEMA_RESOURCE_QNAME = "/jakarta/xml/bind/annotation/" + XML_SCHEMA_RESOURCE_NAME;
 	private static final String XML_ELEMENT_REF_CLASS_NAME = "XmlElementRef";
+	private static final String XML_ELEMENT_REF_CLASS_QNAME = "jakarta.xml.bind.annotation." + XML_ELEMENT_REF_CLASS_NAME;
 
-	public ArtifactRepository getLocalRepository() {
-		return localRepository;
-	}
+	@Component
+	private ArtifactResolver artifactResolver;
+	public ArtifactResolver getArtifactResolver() { return artifactResolver; }
+	public void setArtifactResolver(ArtifactResolver artifactResolver) { this.artifactResolver = artifactResolver; }
 
-	public void setLocalRepository(ArtifactRepository localRepository) {
-		this.localRepository = localRepository;
-	}
+	@Component
+	private ArtifactMetadataSource artifactMetadataSource;
+	public ArtifactMetadataSource getArtifactMetadataSource() { return artifactMetadataSource; }
+	public void setArtifactMetadataSource(ArtifactMetadataSource artifactMetadataSource) { this.artifactMetadataSource = artifactMetadataSource; }
 
-	private static final String XML_ELEMENT_REF_CLASS_QNAME = "jakarta.xml.bind.annotation."
-			+ XML_ELEMENT_REF_CLASS_NAME;
+	@Component
+	private ArtifactFactory artifactFactory;
+	public ArtifactFactory getArtifactFactory() { return artifactFactory; }
+	public void setArtifactFactory(ArtifactFactory artifactFactory) { this.artifactFactory = artifactFactory; }
 
-	public MavenProjectBuilder getMavenProjectBuilder() {
-		return mavenProjectBuilder;
-	}
+	/**
+	 * Artifact factory, needed to download source jars.
+	 */
+	@Component(role = org.apache.maven.project.MavenProjectBuilder.class)
+	private MavenProjectBuilder mavenProjectBuilder;
+	public MavenProjectBuilder getMavenProjectBuilder() { return mavenProjectBuilder; }
+	public void setMavenProjectBuilder(MavenProjectBuilder mavenProjectBuilder) { this.mavenProjectBuilder = mavenProjectBuilder; }
 
-	public void setMavenProjectBuilder(MavenProjectBuilder mavenProjectBuilder) {
-		this.mavenProjectBuilder = mavenProjectBuilder;
-	}
+	@Component
+	private BuildContext buildContext = new DefaultBuildContext();
+	public BuildContext getBuildContext() { return buildContext; }
+	public void setBuildContext(BuildContext buildContext) { this.buildContext = buildContext; }
 
-	public BuildContext getBuildContext() {
-		return buildContext;
-	}
-
-	public void setBuildContext(BuildContext buildContext) {
-		this.buildContext = buildContext;
-	}
-
-	protected void logApiConfiguration() {
-
-		try {
-			final Class<?> xmlSchemaClass = Class
-					.forName(XML_SCHEMA_CLASS_QNAME);
-
-			final URL resource = xmlSchemaClass
-					.getResource(XML_SCHEMA_RESOURCE_NAME);
-
+	protected void logApiConfiguration()
+	{
+		try
+		{
+			final Class<?> xmlSchemaClass = Class.forName(XML_SCHEMA_CLASS_QNAME);
+			final URL resource = xmlSchemaClass.getResource(XML_SCHEMA_RESOURCE_NAME);
 			final String draftLocation = resource.toExternalForm();
 			final String location;
-			if (draftLocation.endsWith(XML_SCHEMA_RESOURCE_QNAME)) {
-				location = draftLocation.substring(0, draftLocation.length()
-						- XML_SCHEMA_RESOURCE_QNAME.length());
-			} else {
+			
+			if (draftLocation.endsWith(XML_SCHEMA_RESOURCE_QNAME))
+				location = draftLocation.substring(0, draftLocation.length() - XML_SCHEMA_RESOURCE_QNAME.length());
+			else
 				location = draftLocation;
-			}
+			
 			getLog().info("JAXB API is loaded from the [" + location + "].");
 
-			try {
+			try
+			{
 				xmlSchemaClass.getMethod("location");
 
-				final Class<?> xmlElementRefClass = Class
-						.forName(XML_ELEMENT_REF_CLASS_QNAME);
+				final Class<?> xmlElementRefClass = Class.forName(XML_ELEMENT_REF_CLASS_QNAME);
 
-				try {
+				try
+				{
 					xmlElementRefClass.getMethod("required");
 					getLog().info("Detected JAXB API version [2.2].");
-				} catch (NoSuchMethodException nsmex2) {
+				}
+				catch (NoSuchMethodException nsmex2)
+				{
 					getLog().info("Detected JAXB API version [2.1].");
 				}
-			} catch (NoSuchMethodException nsmex1) {
-				getLog().info("Detected JAXB API version [2.0].");
-
 			}
-		} catch (ClassNotFoundException cnfex) {
-			getLog().error(
-					"Could not find JAXB 2.x API classes. Make sure JAXB 2.x API is on the classpath.");
+			catch (NoSuchMethodException nsmex1)
+			{
+				getLog().info("Detected JAXB API version [2.0].");
+			}
+		}
+		catch (ClassNotFoundException cnfex)
+		{
+			getLog().error("Could not find JAXB 2.x API classes. Make sure JAXB 2.x API is on the classpath.");
 		}
 	}
-
-	public List<org.apache.maven.artifact.Artifact> getPluginArtifacts() {
-		return pluginArtifacts;
-	}
-
-	public void setPluginArtifacts(
-			List<org.apache.maven.artifact.Artifact> plugingArtifacts) {
-		this.pluginArtifacts = plugingArtifacts;
-	}
 	
-	public List<Dependency> getProjectDependencies() {
-		
+	public List<Dependency> getProjectDependencies()
+	{
 		@SuppressWarnings("unchecked")
 		final Set<Artifact> artifacts = getProject().getArtifacts();
 		
-		if (artifacts == null) {
+		if (artifacts == null)
 			return Collections.emptyList();
-		} else {
+		else
+		{
 			final List<Dependency> dependencies = new ArrayList<Dependency>(artifacts.size());
-			for (Artifact artifact : artifacts) {
+			for (Artifact artifact : artifacts)
+			{
 				final Dependency dependency = new Dependency();
 				dependency.setGroupId(artifact.getGroupId());
 				dependency.setArtifactId(artifact.getArtifactId());
@@ -1279,218 +872,238 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo implements
 	}
 
 	public URL resolveDependencyResource(DependencyResource dependencyResource)
-			throws MojoExecutionException {
-
-		if (dependencyResource.getGroupId() == null) {
+		throws MojoExecutionException
+	{
+		if (dependencyResource.getGroupId() == null)
+		{
 			throw new MojoExecutionException(MessageFormat.format(
-					"Dependency resource [{0}] does define the groupId.",
-					dependencyResource));
+				"Dependency resource [{0}] does define the groupId.",
+				dependencyResource));
 		}
 
-		if (dependencyResource.getArtifactId() == null) {
-			throw new MojoExecutionException(
-					MessageFormat
-							.format("Dependency resource [{0}] does not define the artifactId.",
-									dependencyResource));
-		}
-
-		if (dependencyResource.getType() == null) {
+		if (dependencyResource.getArtifactId() == null)
+		{
 			throw new MojoExecutionException(MessageFormat.format(
-					"Dependency resource [{0}] does not define the type.",
-					dependencyResource));
+				"Dependency resource [{0}] does not define the artifactId.",
+				dependencyResource));
 		}
 
-		if (getProject().getDependencyManagement() != null) {
+		if (dependencyResource.getType() == null)
+		{
+			throw new MojoExecutionException(MessageFormat.format(
+				"Dependency resource [{0}] does not define the type.",
+				dependencyResource));
+		}
+
+		if (getProject().getDependencyManagement() != null)
+		{
 			@SuppressWarnings("unchecked")
-			final List<Dependency> dependencies = getProject()
-					.getDependencyManagement().getDependencies();
+			final List<Dependency> dependencies = getProject().getDependencyManagement().getDependencies();
 			merge(dependencyResource, dependencies);
 		}
 
 		List<Dependency> dependencies = getProjectDependencies();
-		if (dependencies != null) {
+		if (dependencies != null)
 			merge(dependencyResource, dependencies);
-		}
 
-		if (dependencyResource.getVersion() == null) {
+		if (dependencyResource.getVersion() == null)
+		{
 			throw new MojoExecutionException(MessageFormat.format(
-					"Dependency resource [{0}] does not define the version.",
-					dependencyResource));
+				"Dependency resource [{0}] does not define the version.",
+				dependencyResource));
 		}
 
-		try {
+		try
+		{
 			@SuppressWarnings("unchecked")
-			final Set<Artifact> artifacts = MavenMetadataSource
-					.createArtifacts(getArtifactFactory(),
-							Arrays.<Dependency>asList(dependencyResource),
-							Artifact.SCOPE_RUNTIME, null, getProject());
+			final Set<Artifact> resourceArtifacts = MavenMetadataSource.createArtifacts(
+				getArtifactFactory(),
+				Arrays.<Dependency>asList(dependencyResource),
+				Artifact.SCOPE_RUNTIME, null, getProject());
 
-			if (artifacts.size() != 1) {
-				getLog().error(
-						MessageFormat
-								.format("Resolved dependency resource [{0}] to artifacts [{1}].",
-										dependencyResource, artifacts));
+			if (resourceArtifacts.size() != 1)
+			{
+				getLog().error(MessageFormat.format(
+					"Resolved dependency resource [{0}] to artifacts [{1}].",
+					dependencyResource, resourceArtifacts));
 				throw new MojoExecutionException(MessageFormat.format(
-						"Could not create artifact for dependency [{0}].",
-						dependencyResource));
+					"Could not create artifact for dependency [{0}].",
+					dependencyResource));
 			}
 
-			final Artifact artifact = artifacts.iterator().next();
+			final Artifact resourceArtifact = resourceArtifacts.iterator().next();
+			final List<ArtifactRepository> remoteRepositories = getProject().getRemoteArtifactRepositories();
 
-			getArtifactResolver().resolve(artifact,
-					getProject().getRemoteArtifactRepositories(),
-					getLocalRepository());
+			// Resolves the path for a resource artifact.
+			// The artifact will be downloaded to the local repository, if necessary.
+			// An artifact that is already resolved will be skipped and is not re-resolved.
+			getArtifactResolver().resolve
+			(
+				resourceArtifact,
+				remoteRepositories,
+				getLocalRepository()
+			);
 
 			final String resource = dependencyResource.getResource();
-			if (resource == null) {
-				throw new MojoExecutionException(
-						MessageFormat
-								.format("Dependency resource [{0}] does not define the resource.",
-										dependencyResource));
+			if (resource == null)
+			{
+				throw new MojoExecutionException(MessageFormat.format(
+					"Dependency resource [{0}] does not define the resource.",
+					dependencyResource));
 			}
-			final URL resourceURL = createArtifactResourceUrl(artifact,
-					resource);
-			getLog().debug(
-					MessageFormat
-							.format("Resolved dependency resource [{0}] to resource URL [{1}].",
-									dependencyResource, resourceURL));
+			final URL resourceURL = createArtifactResourceUrl(resourceArtifact,	resource);
+			
+			getLog().debug(MessageFormat.format(
+				"Resolved dependency resource [{0}] to resource URL [{1}].",
+				dependencyResource, resourceURL));
+			
 			return resourceURL;
-		} catch (ArtifactNotFoundException anfex) {
+		}
+		catch (ArtifactNotFoundException anfex)
+		{
 			throw new MojoExecutionException(MessageFormat.format(
-					"Could not find artifact for dependency [{0}].",
-					dependencyResource));
+				"Could not find artifact for dependency [{0}].",
+				dependencyResource));
 
-		} catch (InvalidDependencyVersionException e) {
+		}
+		catch (InvalidDependencyVersionException e)
+		{
 			throw new MojoExecutionException(MessageFormat.format(
-					"Invalid version of dependency [{0}].", dependencyResource));
-		} catch (ArtifactResolutionException e) {
+				"Invalid version of dependency [{0}].", dependencyResource));
+		}
+		catch (ArtifactResolutionException e)
+		{
 			throw new MojoExecutionException(MessageFormat.format(
-					"Could not resolver artifact for dependency [{0}].",
-					dependencyResource));
+				"Could not resolver artifact for dependency [{0}].",
+				dependencyResource));
 		}
 	}
 
-	private URL createArtifactResourceUrl(final Artifact artifact,
-			String resource) throws MojoExecutionException {
+	private URL createArtifactResourceUrl(final Artifact artifact, String resource)
+		throws MojoExecutionException
+	{
 		final File artifactFile = artifact.getFile();
 
-		if (artifactFile.isDirectory()) {
+		if (artifactFile.isDirectory())
+		{
 			final File resourceFile = new File(artifactFile, resource);
-			try {
+			try
+			{
 				return resourceFile.toURI().toURL();
-			} catch (MalformedURLException murlex) {
-				throw new MojoExecutionException(
-						MessageFormat
-								.format("Could not create an URL for dependency directory [{0}] and resource [{1}].",
-										artifactFile, resource));
 			}
-		} else {
-			try {
-				return new URL("jar:"
-						+ artifactFile.toURI().toURL().toExternalForm() + "!/"
-						+ resource);
-			} catch (MalformedURLException murlex) {
-				throw new MojoExecutionException(
-						MessageFormat
-								.format("Could not create an URL for dependency file [{0}] and resource [{1}].",
-										artifactFile, resource));
-
+			catch (MalformedURLException murlex)
+			{
+				throw new MojoExecutionException(MessageFormat.format(
+					"Could not create an URL for dependency directory [{0}] and resource [{1}].",
+					artifactFile, resource));
+			}
+		}
+		else
+		{
+			try
+			{
+				return new URL("jar:" + artifactFile.toURI().toURL().toExternalForm() + "!/" + resource);
+			}
+			catch (MalformedURLException murlex)
+			{
+				throw new MojoExecutionException(MessageFormat.format(
+					"Could not create an URL for dependency file [{0}] and resource [{1}].",
+					artifactFile, resource));
 			}
 		}
 	}
 
-	private URI createUri(String uriString) throws MojoExecutionException {
-		try {
+	private URI createUri(String uriString) throws MojoExecutionException
+	{
+		try
+		{
 			final URI uri = new URI(uriString);
 			return uri;
-		} catch (URISyntaxException urisex) {
+		}
+		catch (URISyntaxException urisex)
+		{
 			throw new MojoExecutionException(MessageFormat.format(
-					"Could not create the URI from string [{0}].", uriString),
-					urisex);
+				"Could not create the URI from string [{0}].",
+				uriString), urisex);
 		}
 	}
 
-	private List<URI> createFileSetUris(final FileSet fileset,
-			String defaultDirectory, String[] defaultIncludes,
-			String defaultExcludes[]) throws MojoExecutionException {
+	private List<URI> createFileSetUris(final FileSet fileset, String defaultDirectory, String[] defaultIncludes, String defaultExcludes[])
+		throws MojoExecutionException
+	{
 		final String draftDirectory = fileset.getDirectory();
-		final String directory = draftDirectory == null ? defaultDirectory
-				: draftDirectory;
+		final String directory = draftDirectory == null ? defaultDirectory : draftDirectory;
 		final List<String> includes;
+
 		@SuppressWarnings("unchecked")
 		final List<String> draftIncludes = (List<String>) fileset.getIncludes();
-		if (draftIncludes == null || draftIncludes.isEmpty()) {
-			includes = defaultIncludes == null ? Collections
-					.<String> emptyList() : Arrays.asList(defaultIncludes);
-		} else {
+
+		if (draftIncludes == null || draftIncludes.isEmpty())
+			includes = defaultIncludes == null ? Collections.<String> emptyList() : Arrays.asList(defaultIncludes);
+		else
 			includes = draftIncludes;
-		}
 
 		final List<String> excludes;
 		@SuppressWarnings("unchecked")
 		final List<String> draftExcludes = (List<String>) fileset.getExcludes();
-		if (draftExcludes == null || draftExcludes.isEmpty()) {
-			excludes = defaultExcludes == null ? Collections
-					.<String> emptyList() : Arrays.asList(defaultExcludes);
-		} else {
+
+		if (draftExcludes == null || draftExcludes.isEmpty())
+			excludes = defaultExcludes == null ? Collections.<String> emptyList() : Arrays.asList(defaultExcludes);
+		else
 			excludes = draftExcludes;
-		}
+
 		String[] includesArray = includes.toArray(new String[includes.size()]);
 		String[] excludesArray = excludes.toArray(new String[excludes.size()]);
-		try {
+
+		try
+		{
 			final List<File> files = IOUtils.scanDirectoryForFiles(
 					getBuildContext(), new File(directory), includesArray,
 					excludesArray, !getDisableDefaultExcludes());
 
 			final List<URI> uris = new ArrayList<URI>(files.size());
 
-			for (final File file : files) {
-				// try {
+			for (final File file : files)
+			{
 				final URI uri = file.toURI();
 				uris.add(uri);
-				// } catch (MalformedURLException murlex) {
-				// throw new MojoExecutionException(
-				// MessageFormat.format(
-				// "Could not create an URL for the file [{0}].",
-				// file), murlex);
-				// }
 			}
 			return uris;
-		} catch (IOException ioex) {
-			throw new MojoExecutionException(
-					MessageFormat
-							.format("Could not scan directory [{0}] for files with inclusion [{1}]  and exclusion [{2}].",
-									directory, includes, excludes));
+		}
+		catch (IOException ioex)
+		{
+			throw new MojoExecutionException(MessageFormat.format(
+				"Could not scan directory [{0}] for files with inclusion [{1}]	and exclusion [{2}].",
+				directory, includes, excludes));
 		}
 	}
 
-	private void merge(Dependency dependency,
-			final List<Dependency> managedDependencies) {
-
-		for (Dependency managedDependency : managedDependencies) {
-			if (dependency.getManagementKey().equals(
-					managedDependency.getManagementKey())) {
-				ArtifactUtils.mergeDependencyWithDefaults(dependency,
-						managedDependency);
-			}
+	private void merge(Dependency dependency, final List<Dependency> managedDependencies)
+	{
+		for (Dependency managedDependency : managedDependencies)
+		{
+			if (dependency.getManagementKey().equals(managedDependency.getManagementKey()))
+				ArtifactUtils.mergeDependencyWithDefaults(dependency, managedDependency);
 		}
 	}
 
-	protected abstract OptionsFactory<O> getOptionsFactory();
-
-	protected void cleanPackageDirectory(final File packageDirectory) {
-		final File[] files = packageDirectory.listFiles(new FileFilter() {
-
-			// @Override
-			public boolean accept(File file) {
+	protected void cleanPackageDirectory(final File packageDirectory)
+	{
+		// Accept files to delete.
+		final File[] files = packageDirectory.listFiles(new FileFilter()
+		{
+			@Override
+			public boolean accept(File file)
+			{
 				return file.isFile();
 			}
 		});
-		if (files != null) {
-			for (File file : files) {
+
+		// Delete files.
+		if (files != null)
+		{
+			for (File file : files)
 				file.delete();
-			}
 		}
 	}
-
 }
