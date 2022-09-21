@@ -41,7 +41,7 @@ import org.sonatype.plexus.build.incremental.DefaultBuildContext;
 public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	implements DependencyResourceResolver
 {
-	public static final String PROPERTY_PREFIX = "org.jvnet.higherjaxb.mojo.xjc";
+	public static final String HIGHERJAXB_MOJO_PREFIX = "org.jvnet.higherjaxb.mojo.xjc";
 
 	/**
 	 * Creates and initializes an instance of XJC options.
@@ -61,27 +61,27 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * <code>[user[:password]@]proxyHost[:proxyPort]</code>. This sets both HTTP
 	 * as well as HTTPS proxy.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".useActiveProxyAsHttpproxy", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".useActiveProxyAsHttpproxy", defaultValue = "false")
 	private boolean useActiveProxyAsHttpproxy = false;
 	public boolean isUseActiveProxyAsHttpproxy() { return this.useActiveProxyAsHttpproxy; }
 	public void setUseActiveProxyAsHttpproxy(boolean useActiveProxyAsHttpproxy) { this.useActiveProxyAsHttpproxy = useActiveProxyAsHttpproxy; }
 
-	@Parameter(property = PROPERTY_PREFIX + ".proxyHost")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".proxyHost")
 	private String proxyHost;
 	public void setProxyHost(String proxyHost) { this.proxyHost = proxyHost; }
 	public String getProxyHost() { return this.proxyHost; }
 
-	@Parameter(property = PROPERTY_PREFIX + ".proxyPort")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".proxyPort")
 	private int proxyPort;
 	public void setProxyPort(int proxyPort) { this.proxyPort = proxyPort; }
 	public int getProxyPort() { return this.proxyPort; }
 
-	@Parameter(property = PROPERTY_PREFIX + ".proxyUsername")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".proxyUsername")
 	private String proxyUsername;
 	public void setProxyUsername(String proxyUsername) { this.proxyUsername = proxyUsername; }
 	public String getProxyUsername() { return this.proxyUsername; }
 
-	@Parameter(property = PROPERTY_PREFIX + ".proxyPassword")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".proxyPassword")
 	private String proxyPassword;
 	public void setProxyPassword(String proxyPassword) { this.proxyPassword = proxyPassword; }
 	public String getProxyPassword() { return this.proxyPassword; }
@@ -106,9 +106,9 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	/**
 	 * Type of input schema language. One of: DTD, XMLSCHEMA, RELAXNG,
 	 * RELAXNG_COMPACT, WSDL, AUTODETECT. If unspecified, it is assumed
-	 * AUTODETECT.
+	 * AUTODETECT. See com.sun.tools.xjc.Language.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".schemaLanguage")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".schemaLanguage")
 	private String schemaLanguage;
 	public String getSchemaLanguage() { return schemaLanguage; }
 	public void setSchemaLanguage(String schemaLanguage) { this.schemaLanguage = schemaLanguage; }
@@ -117,7 +117,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * The source directory containing *.xsd schema files. Notice that binding
 	 * files are searched by default in this directory.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".schemaDirectory", defaultValue = "src/main/resources", required = true)
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".schemaDirectory", defaultValue = "src/main/resources", required = true)
 	private File schemaDirectory;
 	public File getSchemaDirectory() { return schemaDirectory; }
 	public void setSchemaDirectory(File schemaDirectory) { this.schemaDirectory = schemaDirectory; }
@@ -165,7 +165,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If left undefined, then the <code>schemaDirectory</code> is assumed.
 	 * </p>
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".bindingDirectory")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".bindingDirectory")
 	private File bindingDirectory;
 	public void setBindingDirectory(File bindingDirectory) { this.bindingDirectory = bindingDirectory; }
 	public File getBindingDirectory() { return bindingDirectory != null ? bindingDirectory : getSchemaDirectory(); }
@@ -173,7 +173,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	/**
 	 * The source directory containing <code>*.cat</code> catalog files. Defaults to the <code>schemaDirectory</code>.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".catalogDirectory")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogDirectory")
 	private File catalogDirectory;
 	public void setCatalogDirectory(File catalogDirectory) { this.catalogDirectory = catalogDirectory; }
 	public File getCatalogDirectory() { return catalogDirectory != null ? catalogDirectory : getSchemaDirectory(); }
@@ -217,7 +217,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If 'true', maven's default exludes are NOT added to all the excludes
 	 * lists.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".disableDefaultExcludes", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".disableDefaultExcludes", defaultValue = "false")
 	private boolean disableDefaultExcludes;
 	public boolean getDisableDefaultExcludes() { return disableDefaultExcludes; }
 	public void setDisableDefaultExcludes(boolean disableDefaultExcludes) { this.disableDefaultExcludes = disableDefaultExcludes; }
@@ -230,7 +230,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * catalog-resolver sample and this article for details.
 	 * </p>
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".catalog")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalog")
 	private File catalog;
 	public File getCatalog() { return catalog; }
 	public void setCatalog(File catalog) { this.catalog = catalog; }
@@ -291,7 +291,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	/**
 	 * Provides the class name of the catalog resolver.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".catalogResolver")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogResolver")
 	protected String catalogResolver = null;
 	public String getCatalogResolver() { return catalogResolver; }
 	public void setCatalogResolver(String catalogResolver) { this.catalogResolver = catalogResolver; }
@@ -305,7 +305,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If left unspecified, the package will be derived from the schemas only.
 	 * </p>
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".generatePackage")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".generatePackage")
 	private String generatePackage;
 	public String getGeneratePackage() { return generatePackage; }
 	public void setGeneratePackage(String generatePackage) { this.generatePackage = generatePackage; }
@@ -320,7 +320,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * <code>doe/ray/org/here</code>.
 	 * </p>
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".generateDirectory", defaultValue = "${project.build.directory}/generated-sources/xjc", required = true)
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".generateDirectory", defaultValue = "${project.build.directory}/generated-sources/xjc", required = true)
 	private File generateDirectory;
 	public File getGenerateDirectory() { return generateDirectory; }
 	public void setGenerateDirectory(File generateDirectory)
@@ -337,7 +337,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If set to true (default), adds target directory as a compile source root
 	 * of this Maven project.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".addCompileSourceRoot", defaultValue = "true", required = false)
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".addCompileSourceRoot", defaultValue = "true", required = false)
 	private boolean addCompileSourceRoot = true;
 	public boolean getAddCompileSourceRoot() { return addCompileSourceRoot; }
 	public void setAddCompileSourceRoot(boolean addCompileSourceRoot) { this.addCompileSourceRoot = addCompileSourceRoot; }
@@ -346,7 +346,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If set to true, adds target directory as a test compile source root of
 	 * this Maven project. Default value is false.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".addTestCompileSourceRoot", defaultValue = "false", required = false)
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".addTestCompileSourceRoot", defaultValue = "false", required = false)
 	private boolean addTestCompileSourceRoot = false;
 	public boolean getAddTestCompileSourceRoot() { return addTestCompileSourceRoot; }
 	public void setAddTestCompileSourceRoot(boolean addTestCompileSourceRoot) { this.addTestCompileSourceRoot = addTestCompileSourceRoot; }
@@ -355,7 +355,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If 'true', the generated Java source files are set as read-only (xjc's
 	 * -readOnly option).
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".readOnly", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".readOnly", defaultValue = "false")
 	private boolean readOnly;
 	public boolean getReadOnly() { return readOnly; }
 	public void setReadOnly(boolean readOnly) { this.readOnly = readOnly; }
@@ -364,7 +364,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If 'false', suppresses generation of package level annotations
 	 * (package-info.java), xjc's -npa option.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".packageLevelAnnotations", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".packageLevelAnnotations", defaultValue = "true")
 	private boolean packageLevelAnnotations = true;
 	public boolean getPackageLevelAnnotations() { return packageLevelAnnotations; }
 	public void setPackageLevelAnnotations(boolean packageLevelAnnotations) { this.packageLevelAnnotations = packageLevelAnnotations; }
@@ -373,7 +373,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If 'true', suppresses generation of a file header with timestamp, xjc's
 	 * -no-header option.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".noFileHeader", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".noFileHeader", defaultValue = "false")
 	private boolean noFileHeader = false;
 	public boolean getNoFileHeader() { return noFileHeader; }
 	public void setNoFileHeader(boolean noFileHeader) { this.noFileHeader = noFileHeader; }
@@ -382,7 +382,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If 'true', enables correct generation of Boolean getters/setters to
 	 * enable Bean Introspection apis; xjc's -enableIntrospection option.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".enableIntrospection", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".enableIntrospection", defaultValue = "false")
 	private boolean enableIntrospection = false;
 	public boolean getEnableIntrospection() { return enableIntrospection; }
 	public void setEnableIntrospection(boolean enableIntrospection) { this.enableIntrospection = enableIntrospection; }
@@ -391,7 +391,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If 'true', disables XML security features when parsing XML documents;
 	 * xjc's -disableXmlSecurity option.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".disableXmlSecurity", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".disableXmlSecurity", defaultValue = "true")
 	private boolean disableXmlSecurity = true;
 	public boolean getDisableXmlSecurity() { return disableXmlSecurity; }
 	public void setDisableXmlSecurity(boolean disableXmlSecurity) { this.disableXmlSecurity = disableXmlSecurity; }
@@ -404,7 +404,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * scheme portion separated by colon. The keyword "all" grants permission to
 	 * all protocols.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".accessExternalSchema", defaultValue = "all")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".accessExternalSchema", defaultValue = "all")
 	private String accessExternalSchema = "all";
 	public String getAccessExternalSchema() { return accessExternalSchema; }
 	public void setAccessExternalSchema(String accessExternalSchema) { this.accessExternalSchema = accessExternalSchema; }
@@ -416,7 +416,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * of the JAR protocol, "jar" plus the scheme portion separated by colon.
 	 * The keyword "all" grants permission to all protocols.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".accessExternalDTD", defaultValue = "all")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".accessExternalDTD", defaultValue = "all")
 	private String accessExternalDTD = "all";
 	public String getAccessExternalDTD() { return accessExternalDTD; }
 	public void setAccessExternalDTD(String accessExternalDTD) { this.accessExternalDTD = accessExternalDTD; }
@@ -424,7 +424,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	/**
 	 * Enables external entity processing.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".enableExternalEntityProcessing", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".enableExternalEntityProcessing", defaultValue = "true")
 	private boolean enableExternalEntityProcessing;
 	public boolean isEnableExternalEntityProcessing() { return enableExternalEntityProcessing; }
 	public void setEnableExternalEntityProcessing(boolean enableExternalEntityProcessing) { this.enableExternalEntityProcessing = enableExternalEntityProcessing; }
@@ -443,7 +443,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * -extension option). Otherwise, it will run in the strict conformance
 	 * mode.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".extension", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".extension", defaultValue = "true")
 	private boolean extension;
 	public boolean getExtension() { return extension; }
 	public void setExtension(boolean extension) { this.extension = extension; }
@@ -452,7 +452,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If 'true' (default), Perform strict validation of the input schema
 	 * (disabled by the xjc's -nv option).
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".strict", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".strict", defaultValue = "true")
 	private boolean strict = true;
 	public boolean getStrict() { return strict; }
 	public void setStrict(boolean strict) { this.strict = strict; }
@@ -460,7 +460,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	/**
 	 * If 'false', the plugin will not write the generated code to disk.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".writeCode", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".writeCode", defaultValue = "true")
 	private boolean writeCode = true;
 	public boolean getWriteCode() { return writeCode; }
 	public void setWriteCode(boolean writeCode) { this.writeCode = writeCode; }
@@ -475,7 +475,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * -X option).
 	 * </p>
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".verbose", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".verbose", defaultValue = "false")
 	private boolean verbose;
 	public boolean getVerbose() { return verbose; }
 	public void setVerbose(boolean verbose) { this.verbose = verbose; }
@@ -489,7 +489,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * -X option).
 	 * </p>
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".debug", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".debug", defaultValue = "false")
 	private boolean debug;
 	public boolean getDebug() { return debug; }
 	public void setDebug(boolean debug) { this.debug = debug; }
@@ -514,7 +514,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * changed.
 	 *
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".forceRegenerate", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".forceRegenerate", defaultValue = "false")
 	private boolean forceRegenerate;
 	public boolean getForceRegenerate() { return forceRegenerate; }
 	public void setForceRegenerate(boolean forceRegenerate) { this.forceRegenerate = forceRegenerate; }
@@ -531,7 +531,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * </p>
 	 *
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".removeOldOutput", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".removeOldOutput", defaultValue = "false")
 	private boolean removeOldOutput;
 	public boolean getRemoveOldOutput() { return removeOldOutput; }
 	public void setRemoveOldOutput(boolean removeOldOutput) { this.removeOldOutput = removeOldOutput; }
@@ -543,7 +543,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * </p>
 	 *
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".removeOldPackages", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".removeOldPackages", defaultValue = "true")
 	private boolean cleanPackageDirectories = true;
 	public boolean getCleanPackageDirectories() { return cleanPackageDirectories; }
 	public void setCleanPackageDirectories(boolean removeOldPackages) { this.cleanPackageDirectories = removeOldPackages; }
@@ -584,7 +584,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * episode file will appear as META-INF/sun-jaxb.episode in the JAR -
 	 * just as XJC wants it.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".episodeFile")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".episodeFile")
 	private File episodeFile;
 	public File getEpisodeFile() { return episodeFile; }
 	public void setEpisodeFile(File episodeFile) { this.episodeFile = episodeFile; }
@@ -593,7 +593,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If true, the episode file (describing mapping of elements and types to
 	 * classes for the compiled schema) will be generated.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".episode", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".episode", defaultValue = "true")
 	private boolean episode = true;
 	public boolean getEpisode() { return episode; }
 	public void setEpisode(boolean episode) { this.episode = episode; }
@@ -605,7 +605,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * This is necessary to avoid the annoying `SCD "x-schema::tns" didn't
 	 * match any schema component` errors.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".addIfExistsToEpisodeSchemaBindings", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".addIfExistsToEpisodeSchemaBindings", defaultValue = "true")
 	private boolean addIfExistsToEpisodeSchemaBindings = true;
 	public boolean isAddIfExistsToEpisodeSchemaBindings() { return this.addIfExistsToEpisodeSchemaBindings; }
 	public void setAddIfExistsToEpisodeSchemaBindings(boolean addIfExistsToEpisodeSchemaBindings) { this.addIfExistsToEpisodeSchemaBindings = addIfExistsToEpisodeSchemaBindings; }
@@ -614,7 +614,7 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	 * If true, marks generated classes using a @Generated annotation - i.e.
 	 * turns on XJC -mark-generated option. Default is false.
 	 */
-	@Parameter(property = PROPERTY_PREFIX + ".markGenerated", defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".markGenerated", defaultValue = "false")
 	private boolean markGenerated = false;
 	public boolean getMarkGenerated() { return markGenerated; }
 	public void setMarkGenerated(boolean markGenerated) { this.markGenerated = markGenerated; }
@@ -651,8 +651,13 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	/**
 	 * If you want to use existing artifacts as episodes for separate
 	 * compilation, configure them as episodes/episode elements. It is assumed
-	 * that episode artifacts contain an appropriate META-INF/sun-jaxb.episode
-	 * resource.
+	 * that episode artifacts contain an appropriate META-INF/sun-jaxb.episode resource.
+	 * 
+	 * An "META-INF/sun-jaxb.episode" file is generated by the XJC (XML Schema to Java) compiler.
+	 * It is a schema bindings that associates schema types with existing classes.
+	 * It is useful when you have one XML schema that is imported by other schemas, as it prevents
+	 * the model from being regenerated. XJC will scan JARs for '*.episode files', then use them
+	 * as binding files automatically.
 	 */
 	@Parameter
 	private Dependency[] episodes;
@@ -689,45 +694,45 @@ public abstract class AbstractXJC2Mojo<O> extends AbstractMojo
 	{
 		logApiConfiguration();
 
-		getLog().info("pluginArtifacts:" + getPluginArtifacts());
-		getLog().info("specVersion:" + getSpecVersion());
-		getLog().info("encoding:" + getEncoding());
-		getLog().info("locale:" + getLocale());
-		getLog().info("schemaLanguage:" + getSchemaLanguage());
-		getLog().info("schemaDirectory:" + getSchemaDirectory());
-		getLog().info("schemaIncludes:" + Arrays.toString(getSchemaIncludes()));
-		getLog().info("schemaExcludes:" + Arrays.toString(getSchemaExcludes()));
-		getLog().info("schemas:" + Arrays.toString(getSchemas()));
-		getLog().info("bindingDirectory:" + getBindingDirectory());
-		getLog().info("bindingIncludes:" + Arrays.toString(getBindingIncludes()));
-		getLog().info("bindingExcludes:" + Arrays.toString(getBindingExcludes()));
-		getLog().info("bindings:" + Arrays.toString(getBindings()));
-		getLog().info("disableDefaultExcludes:" + getDisableDefaultExcludes());
-		getLog().info("catalog:" + getCatalog());
-		getLog().info("catalogResolver:" + getCatalogResolver());
-		getLog().info("generatePackage:" + getGeneratePackage());
-		getLog().info("generateDirectory:" + getGenerateDirectory());
-		getLog().info("readOnly:" + getReadOnly());
-		getLog().info("extension:" + getExtension());
-		getLog().info("strict:" + getStrict());
-		getLog().info("writeCode:" + getWriteCode());
-		getLog().info("verbose:" + getVerbose());
-		getLog().info("debug:" + getDebug());
-		getLog().info("args:" + getArgs());
-		getLog().info("forceRegenerate:" + getForceRegenerate());
-		getLog().info("removeOldOutput:" + getRemoveOldOutput());
-		getLog().info("produces:" + Arrays.toString(getProduces()));
-		getLog().info("otherDepends:" + getOtherDepends());
-		getLog().info("otherDependIncludes:" + getOtherDependsIncludes());
-		getLog().info("otherDependExcludes:" + getOtherDependsExcludes());
-		getLog().info("episodeFile:" + getEpisodeFile());
-		getLog().info("episode:" + getEpisode());
-		getLog().info("plugins:" + Arrays.toString(getPlugins()));
-		getLog().info("episodes:" + Arrays.toString(getEpisodes()));
-		getLog().info( "useDependenciesAsEpisodes:" + getUseDependenciesAsEpisodes());
-		getLog().info( "scanDependenciesForBindings:" + getScanDependenciesForBindings());
-		getLog().info("xjcPlugins:" + Arrays.toString(getPlugins()));
-		getLog().info("episodes:" + Arrays.toString(getEpisodes()));
+		getLog().info("XJC pluginArtifacts = " + getPluginArtifacts());
+		getLog().info("XJC specVersion = " + getSpecVersion());
+		getLog().info("XJC encoding = " + getEncoding());
+		getLog().info("XJC locale = " + getLocale());
+		getLog().info("XJC schemaLanguage = " + getSchemaLanguage());
+		getLog().info("XJC schemaDirectory = " + getSchemaDirectory());
+		getLog().info("XJC schemaIncludes = " + Arrays.toString(getSchemaIncludes()));
+		getLog().info("XJC schemaExcludes = " + Arrays.toString(getSchemaExcludes()));
+		getLog().info("XJC schemas = " + Arrays.toString(getSchemas()));
+		getLog().info("XJC bindingDirectory = " + getBindingDirectory());
+		getLog().info("XJC bindingIncludes = " + Arrays.toString(getBindingIncludes()));
+		getLog().info("XJC bindingExcludes = " + Arrays.toString(getBindingExcludes()));
+		getLog().info("XJC bindings = " + Arrays.toString(getBindings()));
+		getLog().info("XJC disableDefaultExcludes = " + getDisableDefaultExcludes());
+		getLog().info("XJC catalog = " + getCatalog());
+		getLog().info("XJC catalogResolver = " + getCatalogResolver());
+		getLog().info("XJC generatePackage = " + getGeneratePackage());
+		getLog().info("XJC generateDirectory = " + getGenerateDirectory());
+		getLog().info("XJC readOnly = " + getReadOnly());
+		getLog().info("XJC extension = " + getExtension());
+		getLog().info("XJC strict = " + getStrict());
+		getLog().info("XJC writeCode = " + getWriteCode());
+		getLog().info("XJC verbose = " + getVerbose());
+		getLog().info("XJC debug = " + getDebug());
+		getLog().info("XJC args = " + getArgs());
+		getLog().info("XJC forceRegenerate = " + getForceRegenerate());
+		getLog().info("XJC removeOldOutput = " + getRemoveOldOutput());
+		getLog().info("XJC produces = " + Arrays.toString(getProduces()));
+		getLog().info("XJC otherDepends = " + getOtherDepends());
+		getLog().info("XJC otherDependIncludes = " + getOtherDependsIncludes());
+		getLog().info("XJC otherDependExcludes = " + getOtherDependsExcludes());
+		getLog().info("XJC episodeFile = " + getEpisodeFile());
+		getLog().info("XJC episode = " + getEpisode());
+		getLog().info("XJC plugins = " + Arrays.toString(getPlugins()));
+		getLog().info("XJC episodes = " + Arrays.toString(getEpisodes()));
+		getLog().info("XJC useDependenciesAsEpisodes = " + getUseDependenciesAsEpisodes());
+		getLog().info("XJC scanDependenciesForBindings = " + getScanDependenciesForBindings());
+		getLog().info("XJC xjcPlugins = " + Arrays.toString(getPlugins()));
+		getLog().info("XJC episodes = " + Arrays.toString(getEpisodes()));
 	}
 
 	@Parameter( defaultValue = "${project}", readonly = true )

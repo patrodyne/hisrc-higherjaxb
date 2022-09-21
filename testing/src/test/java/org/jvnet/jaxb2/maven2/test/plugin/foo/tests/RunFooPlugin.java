@@ -10,7 +10,7 @@ public class RunFooPlugin extends RunXJC2Mojo {
 
 	@Override
 	public File getSchemaDirectory() {
-		return new File(getBaseDir(), "src/test/resources");
+		return getDirectory("src/test/resources");
 	}
 
 	@Override

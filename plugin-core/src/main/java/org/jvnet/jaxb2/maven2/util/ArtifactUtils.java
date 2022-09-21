@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -65,25 +66,27 @@ public class ArtifactUtils {
 			final ArtifactRepository localRepository,
 			final ArtifactMetadataSource artifactMetadataSource,
 			final Dependency[] dependencies, final MavenProject project)
-			throws InvalidDependencyVersionException,
-			ArtifactResolutionException, ArtifactNotFoundException {
-		if (dependencies == null) {
+		throws InvalidDependencyVersionException, ArtifactResolutionException, ArtifactNotFoundException
+	{
+		if (dependencies == null)
 			return Collections.emptyList();
+
+		if ( artifactFactory != null )
+		{
+			@SuppressWarnings("unchecked")
+			final Set<Artifact> artifacts =
+				MavenMetadataSource.createArtifacts(artifactFactory, Arrays.asList(dependencies), "runtime", null, project);
+			
+			for (Artifact artifact : artifacts)
+				artifactResolver.resolve(artifact, project.getRemoteArtifactRepositories(), localRepository);
+
+			final Set<Artifact> resolvedArtifacts = artifacts;
+			return resolvedArtifacts;
 		}
-
-		@SuppressWarnings("unchecked")
-		final Set<Artifact> artifacts = MavenMetadataSource.createArtifacts(
-				artifactFactory, Arrays.asList(dependencies), "runtime", null,
-				project);
-
-		for (Artifact artifact : artifacts) {
-			artifactResolver.resolve(artifact,
-
-			project.getRemoteArtifactRepositories(), localRepository);
+		else
+		{
+			throw new IllegalArgumentException("Missing ArtifactFactory instance!");
 		}
-
-		final Set<Artifact> resolvedArtifacts = artifacts;
-		return resolvedArtifacts;
 	}
 
 	public static final Function<Artifact, File> GET_FILE = new Function<Artifact, File>() {

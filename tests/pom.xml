@@ -115,6 +115,24 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+						<!--
+						<include>**/Run*Mojo.java</include>
+						-->
+					</includes>
+					<forkMode>once</forkMode>
+					<!-- need more memory than the default for our unit tests -->
+					<!-- OpenJDK 64-Bit Server VM warning: Ignoring option MaxPermSize; support was removed in 8.0 -->
+					<!--
+					<argLine>-Xmx1024M -XX:MaxPermSize=128M -verbose:gc</argLine>
+					-->
+				</configuration>
+			</plugin> 
 		</plugins>
 	</build>
 </project>

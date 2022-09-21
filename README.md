@@ -85,7 +85,7 @@ New goals for the next release are:
 
 #### In Progress
 
-* Replace `org.apache.maven:maven-compat` with Maven 3 dependencies.
+* Reviewing
 
 ### Fork History
 
