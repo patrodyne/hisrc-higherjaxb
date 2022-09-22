@@ -20,6 +20,7 @@
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-higherjaxb-maven-plugin-core</artifactId>
 		</dependency>
+		<!-- JAXB API dependencies -->
 		<dependency>
 			<groupId>jakarta.activation</groupId>
 			<artifactId>jakarta.activation-api</artifactId>
@@ -33,6 +34,7 @@
 			<artifactId>jakarta.xml.bind-api</artifactId>
 			<version>${jaxb-api30.version}</version>
 		</dependency>
+		<!-- JAXB Implementation dependencies -->
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>codemodel</artifactId>
@@ -48,8 +50,32 @@
 			<artifactId>jaxb-xjc</artifactId>
 			<version>${jaxb-imp30.version}</version>
 		</dependency>
+		<!-- Maven dependencies -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<exclusions>
+				<!-- In favor of jakarta.annotation:jakarta.annotation-api -->
+				<exclusion>
+					<groupId>javax.annotation</groupId>
+					<artifactId>javax.annotation-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-compat</artifactId>
+			<exclusions>
+				<!-- In favor of jakarta.inject:jakarta.inject-api -->
+				<exclusion>
+					<groupId>javax.inject</groupId>
+					<artifactId>javax.inject</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 	<build>
+		<defaultGoal>compile</defaultGoal>
 		<resources>
 			<resource>
 				<filtering>true</filtering>
