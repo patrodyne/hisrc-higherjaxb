@@ -446,7 +446,7 @@ public abstract class RawXJC2Mojo<O> extends AbstractXJC2Mojo<O> {
 		final OptionsConfiguration optionsConfiguration = createOptionsConfiguration();
 
 		if (getVerbose())
-			getLog().info("optionsConfiguration:" + optionsConfiguration);
+			getLog().info("MOJO optionsConfiguration:" + optionsConfiguration);
 
 		checkCatalogsInStrictMode();
 

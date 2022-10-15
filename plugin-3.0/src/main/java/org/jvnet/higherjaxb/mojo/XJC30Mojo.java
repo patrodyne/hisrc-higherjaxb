@@ -134,9 +134,9 @@ public class XJC30Mojo extends RawXJC2Mojo<Options> {
 					String beanKey = (beanEntry.getKey() != null ) ? beanEntry.getKey().toString() : "";
 					String beanVal = (beanEntry.getValue() != null ) ? beanEntry.getValue().toString() : "";
 					if ( beanKey.equals(beanVal) )
-						getLog().info("Bean: [" + beanVal + "]");
+						getLog().info("JAXB Bean: [" + beanVal + "]");
 					else
-						getLog().info("Bean: [key=" + beanEntry.getKey() + ", value=" + beanEntry.getValue() + "]");
+						getLog().info("JAXB Bean: [key=" + beanEntry.getKey() + ", value=" + beanEntry.getValue() + "]");
 				}
 			}
 		}

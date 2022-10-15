@@ -381,9 +381,9 @@
 				<plugin>
 					<artifactId>maven-plugin-plugin</artifactId>
 					<version>${maven-plugin-plugin.version}</version>
+					<?m2e ignore?>
 					<executions>
 						<execution>
-							<?m2e ignore?>
 							<id>mojo-descriptor</id>
 							<phase>process-classes</phase>
 							<goals>
@@ -392,7 +392,6 @@
 							</goals>
 						</execution>
 						<execution>
-							<?m2e ignore?>
 							<id>help-goal</id>
 							<goals>
 								<!-- Generate {package}/HelpMojo.java -->

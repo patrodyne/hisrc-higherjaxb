@@ -55,6 +55,10 @@ public class RunXJC2Mojo
 		mojo.setVerbose(isVerbose());
 		mojo.setDebug(isDebug());
 		mojo.setWriteCode(isWriteCode());
+		
+		mojo.setRemoveOldOutput(true);
+		mojo.setForceRegenerate(true);
+		mojo.setExtension(true);
 	}
 	
 	public void check() throws Exception
