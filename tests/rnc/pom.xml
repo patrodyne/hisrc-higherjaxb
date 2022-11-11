@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.patrodyne.jvnet</groupId>
 		<artifactId>hisrc-higherjaxb-maven-plugin-tests</artifactId>
-		<version>0.14.3-SNAPSHOT</version>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 	<packaging>jar</packaging>
 	<name>HiSrc HigherJAXB Plugin Tests [rnc]</name>
@@ -19,11 +19,18 @@
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
 		</dependency>
+		<!--
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-osgi</artifactId>
+			<version>${jaxb-imp.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-extra-osgi</artifactId>
 			<version>${jaxb-imp.version}</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-higherjaxb-maven-plugin-testing</artifactId>
@@ -49,6 +56,14 @@
 						</configuration>
 					</execution>
 				</executions>
+				<!--
+				<dependencies>
+					<dependency>
+						<groupId>com.sun.xml.bind</groupId>
+						<artifactId>jaxb-osgi</artifactId>
+						<version>${jaxb-imp.version}</version>
+					</dependency>
+				</dependencies>
 				<dependencies>
 					<dependency>
 						<groupId>com.sun.xml.bind</groupId>
@@ -56,6 +71,7 @@
 						<version>${jaxb-imp.version}</version>
 					</dependency>
 				</dependencies>
+				-->
 			</plugin>
 		</plugins>
 	</build>

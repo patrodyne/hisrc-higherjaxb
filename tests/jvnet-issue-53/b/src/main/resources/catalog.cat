@@ -1,0 +1,5 @@
+--
+    If the <catalog/> parameter isn't working, this link to schema A is
+    not recognized and the test will fail because of a missing schema.
+--
+PUBLIC "http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-53-a:jar::!/a.xsd"

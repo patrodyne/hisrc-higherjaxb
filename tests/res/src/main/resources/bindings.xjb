@@ -6,7 +6,7 @@
 
 	<jaxb:bindings schemaLocation="maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-po:jar::!/purchaseorder.xsd" node="/xs:schema">
 		<!--jaxb:schemaBindings>
-			<jaxb:package name="org.jvnet.jaxb2.maven2.tests.po"/>
+			<jaxb:package name="org.jvnet.higherjaxb.mojo.tests.po"/>
 		</jaxb:schemaBindings-->		
 	</jaxb:bindings>
 

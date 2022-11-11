@@ -11,7 +11,7 @@
 				<xjc:noValidatingUnmarshaller /-->
 			</jaxb:globalBindings>
 			<jaxb:schemaBindings>
-				<jaxb:package name="org.jvnet.jaxb2_commons.tests.one"/>
+				<jaxb:package name="org.jvnet.basicjaxb.tests.one"/>
 			</jaxb:schemaBindings>
 		</xs:appinfo>
 	</xs:annotation>

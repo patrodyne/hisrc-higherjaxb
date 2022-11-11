@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xml-java-binding-schema>
-	<options package="org.jvnet.hyperjaxb3.hibernate.mapping"/>
+	<options package="org.jvnet.hyperjaxb.hibernate.mapping"/>
 	<element name="hibernate-mapping" type="class"/>
 	<element name="class" type="class" class="Clazz">
 		<attribute name="subselect" property="SubselectAttribute"/>

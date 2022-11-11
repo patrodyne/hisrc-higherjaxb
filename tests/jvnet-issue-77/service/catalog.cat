@@ -1,0 +1,8 @@
+# PUBLIC "http://company.com/project/schemas/common-types" "classpath:META-INF/project/schemas/CommonTypes.xsd"
+# PUBLIC "http://company.com/project/schemas/iso/currency" "classpath:META-INF/project/schemas/ISOCurrencyCodeType-V2008.xsd"
+
+PUBLIC "http://company.com/project/schemas/common-types" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-77-common-types:jar::!META-INF/project/schemas/CommonTypes.xsd"
+PUBLIC "http://company.com/project/schemas/iso/currency" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-77-common-types:jar::!META-INF/project/schemas/ISOCurrencyCodeType-V2008.xsd"
+
+PUBLIC "http://company.com/project/schemas/common-types" "/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/tests/jvnet-issue-77/common-types/src/main/resources/META-INF/project/schemas/CommonTypes.xsd"
+PUBLIC "http://company.com/project/schemas/iso/currency" "/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/tests/jvnet-issue-77/common-types/src/main/resources/META-INF/project/schemas/ISOCurrencyCodeType-V2008.xsd"

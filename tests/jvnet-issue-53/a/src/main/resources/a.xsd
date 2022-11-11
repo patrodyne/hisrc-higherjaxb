@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema jaxb:version="3.0" elementFormDefault="qualified"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a"
+  xmlns:episode_a="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a"
+  xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+>
+
+  <xsd:element name="a" type="episode_a:AType"/>
+  <xsd:element name="enumA" type="episode_a:A2EnumType"/>
+
+  <xsd:complexType name="AType">
+    <xsd:sequence>
+      <xsd:element name="a1" type="episode_a:A1Type"/>
+    </xsd:sequence>
+    <xsd:attribute name="a2" type="episode_a:A2EnumType"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="A1Type">
+    <xsd:sequence>
+      <xsd:element name="a1" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+  <xsd:simpleType name="A2EnumType">
+    <xsd:annotation><xsd:appinfo>
+      <jaxb:typesafeEnumClass>
+      </jaxb:typesafeEnumClass>
+    </xsd:appinfo></xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ABC" />
+      <xsd:enumeration value="DEF" />
+      <xsd:enumeration value="GHI" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+</xsd:schema>

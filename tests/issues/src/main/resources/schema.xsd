@@ -11,7 +11,7 @@
 	<xsd:annotation>
 		<xsd:appinfo>
 			<jaxb:schemaBindings>
-				<jaxb:package name="org.jvnet.jaxb2.maven2.tests.issues"/>
+				<jaxb:package name="org.jvnet.higherjaxb.mojo.tests.issues"/>
 			</jaxb:schemaBindings>
 		</xsd:appinfo>
 	</xsd:annotation>
@@ -22,11 +22,11 @@
 	</xsd:complexType>
 
 
-	<xsd:complexType name="MAVEN_JAXB2_PLUGIN-60">
+	<xsd:complexType name="jvnet_issue_60">
 		<xsd:attribute name="test" type="xsd:string"/>
 	</xsd:complexType>
 
-	<xsd:complexType name="MAVEN_JAXB2_PLUGIN-55">
+	<xsd:complexType name="jvnet_issue_55">
 		<xsd:attribute name="test" type="xsd:string"/>
 	</xsd:complexType>
 

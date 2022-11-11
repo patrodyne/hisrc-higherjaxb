@@ -5,7 +5,7 @@
 	xmlns:b="urn:b"
 	xmlns:a="urn:a">
 
-	<import namespace="urn:a" schemaLocation="../a/a.xsd"/>
+	<import namespace="urn:a" schemaLocation="http://localhost/hisrc-higherjaxb/tests/gh-issue-19/a/src/main/resources/a/a.xsd"/>
 	
 	<element name="b" type="b:BType"/>
 	<complexType name="BType">
