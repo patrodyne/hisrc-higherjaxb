@@ -1,10 +1,16 @@
-# HiSrc HigherJAXB Ex001 Trade DTD
+# HiSrc HigherJAXB Ex001: Trade DTD
 
 This project is the first exploration of the HiSrc HigherJAXB library. It includes a Swing application named *Explorer* to demonstrate features of the HiSrc Higher plug-ins. This *Explorer* application is designed to present a narrative lesson together with dynamic output for real-time experimentation. Feel free to modify your copy of the [Explorer.java][4] source file by adding or modifying the action methods with your own investigative code. The `Explorer` class is an extension of `AbstractExplorer` which contains the more boring mechanics of this implementation. Feel free to create an `Explorer` class in your own projects to help explain the purpose of your work too.
 
 > **About AbstractExplorer:** Projects can create their own custom Explorer by extending `AbstractExplorer` and providing an HTML lesson page plus `JMenuItem`(s) to trigger exploratory code.
 
 > An `AbstractExplorer` implementation (like the one you see here) displays three panels: an HTML lesson, a print console and an error console. The lesson file is read as a resource relative to the implementation (i.e. `Explorer`) class. Text is sent to the print console by calling `println(text)` and error messages are sent to the error console by calling `errorln(msg)`. Additionally, 'standard out' / 'standard error' streams are sent to their respective consoles.
+
+## Goal: Model Stock Trades
+
+In [this exploration][4], you will [model][5] a simple stock trade with a [DTD schema][6] and its related [XJC binding file][7]. Your [POM][3] configures the `hisrc-higherjaxb-maven-plugin` to use `<schemaLanguage>dtd</schemaLanguage>`.
+
+> **Note:** [XJC][10] uses different binding files based on the schema language being used, for DTD schemas the binding file is known as an *xml-java-binding-schema* binding and it has its own DTD schema, [xjs.dtd][8]. The XJC compiler is available in several forms: as a CLI tool, a Ant task, a Maven plug-in and a library API. Your POM invokes the XJC compiler as a Maven plug-in. Although this exploration highlights the historic DTD schema-language, you should consider the XML schema-language for modern use.
 
 ## Document Type Definition (DTD)
 
@@ -13,10 +19,6 @@ An XML document need not follow any rules beyond the well-formedness criteria la
 When the [early draft of the JAXB specification][2] was written in 2001, schemas written in the *document-type definition* language (DTD) were by far the most common type. As schemas go, however, DTDs are fairly weak. They support the definition of simple constraints on structure and content, but provide no real facility for expressing data-types or complex structural relationships.
 
 Nevertheless, the *HiSrc HigherJAXB* Maven plug-in supports DTD schemas and there is merit in the simplicity of a DTD.
-
-In [this exploration][4], you will [model][5] a simple stock trade with a [DTD schema][6] and its related [XJC binding file][7]. Your [POM][3] configures the `hisrc-higherjaxb-maven-plugin` to use `<schemaLanguage>dtd</schemaLanguage>`.
-
-> **Note:** [XJC][10] uses different binding files based on the schema language being used, for DTD schemas the binding file is known as an *xml-java-binding-schema* binding and it has its own DTD schema, [xjs.dtd][8]. The XJC compiler is available in several forms: as a CLI tool, a Ant task, a Maven plug-in and a library API. Your POM invokes the XJC compiler as a Maven plug-in. Although this exploration highlights the historic DTD schema-language, you should consider the XML schema-language for modern use.
 
 Your [Trade.dtd][6] uses these DTD building blocks:
 
@@ -479,7 +481,7 @@ Invalid content was found starting with element 'simbol'. One of '{symbol}' is e
 
 ### Searching
 
-A benefit of implementing custom *hashCode()* and *equals()* methods is found when using a Java `List` to find the index of a `Trade` or `Transfer` instance.
+A benefit of implementing custom *hashCode()* and *equals()* methods is revealed when using a Java `List` to find the index of a `Trade` or `Transfer` instance.
 
 The *indexOf()* method returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element. More formally, returns the lowest index i such that `(o==null ? get(i)==null : o.equals(get(i)))`, or -1 if there is no such index.
 
@@ -492,7 +494,7 @@ These two experiments, select a random item from a list of trades or transfers, 
 + [Search Trades](!searchTrades)
 + [Search Transfers](!searchTransfers)
 
-When you configure your logger to trace level for the equals strategy, your log will contain the detailed location where each non-matching comparison ocured. This is verbose but useful when trouble-shooting. The level should be set higher in production.
+When you configure your logger to trace level for the equals strategy, your log will contain the detailed location where each non-matching comparison ocured. This is verbose but useful when trouble-shooting. The level should be set higher (`DEBUG`, `INFO`, `WARN`, or `ERROR`) in production.
 
 ~~~
 ...DefaultEqualsStrategy=TRACE

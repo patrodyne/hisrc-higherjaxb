@@ -187,7 +187,7 @@ public class Explorer extends AbstractExplorer
 				getUnmarshaller().setSchema(schemaValidator);
 				
 				getValidateButton().setSelected(true);
-				println("Schema Validation is ON.");
+				println("Schema Validation of XML is ON.");
 			}
 			else
 				errorln("Please create marshaller and unmarshaller!");
@@ -484,12 +484,12 @@ public class Explorer extends AbstractExplorer
 		String validateOffPath = OILPATH+"/actions/flag-red.png";
 		String validateOnPath = OILPATH+"/actions/flag-green.png";
 		setValidateButton(createImageToggleButton(Explorer.class, validateOffPath, validateOnPath));
-		getValidateButton().addActionListener((event) -> toggleValidateSchema(event));
-		getValidateButton().setToolTipText("Toggle schema validation");
+		getValidateButton().addActionListener((event) -> toggleValidateXml(event));
+		getValidateButton().setToolTipText("Toggle schema validation of XML");
 		getToolBar().add(getValidateButton());
 	}
 	
-	private void toggleValidateSchema(ActionEvent event)
+	private void toggleValidateXml(ActionEvent event)
 	{
 		JToggleButton toggleButton = (JToggleButton) event.getSource();
 		if ( toggleButton.isSelected() )
@@ -498,7 +498,7 @@ public class Explorer extends AbstractExplorer
 		{
 			setMarshaller(createMarshaller(getJaxbContext()));
 			setUnmarshaller(createUnmarshaller(getJaxbContext()));
-			println("Schema Validation is OFF.");
+			println("Schema Validation of XML is OFF.");
 		}
 	}
 
