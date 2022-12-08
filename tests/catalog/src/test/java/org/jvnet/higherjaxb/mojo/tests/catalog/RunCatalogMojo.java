@@ -9,7 +9,7 @@ import org.jvnet.higherjaxb.mojo.AbstractHigherjaxbParmMojo;
 public class RunCatalogMojo extends RunHigherjaxbMojo
 {
 	@Override
-	protected void configureMojo(AbstractHigherjaxbParmMojo mojo)
+	protected void configureMojo(AbstractHigherjaxbParmMojo<?> mojo)
 	{
 		super.configureMojo(mojo);
 		

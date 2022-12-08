@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-higherjaxb-maven-plugin-tests-po</artifactId>
-			<version>${project.version}</version>
+			<version>${project.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>

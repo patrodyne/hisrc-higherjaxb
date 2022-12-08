@@ -1,20 +1,31 @@
 package org.jvnet.higherjaxb.mojo.tests;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.jvnet.higherjaxb.mojo.AbstractHigherjaxbBaseMojo.ADD_IF_EXISTS_TO_EPISODE_SCHEMA_BINDINGS_TRANSFORMATION_RESOURCE_NAME;
 
+import java.io.IOException;
 import java.io.InputStream;
 
-import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 import org.jvnet.higherjaxb.mojo.AbstractHigherjaxbBaseMojo;
 
-public class AddIfExistsToEpisodeSchemaBindingsTest {
-
+public class AddIfExistsToEpisodeSchemaBindingsTest
+{
 	@Test
-	public void transformationResourceIsAccessible() {
-		InputStream is = AbstractHigherjaxbBaseMojo.class
-				.getResourceAsStream(AbstractHigherjaxbBaseMojo.ADD_IF_EXISTS_TO_EPISODE_SCHEMA_BINDINGS_TRANSFORMATION_RESOURCE_NAME);
-		assertNotNull(is);
-		IOUtil.close(is);
+	public void transformationResourceIsAccessible()
+	{
+		try ( InputStream is = getResourceAsStream(ADD_IF_EXISTS_TO_EPISODE_SCHEMA_BINDINGS_TRANSFORMATION_RESOURCE_NAME) )
+		{
+			assertNotNull(is);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	private InputStream getResourceAsStream(String name)
+	{
+		return AbstractHigherjaxbBaseMojo.class.getResourceAsStream(name);
 	}
 }

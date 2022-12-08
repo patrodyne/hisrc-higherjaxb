@@ -4,12 +4,8 @@ import static com.sun.tools.xjc.Language.DTD;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.xml.bind.annotation.XmlSchema;
@@ -25,7 +21,6 @@ import com.sun.codemodel.CodeWriter;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
-import com.sun.tools.xjc.Language;
 import com.sun.tools.xjc.ModelLoader;
 import com.sun.tools.xjc.Options;
 import com.sun.tools.xjc.Plugin;
@@ -35,9 +30,6 @@ import com.sun.tools.xjc.model.CValuePropertyInfo;
 import com.sun.tools.xjc.model.Model;
 import com.sun.tools.xjc.model.nav.NClass;
 import com.sun.tools.xjc.outline.Outline;
-
-import com.sun.tools.xjc.generator.bean.ImplStructureStrategy;
-
 import com.sun.xml.txw2.annotation.XmlNamespace;
 
 /**

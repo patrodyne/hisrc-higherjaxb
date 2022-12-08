@@ -5,17 +5,13 @@ import java.io.File;
 import org.jvnet.higherjaxb.mojo.AbstractHigherjaxbParmMojo;
 import org.jvnet.higherjaxb.mojo.test.RunHigherjaxbMojo;
 
-public class RunPlainCatalogMojo extends RunHigherjaxbMojo {
-
+public class RunPlainCatalogMojo extends RunHigherjaxbMojo
+{
 	@Override
-	protected void configureMojo(AbstractHigherjaxbParmMojo mojo) {
+	protected void configureMojo(AbstractHigherjaxbParmMojo<?> mojo)
+	{
 		super.configureMojo(mojo);
-
-		mojo
-				.setCatalog(new File(getBaseDir(),
-						"src/main/resources/catalog.cat"));
-
+		mojo.setCatalog(new File(getBaseDir(), "src/main/resources/catalog.cat"));
 		mojo.setForceRegenerate(true);
 	}
-
 }

@@ -4,7 +4,6 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 	jaxb:extensionBindingPrefixes="xjc"
-	xmlns:test="urn:test"
 >
 	<!--  Global Bindings
 		* JPA section 2.1, entities must be top-level classes.
@@ -13,9 +12,11 @@
 		  generateElementProperty customization be set to 'false' in globalBindings.
 		* Hint: Increase EnumMemberSizeCap above 256 with typesafeEnumMaxMembers="512".
 	-->
-	<jaxb:globalBindings localScoping="toplevel">
+	<jaxb:globalBindings choiceContentProperty="true" generateIsSetMethod="true" localScoping="toplevel">
 		<jaxb:serializable uid="20221201" />
-		<xjc:superClass name="org.jvnet.higherjaxb.mojo.tests.issues.common.Generated" />
+		<!--
+			<xjc:noValidator />
+			<xjc:noValidatingUnmarshaller />
+		-->
 	</jaxb:globalBindings>
-
 </jaxb:bindings>

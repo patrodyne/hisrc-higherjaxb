@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<jxb:bindings jxb:version="3.0"
-	xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
+<jaxb:bindings jaxb:version="3.0"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
-	<jxb:globalBindings>
-		<jxb:serializable/>
-	</jxb:globalBindings>
-</jxb:bindings>
+	<!--  Global Bindings
+		* JPA section 2.1, entities must be top-level classes.
+		* JPA section 2.1, entities must implement the serializable interface.
+		* When processing a Microsoft WCF service WSDL, it is recommended that the
+		  generateElementProperty customization be set to 'false' in globalBindings.
+		* Hint: Increase EnumMemberSizeCap above 256 with typesafeEnumMaxMembers="512".
+	-->
+	<jaxb:globalBindings localScoping="toplevel">
+		<jaxb:serializable uid="20221201" />
+	</jaxb:globalBindings>
+</jaxb:bindings>

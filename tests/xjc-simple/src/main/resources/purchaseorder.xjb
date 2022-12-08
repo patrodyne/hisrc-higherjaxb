@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jxb:bindings jxb:version="3.0"
-	xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
+<jaxb:bindings jaxb:version="3.0"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
-	jxb:extensionBindingPrefixes="xjc"
+	jaxb:extensionBindingPrefixes="xjc"
 >
-	<jxb:globalBindings generateValueClass="false">
+	<!--  Global Bindings
+		* JPA section 2.1, entities must be top-level classes.
+		* JPA section 2.1, entities must implement the serializable interface.
+		* When processing a Microsoft WCF service WSDL, it is recommended that the
+		  generateElementProperty customization be set to 'false' in globalBindings.
+		* Hint: Increase EnumMemberSizeCap above 256 with typesafeEnumMaxMembers="512".
+		* Note: Content Representation, a complex type definition is bound to either a
+				Java value class or a content interface, depending on the value of the
+				global binding customization generateValueClass (default is "true").
+	-->
+	<jaxb:globalBindings generateValueClass="true" localScoping="toplevel">
+		<jaxb:serializable uid="20221201" />
+		<!--
+			When "xjc:simple" is enabled, XJC produces Java source code that are more concise and easier to use. Improvements include:
+			1) Some content model definitions, such as A,B,A, which used to cause an XJC compilation error and required manual intervention,
+			   now compile out of the box without any customization.
+			2) Some content model definitions that used to bind to a non-intuitive Java class now binds to a much better Java class.
+			3) When repeatable elements are bound, the method name will become plural.
+			This feature may only be used when the JAXB XJC binding compiler is run in the -extension mode.
+            This extension is defined in the "http://java.sun.com/xml/ns/jaxb/xjc" namespace.
+			See https://javaee.github.io/jaxb-v2/doc/user-guide/ch05.html
+		-->
 		<xjc:simple/>
-	</jxb:globalBindings>
-</jxb:bindings>
+	</jaxb:globalBindings>
+</jaxb:bindings>

@@ -44,6 +44,7 @@ import org.sonatype.plexus.build.incremental.DefaultBuildContext;
  * 
  * @param <O> Stores invocation options for XJC.
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	implements DependencyResourceResolver
 {
@@ -564,16 +565,6 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	public String[] getProduces() { return produces; }
 	public void setProduces(String[] produces) { this.produces = produces; }
 
-	/**
-	 * A list of of input files or URLs to consider during the up-to-date. By
-	 * default it always considers: 1. schema files, 2. binding files, 3.
-	 * catalog file, and 4. the pom.xml file of the project executing this plugin.
-	 * Deprecated, use {@link #otherDependsIncludes} and {@link #otherDependsExcludes} instead.
-	 */
-	@Deprecated @Parameter private File[] otherDepends;
-	@Deprecated public File[] getOtherDepends() { return otherDepends; }
-	@Deprecated public void setOtherDepends(File[] otherDepends) { this.otherDepends = otherDepends; }
-	
 	@Parameter
 	private String[] otherDependsIncludes;
 	public String[] getOtherDependsIncludes() { return otherDependsIncludes; }
@@ -728,7 +719,6 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		getLog().info("XJC forceRegenerate = " + getForceRegenerate());
 		getLog().info("XJC removeOldOutput = " + getRemoveOldOutput());
 		getLog().info("XJC produces = " + Arrays.toString(getProduces()));
-		getLog().info("XJC otherDepends = " + getOtherDepends());
 		getLog().info("XJC otherDependIncludes = " + getOtherDependsIncludes());
 		getLog().info("XJC otherDependExcludes = " + getOtherDependsExcludes());
 		getLog().info("XJC episodeFile = " + getEpisodeFile());
@@ -826,7 +816,6 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	
 	public List<Dependency> getProjectDependencies()
 	{
-		@SuppressWarnings("unchecked")
 		final Set<Artifact> artifacts = getProject().getArtifacts();
 		
 		if (artifacts == null)
@@ -908,8 +897,8 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 
 		if (getProject().getDependencyManagement() != null)
 		{
-			@SuppressWarnings("unchecked")
-			final List<Dependency> dependencies = getProject().getDependencyManagement().getDependencies();
+			final List<Dependency> dependencies =
+				getProject().getDependencyManagement().getDependencies();
 			merge(dependencyResource, dependencies);
 		}
 
@@ -926,7 +915,6 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 
 		try
 		{
-			@SuppressWarnings("unchecked")
 			final Set<Artifact> resourceArtifacts = MavenMetadataSource.createArtifacts(
 				getArtifactFactory(),
 				Arrays.<Dependency>asList(dependencyResource),
@@ -1044,20 +1032,16 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	{
 		final String draftDirectory = fileset.getDirectory();
 		final String directory = draftDirectory == null ? defaultDirectory : draftDirectory;
+		
 		final List<String> includes;
-
-		@SuppressWarnings("unchecked")
-		final List<String> draftIncludes = (List<String>) fileset.getIncludes();
-
+		final List<String> draftIncludes = fileset.getIncludes();
 		if (draftIncludes == null || draftIncludes.isEmpty())
 			includes = defaultIncludes == null ? Collections.<String> emptyList() : Arrays.asList(defaultIncludes);
 		else
 			includes = draftIncludes;
 
 		final List<String> excludes;
-		@SuppressWarnings("unchecked")
-		final List<String> draftExcludes = (List<String>) fileset.getExcludes();
-
+		final List<String> draftExcludes = fileset.getExcludes();
 		if (draftExcludes == null || draftExcludes.isEmpty())
 			excludes = defaultExcludes == null ? Collections.<String> emptyList() : Arrays.asList(defaultExcludes);
 		else

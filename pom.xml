@@ -67,7 +67,7 @@
 		<activation-imp.version>1.0.0</activation-imp.version>
 		<annotation.version>2.1.1</annotation.version>
 		<dtd-parser.version>1.5.0</dtd-parser.version>
-		<hisrc-basicjaxb.version>2.0.0</hisrc-basicjaxb.version>
+		<hisrc-basicjaxb.version>2.0.1-SNAPSHOT</hisrc-basicjaxb.version>
 		<jaxb-api23.version>2.3.1</jaxb-api23.version>
 		<jaxb-api30.version>3.0.1</jaxb-api30.version>
 		<jaxb-api.version>${jaxb-api30.version}</jaxb-api.version>

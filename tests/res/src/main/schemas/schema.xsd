@@ -6,12 +6,8 @@
 
 	<xs:annotation>
 		<xs:appinfo>
-			<jaxb:globalBindings choiceContentProperty="true" generateIsSetMethod="true" generateElementProperty="true" generateElementClass="true">
-				<!--xjc:noValidator />
-				<xjc:noValidatingUnmarshaller /-->
-			</jaxb:globalBindings>
 			<jaxb:schemaBindings>
-				<jaxb:package name="org.jvnet.basicjaxb.tests.one"/>
+				<jaxb:package name="org.jvnet.higherjaxb.tests.one"/>
 			</jaxb:schemaBindings>
 		</xs:appinfo>
 	</xs:annotation>

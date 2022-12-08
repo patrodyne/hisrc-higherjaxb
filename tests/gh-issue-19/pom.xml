@@ -22,7 +22,6 @@
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
-			<version>${jaxb-imp.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

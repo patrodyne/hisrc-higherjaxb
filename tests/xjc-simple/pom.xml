@@ -37,21 +37,12 @@
 						</goals>
 						<configuration>
 							<!--
-							<args>
-								<arg>-XtoString</arg>
-								<arg>-Xequals</arg>
-								<arg>-XhashCode</arg>
-								<arg>-Xcopyable</arg>
-							</args>
-							<plugins>
-								<plugin>
-									<groupId>org.patrodyne.jvnet</groupId>
-									<artifactId>hisrc-basicjaxb-plugins</artifactId>
-									<version>${hisrc-basicjaxb.version}</version>
-								</plugin>
-							</plugins>
+							The 'simple' feature (see src/main/resources/purchaseorder.xjb) may only
+							be used when the JAXB XJC binding compiler is run in the 'extension' mode.
+							Extensions are defined in the "http://java.sun.com/xml/ns/jaxb/xjc" namespace.
 							-->
 							<extension>true</extension>
+							<noFileHeader>true</noFileHeader>
 						</configuration>
 					</execution>
 				</executions>

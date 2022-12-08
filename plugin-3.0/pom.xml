@@ -32,23 +32,23 @@
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
-			<version>${jaxb-api30.version}</version>
+			<version>${jaxb-api30.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<!-- JAXB Implementation dependencies -->
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>codemodel</artifactId>
-			<version>${jaxb-imp30.version}</version>
+			<version>${jaxb-imp30.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
-			<version>${jaxb-imp30.version}</version>
+			<version>${jaxb-imp30.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-xjc</artifactId>
-			<version>${jaxb-imp30.version}</version>
+			<version>${jaxb-imp30.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<!-- Maven dependencies -->
 		<dependency>

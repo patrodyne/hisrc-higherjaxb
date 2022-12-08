@@ -3,6 +3,7 @@ package org.jvnet.higherjaxb.mojo;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -45,7 +46,6 @@ import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
 import org.jvnet.higherjaxb.mojo.net.CompositeURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.FileURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.URILastModifiedResolver;
@@ -327,7 +327,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		injectDependencyDefaults(getEpisodes());
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void injectDependencyDefaults(Dependency[] dependencies)
 	{
 		if (dependencies != null)
@@ -405,7 +404,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			if (getUseDependenciesAsEpisodes())
 			{
-				@SuppressWarnings("unchecked")
 				final Collection<Artifact> projectArtifacts = getProject().getArtifacts();
 				final AndArtifactFilter filter = new AndArtifactFilter();
 				filter.add(new ScopeArtifactFilter(DefaultArtifact.SCOPE_COMPILE));
@@ -581,10 +579,9 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			return;
 		}
 		
-		InputStream is = null;
-		try {
+		try ( InputStream is = getClass().getResourceAsStream(ADD_IF_EXISTS_TO_EPISODE_SCHEMA_BINDINGS_TRANSFORMATION_RESOURCE_NAME) )
+		{
 			final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			is = getClass().getResourceAsStream(ADD_IF_EXISTS_TO_EPISODE_SCHEMA_BINDINGS_TRANSFORMATION_RESOURCE_NAME);
 			final Transformer addIfExistsToEpisodeSchemaBindingsTransformer = transformerFactory
 				.newTransformer(new StreamSource(is));
 			final DOMResult result = new DOMResult();
@@ -597,15 +594,11 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				"Episode file [{0}] was augmented with if-exists=\"true\" attributes.",
 				episodeFile));
 		}
-		catch (TransformerException e)
+		catch (TransformerException | IOException ex)
 		{
 			throw new MojoExecutionException(MessageFormat.format(
 				"Error augmenting the episode file [{0}] with if-exists=\"true\" attributes. Transformation failed with an unexpected error.",
-				episodeFile), e);
-		}
-		finally
-		{
-			IOUtil.close(is);
+				episodeFile), ex);
 		}
 	}
 
@@ -778,18 +771,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		if (projectFile != null)
 			dependsURIs.add(projectFile.toURI());
 		
-		if (getOtherDepends() != null)
-		{
-			getLog().warn(
-				"Configuration element [otherDepends] is deprecated, please use [otherDependsIncludes] and [otherDependsExcludes] instead.");
-
-			for (File file : getOtherDepends())
-			{
-				if (file != null)
-					dependsURIs.add(file.toURI());
-			}
-		}
-		
 		if (getOtherDependsIncludes() != null)
 		{
 			try
@@ -847,7 +828,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	protected void logConfiguration() throws MojoExecutionException
 	{
 		super.logConfiguration();
-		// TODO clean up
 		getLog().info("catalogURIs (calculated):" + getCatalogURIs());
 		getLog().info("resolvedCatalogURIs (calculated):" + getResolvedCatalogURIs());
 		getLog().info("schemaFiles (calculated):" + getSchemaFiles());
@@ -866,7 +846,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 	private void collectBindingUrisFromDependencies(List<URI> bindingUris) throws MojoExecutionException
 	{
-		@SuppressWarnings("unchecked")
 		final Collection<Artifact> projectArtifacts = getProject().getArtifacts();
 		final List<Artifact> compileScopeArtifacts = new ArrayList<Artifact>(projectArtifacts.size());
 		final ArtifactFilter filter = new ScopeArtifactFilter(DefaultArtifact.SCOPE_COMPILE);
@@ -1020,25 +999,19 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			{
 				@SuppressWarnings("unchecked")
 				final Class<? extends CatalogResolver> catalogResolverClass = (Class<? extends CatalogResolver>) draftCatalogResolverClass;
-				final CatalogResolver catalogResolverInstance = catalogResolverClass.newInstance();
+				final CatalogResolver catalogResolverInstance = catalogResolverClass.getDeclaredConstructor().newInstance();
 				return catalogResolverInstance;
 			}
 		}
 		catch (ClassNotFoundException cnfex)
 		{
-			throw new MojoExecutionException(MessageFormat.format(
-				"Could not find specified catalog resolver class [{0}].",
-				catalogResolver), cnfex);
+			throw new MojoExecutionException(
+				MessageFormat.format("Could not find specified catalog resolver class [{0}].", catalogResolver), cnfex);
 		}
-		catch (InstantiationException iex)
+		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex )
 		{
 			throw new MojoExecutionException(
-				MessageFormat.format("Could not instantiate catalog resolver class [{0}].", catalogResolver), iex);
-		}
-		catch (IllegalAccessException iaex)
-		{
-			throw new MojoExecutionException(
-				MessageFormat.format("Could not instantiate catalog resolver class [{0}].", catalogResolver), iaex);
+				MessageFormat.format("Could not instantiate catalog resolver class [{0}].", catalogResolver), ex);
 		}
 	}
 

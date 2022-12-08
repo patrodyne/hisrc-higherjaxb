@@ -33,19 +33,19 @@ public class RunHigherjaxbMojo
 		mojo.execute();
 	}
 
-	protected AbstractHigherjaxbParmMojo initMojo()
+	protected AbstractHigherjaxbParmMojo<?> initMojo()
 	{
-		final AbstractHigherjaxbParmMojo mojo = createMojo();
+		final AbstractHigherjaxbParmMojo<?> mojo = createMojo();
 		configureMojo(mojo);
 		return mojo;
 	}
 	
-	protected AbstractHigherjaxbParmMojo createMojo()
+	protected AbstractHigherjaxbParmMojo<?> createMojo()
 	{
 		return new HigherjaxbMojo();
 	}
 	
-	protected void configureMojo(final AbstractHigherjaxbParmMojo mojo)
+	protected void configureMojo(final AbstractHigherjaxbParmMojo<?> mojo)
 	{
 		mojo.setProject(new MavenProject());
 		mojo.setSchemaDirectory(getSchemaDirectory());

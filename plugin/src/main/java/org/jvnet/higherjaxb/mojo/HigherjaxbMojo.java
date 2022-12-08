@@ -3,7 +3,6 @@ package org.jvnet.higherjaxb.mojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.jvnet.higherjaxb.mojo.CoreOptionsFactory;
 import org.jvnet.higherjaxb.mojo.v30.Higherjaxb30Mojo;
 
 import com.sun.tools.xjc.Options;
