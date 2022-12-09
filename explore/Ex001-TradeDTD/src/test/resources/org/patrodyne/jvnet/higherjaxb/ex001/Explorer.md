@@ -392,7 +392,7 @@ A batch contains several, often many, instances of top-level elements when you n
 
 ### Compare Objects
 
-The HiSrc framework provides an `ObjectLocator` and `HashCodeStrategy2` to generate a hash code that is based on the object values. In your model, the hash code and equality is based on the instance's (i.e. **trade**, **transfer**) field values. 
+The HiSrc framework provides an `ObjectLocator` and `HashCodeStrategy` to generate a hash code that is based on the object values. In your model, the hash code and equality is based on the instance's (i.e. **trade**, **transfer**) field values. 
 
 #### Compare Hash Codes
 
@@ -403,7 +403,7 @@ Here's how the `Trade` class uses the HiSrc interfaces for the `hashCode()` meth
 ~~~
 public int hashCode() {
     ObjectLocator theLocator = null;
-    final HashCodeStrategy2 strategy = JAXBHashCodeStrategy.getInstance();
+    final HashCodeStrategy strategy = JAXBHashCodeStrategy.getInstance();
     if (strategy.isTraceEnabled()) {
         theLocator = new DefaultRootObjectLocator(this);
     }
@@ -425,7 +425,7 @@ Here's how the `Trade` class uses the HiSrc interfaces for the `equals(Object th
 public boolean equals(Object object) {
     ObjectLocator thisLocator = null;
     ObjectLocator thatLocator = null;
-    final EqualsStrategy2 strategy = JAXBEqualsStrategy.getInstance();
+    final EqualsStrategy strategy = JAXBEqualsStrategy.getInstance();
     if (strategy.isTraceEnabled()) {
         thisLocator = new DefaultRootObjectLocator(this);
         thatLocator = new DefaultRootObjectLocator(object);
@@ -445,7 +445,7 @@ Select [Compare ToString](!compareToString) to compare **Trade1**, **Trade2** an
 ~~~
 public String toString() {
     ObjectLocator theLocator = null;
-    final ToStringStrategy2 strategy = JAXBToStringStrategy.getInstance();
+    final ToStringStrategy strategy = JAXBToStringStrategy.getInstance();
     if (strategy.isTraceEnabled()) {
         theLocator = new DefaultRootObjectLocator(this);
     }
