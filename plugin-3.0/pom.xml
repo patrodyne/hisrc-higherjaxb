@@ -10,7 +10,7 @@
 	<packaging>maven-plugin</packaging>
 	<name>HiSrc HigherJAXB 3.0.x Plugin</name>
 	<prerequisites>
-		<maven>${maven.version}</maven>
+		<maven>${maven-min.version}</maven>
 	</prerequisites>
 	<properties>
 		<root.basedir>${basedir}/..</root.basedir>

@@ -11,7 +11,7 @@
 	<name>HiSrc HigherJAXB Plugin</name>
 	<url>https://github.com/patrodyne/hisrc-higherjaxb</url>
 	<prerequisites>
-		<maven>${maven.version}</maven>
+		<maven>${maven-min.version}</maven>
 	</prerequisites>
 	<properties>
 		<root.basedir>${basedir}/..</root.basedir>
