@@ -18,6 +18,7 @@
 		<maven.compiler.target>8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<hisrc-higherjaxb-maven-plugin.version>${hisrc-higherjaxb-maven-plugin.version}</hisrc-higherjaxb-maven-plugin.version>
 		<jaxb-api.version>${jaxb-api.version}</jaxb-api.version>
 	</properties>
 	<dependencyManagement>
@@ -78,7 +79,7 @@
 				<plugin>
 					<groupId>org.patrodyne.jvnet</groupId>
 					<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
-					<version>${project.version}</version>
+					<version>\${hisrc-higherjaxb-maven-plugin.version}</version>
 					<executions>
 						<execution>
 							<goals>

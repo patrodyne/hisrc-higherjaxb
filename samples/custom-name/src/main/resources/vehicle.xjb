@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	StackOverflow
+	https://stackoverflow.com/questions/74746590/how-to-do-jaxb-xml-unmarshalling-marshalling-of-element-with-package-name
+-->
+<jaxb:bindings jaxb:version="3.0"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:annox="http://jvnet.org/basicjaxb/xjc/annox"
+	jaxb:extensionBindingPrefixes="annox"
+>
+	<!--  Global Bindings -->
+	<jaxb:globalBindings localScoping="toplevel">
+		<jaxb:serializable uid="20221201" />
+	</jaxb:globalBindings>
+
+	<!--  Schema Bindings -->
+	<jaxb:bindings schemaLocation="vehicle.xsd">
+
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.jaraws.api"/>
+		</jaxb:schemaBindings>
+
+		<jaxb:bindings node="//xsd:element[@name='com.jaraws.api.Vehicle']/xsd:complexType">
+			<jaxb:class name="Vehicle"/>
+			<annox:annotate>
+                <annox:annotate annox:class="jakarta.xml.bind.annotation.XmlRootElement" name="com.jaraws.api.Vehicle" />
+            </annox:annotate>
+		</jaxb:bindings>
+
+	</jaxb:bindings>
+
+</jaxb:bindings>

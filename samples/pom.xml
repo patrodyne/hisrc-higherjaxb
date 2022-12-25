@@ -11,12 +11,16 @@
 	<name> HiSrc HigherJAXB Plugin Samples</name>
 	<modules>
 		<module>catalog</module>
+		<module>custom-name</module>
 		<module>dtd</module>
 		<module>episode</module>
 		<module>jaxbplugins</module>
 		<module>po</module>
 	</modules>
 	<properties>
+		<hisrc-basicjaxb.version>2.0.0</hisrc-basicjaxb.version>
+		<hisrc-higherjaxb-maven-plugin.version>2.0.0</hisrc-higherjaxb-maven-plugin.version>
+		<hisrc-hyperjaxb-annox-plugin.version>2.0.0</hisrc-hyperjaxb-annox-plugin.version>
 		<root.basedir>${basedir}/..</root.basedir>
 	</properties>
 	<build>
