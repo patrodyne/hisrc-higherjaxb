@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.patrodyne.jvnet</groupId>
+		<artifactId>${project.artifactId}</artifactId>
+		<version>${hisrc-higherjaxb-maven-plugin.version}</version>
+	</parent>
+	<artifactId>${project.artifactId}-c</artifactId>
+	<name>HiSrc HigherJAXB Plugin Sample [episode-c|maven]</name>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>${project.artifactId}-a</artifactId>
+			<version>${hisrc-higherjaxb-maven-plugin.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<defaultGoal>package</defaultGoal>
+		<plugins>
+			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+			<!-- mvn hisrc-higherjaxb:generate -->
+			<plugin>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+				<configuration>
+					<extension>true</extension>
+					<strict>false</strict>
+					<catalogs>
+						<catalog>
+							<dependencyResource>                                                            
+								<groupId>org.patrodyne.jvnet</groupId>
+								<artifactId>${project.artifactId}-b</artifactId>
+								<version>${hisrc-higherjaxb-maven-plugin.version}</version>
+								<resource>catalog.cat</resource>
+							</dependencyResource>
+						</catalog>
+					</catalogs>
+					<useDependenciesAsEpisodes>true</useDependenciesAsEpisodes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

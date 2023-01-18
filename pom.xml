@@ -330,18 +330,37 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.1.0</version>
 					<dependencies>
 						<dependency>
-							<groupId>org.junit.jupiter</groupId>
-							<artifactId>junit-jupiter-api</artifactId>
-							<version>${junit-jupiter.version}</version>
-							<scope>runtime</scope>
+							<groupId>org.apache.ant</groupId>
+							<artifactId>ant-junitlauncher</artifactId>
+							<version>1.10.12</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.ant</groupId>
+							<artifactId>ant-apache-xalan2</artifactId>
+							<version>1.10.12</version>
 						</dependency>
 						<dependency>
 							<groupId>ant</groupId>
 							<artifactId>ant-optional</artifactId>
 							<version>1.5.3-1</version>
+						</dependency>
+						<dependency>
+							<groupId>org.junit.platform</groupId>
+							<artifactId>junit-platform-console-standalone</artifactId>
+							<version>${junit-platform.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.junit.jupiter</groupId>
+							<artifactId>junit-jupiter-api</artifactId>
+							<version>${junit-jupiter.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.junit.jupiter</groupId>
+							<artifactId>junit-jupiter-engine</artifactId>
+							<version>${junit-jupiter.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -446,6 +465,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M5</version>
 				<configuration>
+					<argLine>${env.JVM_SYS_ARGS}</argLine>
 					<systemPropertiesFile>${root.basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
 				</configuration>
 			</plugin>
@@ -514,15 +534,14 @@
 	</reporting>
 	<profiles>
 		<profile>
-			<id>samples</id>
+			<id>assembly</id>
 			<activation>
 				<property>
-					<name>samples</name>
+					<name>assembly</name>
 				</property>
 			</activation>
 			<modules>
-				<module>explore</module>
-				<module>samples</module>
+				<module>assembly</module>
 			</modules>
 		</profile>
 		<profile>
@@ -544,8 +563,7 @@
 				</property>
 			</activation>
 			<modules>
-				<module>explore</module>
-				<module>samples</module>
+				<module>assembly</module>
 				<module>tests</module>
 			</modules>
 		</profile>
