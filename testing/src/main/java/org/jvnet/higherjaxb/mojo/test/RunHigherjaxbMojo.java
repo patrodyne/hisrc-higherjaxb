@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Aleksei Valikov
  */
-
 public class RunHigherjaxbMojo
 {
 	/**
@@ -57,7 +56,7 @@ public class RunHigherjaxbMojo
 		mojo.setWriteCode(isWriteCode());
 		
 		mojo.setRemoveOldOutput(true);
-		mojo.setForceRegenerate(true);
+		mojo.setForceRegenerate(false);
 		mojo.setExtension(true);
 	}
 	
