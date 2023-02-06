@@ -74,7 +74,7 @@
 					<version>${project.version}</version>
 					<executions>
 						<execution>
-							<id>generate</id>
+							<id>default</id>
 							<goals>
 								<goal>generate</goal>
 							</goals>
@@ -88,7 +88,7 @@
 					<version>${project.version}</version>
 					<executions>
 						<execution>
-							<id>generate</id>
+							<id>default</id>
 							<goals>
 								<goal>generate</goal>
 							</goals>
@@ -101,7 +101,7 @@
 					<version>${project.version}</version>
 					<executions>
 						<execution>
-							<id>generate</id>
+							<id>default</id>
 							<goals>
 								<goal>generate</goal>
 							</goals>

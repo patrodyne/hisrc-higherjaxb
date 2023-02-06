@@ -381,6 +381,10 @@
 					<version>3.0.0-M5</version>
 				</plugin>
 				<plugin>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>3.0.0-M8</version>
+				</plugin>
+				<plugin>
 					<artifactId>maven-jxr-plugin</artifactId>
 					<version>3.1.1</version>
 				</plugin>
@@ -456,6 +460,11 @@
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.2.2</version>
+				<configuration>
+					<excludes>
+						<exclude>**/.placeholder</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -509,7 +518,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.3.1</version> 
+				<version>3.4.1</version> 
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -517,6 +526,32 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+						<configuration>
+							<doclint>all,-missing</doclint>
+							<failOnError>false</failOnError>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>enforce-java-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>${maven.compiler.source}</version>
+								</requireJavaVersion>
+								<requireMavenVersion>
+									<version>3.1</version>
+								</requireMavenVersion>
+							</rules>    
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
