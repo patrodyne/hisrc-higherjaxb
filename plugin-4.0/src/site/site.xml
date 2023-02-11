@@ -1,4 +1,4 @@
-<project name="Maven JAXB-2.x Plugin">
+<project name="Maven JAXB-4.x Plugin">
     <body>
         ${reports}
     </body>

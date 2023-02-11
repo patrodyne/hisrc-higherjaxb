@@ -1,4 +1,4 @@
-package org.jvnet.higherjaxb.mojo.v23;
+package org.jvnet.higherjaxb.mojo.v40;
 
 import org.apache.maven.plugin.logging.Log;
 import org.xml.sax.SAXParseException;
@@ -58,8 +58,8 @@ public class LoggingErrorReceiver extends ErrorReceiver
 		final String pub = ex.getPublicId();
 
 		return messagePrefix + " Location [" + (sys != null ? " " + sys : "")
-				+ (pub != null ? " " + pub : "")
-				+ (row > 0 ? "{" + row + (col > 0 ? "," + col : "") + "}" : "")
-				+ " ].";
+			+ (pub != null ? " " + pub : "")
+			+ (row > 0 ? "{" + row + (col > 0 ? "," + col : "") + "}" : "")
+			+ " ].";
 	}
 }

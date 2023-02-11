@@ -6,7 +6,7 @@
 	<version>2.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>HiSrc HigherJAXB Plugin Project</name>
-	<description>Maven2 plugin for JAXB 2.x XJC compiler to generate Java sources from XML Schemas.</description>
+	<description>Maven plugin for JAXB XJC compiler to generate Java sources from XML Schemas.</description>
 	<url>https://github.com/patrodyne/hisrc-higherjaxb</url>
 	<inceptionYear>2006</inceptionYear>
 	<licenses>
@@ -38,6 +38,7 @@
 		<module>plugin-core</module>
 		<module>plugin-2.3</module>
 		<module>plugin-3.0</module>
+		<module>plugin-4.0</module>
 		<module>plugin</module>
 		<module>testing</module>
 	</modules>
@@ -96,12 +97,13 @@
 		<hisrc-basicjaxb.version>2.0.1-SNAPSHOT</hisrc-basicjaxb.version>
 		<jaxb-api23.version>2.3.1</jaxb-api23.version>
 		<jaxb-api30.version>3.0.1</jaxb-api30.version>
-		<jaxb-api.version>${jaxb-api30.version}</jaxb-api.version>
+		<jaxb-api40.version>4.0.0</jaxb-api40.version>
+		<jaxb-api.version>${jaxb-api40.version}</jaxb-api.version>
 		<jaxb-imp23.version>2.3.1</jaxb-imp23.version>
 		<jaxb-core-imp23.version>2.3.0.1</jaxb-core-imp23.version>
 		<jaxb-imp30.version>3.0.2</jaxb-imp30.version>
-		<jaxb-imp40.version>4.0.0</jaxb-imp40.version>
-		<jaxb-imp.version>${jaxb-imp30.version}</jaxb-imp.version>
+		<jaxb-imp40.version>4.0.2</jaxb-imp40.version>
+		<jaxb-imp.version>${jaxb-imp40.version}</jaxb-imp.version>
 		<junit-jupiter.version>5.9.2</junit-jupiter.version>
 		<junit-platform.version>1.9.2</junit-platform.version>
 		<maven.compiler.release>11</maven.compiler.release>
@@ -201,6 +203,11 @@
 			<dependency>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb30-maven-plugin</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-higherjaxb40-maven-plugin</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

@@ -6,10 +6,9 @@
 		<artifactId>hisrc-higherjaxb-maven-plugin-project</artifactId>
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+	<artifactId>hisrc-higherjaxb40-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<name>HiSrc HigherJAXB Plugin</name>
-	<url>https://github.com/patrodyne/hisrc-higherjaxb</url>
+	<name>HiSrc HigherJAXB 4.0.x Plugin</name>
 	<prerequisites>
 		<maven>${maven-min.version}</maven>
 	</prerequisites>
@@ -18,21 +17,38 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-higherjaxb-maven-plugin-core</artifactId>
 		</dependency>
+		<!-- JAXB API dependencies -->
 		<dependency>
-			<groupId>org.patrodyne.jvnet</groupId>
-			<artifactId>hisrc-higherjaxb40-maven-plugin</artifactId>
+			<groupId>jakarta.activation</groupId>
+			<artifactId>jakarta.activation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>${jaxb-api40.version}</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		<!-- JAXB Implementation dependencies -->
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>codemodel</artifactId>
+			<version>${jaxb-imp40.version}</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>${jaxb-imp40.version}</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-xjc</artifactId>
+			<version>${jaxb-imp40.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<!-- Maven dependencies -->
 		<dependency>
@@ -57,17 +73,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- Test dependencies -->
-		<dependency>
-			<groupId>org.patrodyne.jvnet</groupId>
-			<artifactId>hisrc-basicjaxb-plugins</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>compile</defaultGoal>
@@ -83,43 +88,32 @@
 		</resources>
 		<plugins>
 			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
+				 <artifactId>maven-dependency-plugin</artifactId>
+				 <executions>
+					 <!-- See https://github.com/highsource/maven-jaxb2-plugin/issues/114 -->
+					 <execution>
+						 <id>unpack</id>
+						 <phase>generate-resources</phase>
+						 <goals>
+							 <goal>unpack</goal>
+						 </goals>
+						 <configuration>
+							 <artifactItems>
 								 <artifactItem>
 									<groupId>org.glassfish.jaxb</groupId>
 									<artifactId>jaxb-xjc</artifactId>
-									<version>${jaxb-imp.version}</version>
+									<version>${jaxb40-imp.version}</version>
 									<classifier>sources</classifier>
 									<type>jar</type>
 									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/generated-resources/jaxb-xjc-runtime</outputDirectory>
 									<includes>com/sun/tools/xjc/runtime/*.java</includes>
 								 </artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<ignoredUnusedDeclaredDependencies>
-						<ignoredUnusedDeclaredDependency>org.slf4j:jcl-over-slf4j:jar:</ignoredUnusedDeclaredDependency>
-					</ignoredUnusedDeclaredDependencies>
-				</configuration>
-			</plugin>
+							 </artifactItems>
+						 </configuration>
+					 </execution>
+				 </executions>
+			 </plugin>
 		</plugins>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<artifactId>maven-plugin-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</reporting>
 </project>

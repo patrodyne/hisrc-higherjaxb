@@ -1,4 +1,4 @@
-package org.jvnet.higherjaxb.mojo.v30;
+package org.jvnet.higherjaxb.mojo.v40;
 
 import static com.sun.tools.xjc.Language.DTD;
 
@@ -14,6 +14,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.jvnet.higherjaxb.mojo.AbstractHigherjaxbBaseMojo;
+import org.jvnet.higherjaxb.mojo.CoreOptionsFactory;
 
 import jakarta.xml.bind.annotation.XmlSchema;
 
@@ -34,12 +35,12 @@ import com.sun.tools.xjc.outline.Outline;
 import com.sun.xml.txw2.annotation.XmlNamespace;
 
 /**
- * This concrete higherjaxb V3.X mojo provides a version specific implementation.
+ * This concrete higherjaxb V4.X mojo provides a version specific implementation.
  * 
  * @author Rick O'Sullivan
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
-public class Higherjaxb30Mojo extends AbstractHigherjaxbBaseMojo<Options> {
+public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 
 	private static final String JAXB_NSURI = "https://jakarta.ee/xml/ns/jaxb";
 	private static final String JAXB_EPISODE_PKG_NAME = "org.glassfish.jaxb.core.v2.schemagen.episode.package-info";
@@ -50,19 +51,21 @@ public class Higherjaxb30Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 		return SpecVersion.V3_0.getVersion();
 	}
 
-	private final org.jvnet.higherjaxb.mojo.CoreOptionsFactory<Options> optionsFactory = new OptionsFactory();
+	private final CoreOptionsFactory<Options> optionsFactory = new OptionsFactory();
 	@Override
-	protected org.jvnet.higherjaxb.mojo.CoreOptionsFactory<Options> getOptionsFactory() {
+	protected CoreOptionsFactory<Options> getOptionsFactory()
+	{
 		return optionsFactory;
 	}
 
 	@Override
-	public void doExecute(Options options) throws MojoExecutionException {
+	public void doExecute(Options options) throws MojoExecutionException
+	{
 		final Model model = loadModel(options);
 		final Outline outline = generateCode(model);
 		writeCode(outline);
-
 	}
+	
 	@Override
 	protected String getJaxbNamespaceURI()
 	{
@@ -91,6 +94,7 @@ public class Higherjaxb30Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 		String xmlNamespaceClassName = XmlNamespace.class.getName();
 		String[] xmlNamespaceNames = null;
 		final XmlNamespace xmlNamespace = packageInfoClass.getAnnotation(XmlNamespace.class);
+		
 		if ( xmlNamespace != null )
 		{
 			String xmlNamespaceValue = xmlNamespace.value();
@@ -98,29 +102,31 @@ public class Higherjaxb30Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 		}
 		else
 			xmlNamespaceNames = new String[] { null, xmlNamespaceClassName };
+		
 		return xmlNamespaceNames;
 	}
 
-	protected Model loadModel(Options options) throws MojoExecutionException {
-		if (getVerbose()) {
+	protected Model loadModel(Options options)
+		throws MojoExecutionException
+	{
+		if (getVerbose())
 			getLog().info("Parsing input schema(s)...");
-		}
+		
 		final Model model = ModelLoader.load(options, new JCodeModel(),
-				new LoggingErrorReceiver("Error while parsing schema(s).",
-						getLog(), getVerbose()));
-
+			new LoggingErrorReceiver("Error while parsing schema(s).", getLog(), getVerbose()));
+		
 		if (model != null)
 		{
 			// Ensure DTD 'value' property name(s) conforms to a get/set name.
-			if (  options.getSchemaLanguage() == DTD )
+			if (options.getSchemaLanguage() == DTD)
 			{
-				for ( Entry<NClass, CClassInfo> beanEntry : model.beans().entrySet() )
+				for (Entry<NClass, CClassInfo> beanEntry : model.beans().entrySet())
 				{
-					if ( beanEntry.getValue() != null )
+					if (beanEntry.getValue() != null)
 					{
-						for ( CPropertyInfo property : beanEntry.getValue().getProperties() )
+						for (CPropertyInfo property : beanEntry.getValue().getProperties())
 						{
-							if ( property instanceof CValuePropertyInfo )
+							if (property instanceof CValuePropertyInfo)
 								property.setName(true, StringUtils.capitalize(property.getName(true)));
 						}
 					}
@@ -131,11 +137,11 @@ public class Higherjaxb30Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 			if (getVerbose())
 			{
 				getLog().info("Model Strategy: " + model.strategy);
-				for ( Entry<NClass, CClassInfo> beanEntry : model.beans().entrySet() )
+				for (Entry<NClass, CClassInfo> beanEntry : model.beans().entrySet())
 				{
-					String beanKey = (beanEntry.getKey() != null ) ? beanEntry.getKey().toString() : "";
-					String beanVal = (beanEntry.getValue() != null ) ? beanEntry.getValue().toString() : "";
-					if ( beanKey.equals(beanVal) )
+					String beanKey = (beanEntry.getKey() != null) ? beanEntry.getKey().toString() : "";
+					String beanVal = (beanEntry.getValue() != null) ? beanEntry.getValue().toString() : "";
+					if (beanKey.equals(beanVal))
 						getLog().info("JAXB Bean: [" + beanVal + "]");
 					else
 						getLog().info("JAXB Bean: [key=" + beanEntry.getKey() + ", value=" + beanEntry.getValue() + "]");

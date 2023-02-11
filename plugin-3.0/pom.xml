@@ -90,6 +90,7 @@
 			<plugin>
 				 <artifactId>maven-dependency-plugin</artifactId>
 				 <executions>
+					 <!-- See https://github.com/highsource/maven-jaxb2-plugin/issues/114 -->
 					 <execution>
 						 <id>unpack</id>
 						 <phase>generate-resources</phase>

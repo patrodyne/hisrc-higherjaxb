@@ -1,4 +1,4 @@
-package org.jvnet.higherjaxb.mojo.v30;
+package org.jvnet.higherjaxb.mojo.v40;
 
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -31,6 +31,7 @@ public class OptionsFactory implements org.jvnet.higherjaxb.mojo.CoreOptionsFact
 		options.target = SpecVersion.V3_0;
 		
 		final String encoding = optionsConfiguration.getEncoding();
+		
 		if (encoding != null)
 			options.encoding = createEncoding(encoding);
 		

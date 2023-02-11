@@ -1,4 +1,4 @@
-package org.jvnet.higherjaxb.mojo.v30;
+package org.jvnet.higherjaxb.mojo.v40;
 
 import java.io.File;
 import java.io.IOException;
