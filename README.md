@@ -53,6 +53,7 @@ New goals for the next release are:
 * Set log levels for basic strategies in simplelogger.properties.
 * Compile sources and generate classes for Java release v11 using JDK 17.
 * Replaced `maven.compiler.source/target="11"` with `maven.compiler.release="11"`.
+* Add Maven plugin for JAXB 4.x, default.
 * Replace `org.apache.maven:maven-compat` with Maven 3 dependencies.
 
 ### Status
@@ -67,6 +68,7 @@ New goals for the next release are:
 * Moved 'explore' and 'samples' folder to new 'assembly' folder and restored int. testing.
 * Set log levels for basic strategies in simplelogger.properties.
 * Compile sources and generate classes for Java release v11 using JDK 17.
+* Add Maven plugin for JAXB 4.x, default.
 * Replaced `maven.compiler.source/target="11"` with `maven.compiler.release="11"`.
 
 #### Future
