@@ -4,7 +4,7 @@
 # Example: build-J11.sh clean install
 #
 # Profile Id: none - default, install common jars to local repository.
-# Profile Id: samples - package sample plus default projects.
+# Profile Id: assembly - assemble (zip) explorer, samples projects.
 # Profile Id: tests - package test plus default projects.
 # Profile Id: all - package the above.
 # Profile Id: sonatype-oss-release - upload default artifacts to central repository.
@@ -37,9 +37,9 @@ else
   mvn ${JVM_SYS_PROPS} "$@"
 fi
 
-# mvn ${JVM_SYS_PROPS} install
-# mvn ${JVM_SYS_PROPS} -Psamples package
-# mvn ${JVM_SYS_PROPS} -Ptests install
-# mvn ${JVM_SYS_PROPS} -Ptests,tests-all package
-# mvn ${JVM_SYS_PROPS} -Psamples,tests package
-# mvn ${JVM_SYS_PROPS} -Pall package
+# ./build-J11.sh ${JVM_SYS_PROPS} install
+# ./build-J11.sh ${JVM_SYS_PROPS} -Passembly package
+# ./build-J11.sh ${JVM_SYS_PROPS} -Ptests install
+# ./build-J11.sh ${JVM_SYS_PROPS} -Ptests,tests-all package
+# ./build-J11.sh ${JVM_SYS_PROPS} -Passembly,tests package
+# ./build-J11.sh ${JVM_SYS_PROPS} -Pall package

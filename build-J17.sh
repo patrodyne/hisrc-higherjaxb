@@ -4,7 +4,7 @@
 # Example: build-J17.sh clean install
 #
 # Profile Id: none - default, install common jars to local repository.
-# Profile Id: samples - package sample plus default projects.
+# Profile Id: assembly - assemble (zip) explorer, samples projects.
 # Profile Id: all - package the above plus templates and tutorials.
 #
 # How to build and test:
@@ -39,5 +39,5 @@ else
   mvn ${JVM_SYS_PROPS} "$@"
 fi
 
-# mvn ${JVM_SYS_PROPS} -DskipTests=true clean install
-# mvn ${JVM_SYS_PROPS} -Psamples package
+# ./build-J17.sh ${JVM_SYS_PROPS} -DskipTests=true clean install
+# ./build-J17.sh ${JVM_SYS_PROPS} -Passembly package
