@@ -32,7 +32,7 @@ public class EqualsTest extends AbstractSamplesTest
 				Marshaller marshaller = jaxbContext.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 				marshaller.marshal(vehicle, vehicleXml);
-				logger.info("Vehicle:\n\n" + vehicleXml);
+				getLogger().info("Vehicle:\n\n" + vehicleXml);
 			}
 			switch ( vehicle.getNumber() )
 			{
