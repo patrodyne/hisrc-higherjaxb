@@ -404,7 +404,7 @@ Here's how the `Trade` class uses the HiSrc interfaces for the `hashCode()` meth
 public int hashCode() {
     ObjectLocator theLocator = null;
     final HashCodeStrategy strategy = JAXBHashCodeStrategy.getInstance();
-    if (strategy.isTraceEnabled()) {
+    if (strategy.isDebugEnabled()) {
         theLocator = new DefaultRootObjectLocator(this);
     }
     return this.hashCode(theLocator, strategy);
@@ -426,7 +426,7 @@ public boolean equals(Object object) {
     ObjectLocator thisLocator = null;
     ObjectLocator thatLocator = null;
     final EqualsStrategy strategy = JAXBEqualsStrategy.getInstance();
-    if (strategy.isTraceEnabled()) {
+    if (strategy.isDebugEnabled()) {
         thisLocator = new DefaultRootObjectLocator(this);
         thatLocator = new DefaultRootObjectLocator(object);
     }
@@ -508,15 +508,15 @@ When you configure your logger to DEBUG level for the equals strategy, your log 
 
 [1]: https://www.w3.org/TR/xml/
 [2]: http://xml.coverpages.org/jaxb0530spec.pdf
-[3]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/project-pom.xml?ts=4
-[4]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/src/test/java/org/patrodyne/jvnet/higherjaxb/ex001/Explorer.java?ts=4
-[5]: https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/explore/Ex001-TradeDTD/src/main/resources/TradeDTD.svg
-[6]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/src/main/resources/Trade.dtd?ts=4
-[7]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/src/main/resources/Trade.xjs?ts=4
-[8]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/doc/xjs.dtd?ts=4
+[3]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/project-pom.xml?ts=4
+[4]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/src/test/java/org/patrodyne/jvnet/higherjaxb/ex001/Explorer.java?ts=4
+[5]: https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/assembly/explore/Ex001-TradeDTD/src/main/resources/TradeDTD.svg
+[6]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/src/main/resources/Trade.dtd?ts=4
+[7]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/src/main/resources/Trade.xjs?ts=4
+[8]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/doc/xjs.dtd?ts=4
 [9]: file:src/test/resources/schema-relations.png
 [10]: https://eclipse-ee4j.github.io/jaxb-ri/
-[11]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/explore/Ex001-TradeDTD/src/main/java/org/patrodyne/jvnet/higherjaxb/ex001/model/Bind.java?ts=4
+[11]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/src/main/java/org/patrodyne/jvnet/higherjaxb/ex001/model/Bind.java?ts=4
 [12]: https://en.wikipedia.org/wiki/ISO_8601
 [13]: https://github.com/eclipse-ee4j/jaxb-ri/blob/master/jaxb-ri/xjc/src/main/schemas/com/sun/tools/xjc/reader/dtd/bindinfo/bindingfile.xsd
 [14]: https://www.slf4j.org/
