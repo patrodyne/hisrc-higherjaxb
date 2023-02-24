@@ -108,6 +108,19 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>org.patrodyne.jvnet</groupId>
+					<artifactId>hisrc-higherjaxb40-maven-plugin</artifactId>
+					<version>${project.version}</version>
+					<executions>
+						<execution>
+							<id>default</id>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
