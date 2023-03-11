@@ -29,4 +29,4 @@ RESPONSE: complexType
 
 The key is to define the `CONTENT` as `anySimpleType` and as a top level element. As such, JAXB is able to unmarshal the ambiguous content (address, salary, etc.) into a general DOM `Element`. Further, as a top-level element JAXB treats it as its own root element that can be marshaled into an XML fragment.
 
-The trick is to pragmatically detect the actual fragment type and modify the fragment to use the correct `CONTENT` tag: CONTENTAddress, CONTENTSalary, etc. The to unmarshal the modified XML to instantiate the final objects.
+The trick is to pragmatically detect the actual fragment type and modify the fragment to use the correct `CONTENT` tag: CONTENTAddress, CONTENTSalary, etc. Then to unmarshal the modified XML to instantiate the final objects.
