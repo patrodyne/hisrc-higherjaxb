@@ -1,0 +1,19 @@
+<RESPONSE>
+<INFO>
+  <ret_code>0</ret_code>
+  <details>Content is address.</details>
+</INFO>
+<CONTENT>
+   <name>John</name>
+   <addresses>
+      <address>
+         <city>NewYork</city>
+         <street>5th</street>
+      </address>
+      <address>
+          <city>Paris</city>
+          <street>Colombe</street>
+      </address>
+   </addresses>
+</CONTENT>
+</RESPONSE>

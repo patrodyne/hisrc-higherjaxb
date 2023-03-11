@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- StackOverflow: https://stackoverflow.com/questions/75696006/jaxb-xml-to-pojo-using-inheritance-how-to -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="CONTENT" type="xs:anySimpleType" />
+
+	<xs:element name="CONTENTAddress">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string" />
+				<xs:element name="addresses" >
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="address" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="city" type="xs:string" />
+										<xs:element name="street" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="CONTENTSalary">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string" />
+				<xs:element name="salary" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RESPONSE">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="INFO">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ret_code" type="xs:string" />
+							<xs:element name="details" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="CONTENT" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

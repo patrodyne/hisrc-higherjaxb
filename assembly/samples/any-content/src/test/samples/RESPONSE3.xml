@@ -1,0 +1,10 @@
+<RESPONSE>
+<INFO>
+  <ret_code>0</ret_code>
+  <details>Content is salary.</details>
+</INFO>
+<CONTENT>
+   <name>John</name>
+   <salary>1000</salary>
+</CONTENT>
+</RESPONSE>

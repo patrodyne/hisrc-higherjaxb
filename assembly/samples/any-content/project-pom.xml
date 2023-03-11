@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.patrodyne.jvnet</groupId>
+	<artifactId>${project.artifactId}</artifactId>
+	<version>${hisrc-higherjaxb-maven-plugin.version}</version>
+	<packaging>jar</packaging>
+	<name>HiSrc HigherJAXB Plugin Sample [any-content]</name>
+
+	<properties>
+		<maven.compiler.release>${maven.compiler.release}</maven.compiler.release>
+		<maven-min.version>${maven-min.version}</maven-min.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<hisrc-basicjaxb.version>${hisrc-basicjaxb.version}</hisrc-basicjaxb.version>
+		<hisrc-higherjaxb-maven-plugin.version>${hisrc-higherjaxb-maven-plugin.version}</hisrc-higherjaxb-maven-plugin.version>
+		<hisrc-hyperjaxb-annox-plugin.version>${hisrc-hyperjaxb-annox-plugin.version}</hisrc-hyperjaxb-annox-plugin.version>
+		<jaxb-api.version>${jaxb-api.version}</jaxb-api.version>
+		<jaxb-imp.version>${jaxb-imp.version}</jaxb-imp.version>
+		<junit-jupiter.version>${junit-jupiter.version}</junit-jupiter.version>
+		<slf4j.version>${slf4j.version}</slf4j.version>
+	</properties>
+
+	<dependencies>
+		<!-- JAXB Runtime -->
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>\${jaxb-api.version}</version>
+			<exclusions>
+				<!-- In favor of jakarta.activation:jakarta.activation-api -->
+				<exclusion>
+					<groupId>com.sun.activation</groupId>
+					<artifactId>jakarta.activation</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>\${jaxb-imp.version}</version>
+		</dependency>
+		<!-- HiSrc BasicJAXB -->
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-runtime</artifactId>
+			<version>\${hisrc-basicjaxb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-testing</artifactId>
+			<version>\${hisrc-basicjaxb.version}</version>
+		</dependency>
+		<!-- SLF4J Implementation -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>\${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>\${slf4j.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- JUnit -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>\${junit-jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+
+		<defaultGoal>package</defaultGoal>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>${maven-antrun-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${maven-assembly-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>${maven-dependency-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${maven-release-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-report-plugin</artifactId>
+					<version>${maven-surefire-report-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-jxr-plugin</artifactId>
+					<version>${maven-jxr-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>${maven-project-info-reports-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${versions-maven-plugin.version}</version>
+					<configuration>
+						<ruleSet>
+							<ignoreVersions>
+								<ignoreVersion>
+									<type>regex</type>
+                                    <version>(.+\.Alpha\d|.+-alpha-\d)</version>
+								</ignoreVersion>
+								<ignoreVersion>
+									<type>regex</type>
+									<version>.+-M\d</version>
+								</ignoreVersion>
+								<ignoreVersion>
+									<type>regex</type>
+									<version>.+[\.-](CR|RC)\d</version>
+								</ignoreVersion>
+							</ignoreVersions>
+						</ruleSet>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>${maven-enforcer-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>enforce-java-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>${maven.compiler.release}</version>
+								</requireJavaVersion>
+								<requireMavenVersion>
+									<version>${maven-min.version}</version>
+								</requireMavenVersion>
+							</rules>    
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>${maven-clean-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven-resources-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<argLine>${env.JVM_SYS_ARGS}</argLine>
+					<systemPropertiesFile>\${basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>${maven-install-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>${maven-deploy-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven-site-plugin.version}</version>
+			</plugin>
+
+			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+			<!-- mvn hisrc-higherjaxb:generate -->
+			<plugin>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+				<version>\${hisrc-higherjaxb-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<noFileHeader>true</noFileHeader>
+							<extension>true</extension>
+							<args>
+								<arg>-XhashCode</arg>
+								<arg>-Xequals</arg>
+								<arg>-XtoString</arg>
+							</args>
+							<plugins>
+								<plugin>
+									<groupId>org.patrodyne.jvnet</groupId>
+									<artifactId>hisrc-basicjaxb-plugins</artifactId>
+									<version>\${hisrc-basicjaxb.version}</version>
+								</plugin>
+							</plugins>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jxr-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
+<!-- vi:set tabstop=4 hardtabs=4 shiftwidth=4 noexpandtab:-->
