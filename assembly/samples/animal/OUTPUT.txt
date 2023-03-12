@@ -1,0 +1,71 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------< org.patrodyne.jvnet:hisrc-higherjaxb-sample-animal >---------
+[INFO] Building HiSrc HigherJAXB Assembly Sample [animal] 2.1.0
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ hisrc-higherjaxb-sample-animal ---
+[INFO] 
+[INFO] --- hisrc-higherjaxb-maven-plugin:2.1.0:generate (default) @ hisrc-higherjaxb-sample-animal ---
+[INFO] Sources are not up-to-date, XJC will be executed.
+[INFO] Episode file [/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/assembly/samples/animal/target/hisrc-higherjaxb-sample-animal-2.1.0/target/generated-sources/xjc/META-INF/sun-jaxb.episode] was augmented with if-exists="true" attributes.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ hisrc-higherjaxb-sample-animal ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ hisrc-higherjaxb-sample-animal ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 3 source files with javac [debug release 11] to target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ hisrc-higherjaxb-sample-animal ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:testCompile (default-testCompile) @ hisrc-higherjaxb-sample-animal ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 1 source file with javac [debug release 11] to target/test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ hisrc-higherjaxb-sample-animal ---
+[INFO] Surefire report directory: /home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/assembly/samples/animal/target/hisrc-higherjaxb-sample-animal-2.1.0/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.example.animal.AnimalTest
+15:19:36:639 DEBUG AnimalTest - Testing samples, start
+15:19:36:648 DEBUG AnimalTest - Sample directory [/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/assembly/samples/animal/target/hisrc-higherjaxb-sample-animal-2.1.0/src/test/samples].
+15:19:36:669 DEBUG AnimalTest - Testing sample, start [Animal101.xml].
+15:19:36:853 DEBUG AnimalTest - Animal:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Animal Id="101" Species="Cat">
+    <Name>Tabby</Name>
+    <Born>2023-03-12T09:30:00Z</Born>
+</Animal>
+
+15:19:36:855 INFO AnimalTest - Testing sample, SUCCESS [Animal101.xml].
+15:19:36:855 DEBUG AnimalTest - Testing sample, start [Animal102.xml].
+15:19:36:859 DEBUG AnimalTest - Animal:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Animal Id="101" Species="Dog">
+    <Name>Fido</Name>
+    <Born>2022-07-14T13:15:00Z</Born>
+</Animal>
+
+15:19:36:859 INFO AnimalTest - Testing sample, SUCCESS [Animal102.xml].
+15:19:36:859 DEBUG AnimalTest - Testing samples, finish
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.227 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.552 s
+[INFO] Finished at: 2023-03-12T15:19:36-04:00
+[INFO] ------------------------------------------------------------------------
