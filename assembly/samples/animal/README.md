@@ -10,6 +10,8 @@ This is a stand-alone Maven project. You can run the test using:
 mvn clean test
 ~~~
 
+The [output][6] shows the test results.
+
 ### Problem
 
 Use the *HiSrc HigherJAXB Maven Plugin* to generate JAXB classes from an XML Schema.
@@ -81,5 +83,6 @@ The JUnit test class, [AnimalTest][4], scans for the sample files and invokes th
 [3]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/animal/src/main/resources/animal.xjb
 [4]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/animal/src/test/java/org/example/animal/AnimalTest.java
 [5]: https://github.com/patrodyne/hisrc-higherjaxb/tree/master/assembly/samples/animal/src/test/samples
+[6]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/animal/OUTPUT.txt
 
 
