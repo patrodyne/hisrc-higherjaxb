@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- StackOverflow: https://stackoverflow.com/questions/75661656/ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="element">
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element name="subelement" type="subelement" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="Id" type="xs:string"/>
+			<xs:attribute name="Composite" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="subelement">
+		<xs:attribute name="Id" type="xs:string"/>
+		<xs:attribute name="Composite" type="xs:string"/>
+	</xs:complexType>
+
+</xs:schema>

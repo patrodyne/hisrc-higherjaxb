@@ -1,0 +1,8 @@
+<element Id="BGM02" Composite="Ceramic"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="../../main/resources/element.xsd"
+>
+	<subelement Id="BGM02-01" Composite="Concrete" />
+	<subelement Id="BGM02-02" Composite="Wood" />
+	220
+</element>

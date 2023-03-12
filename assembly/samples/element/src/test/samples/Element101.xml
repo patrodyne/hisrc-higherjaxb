@@ -1,0 +1,4 @@
+<element Id="BGM01" Composite="Plastic"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="../../main/resources/element.xsd"
+>220</element>

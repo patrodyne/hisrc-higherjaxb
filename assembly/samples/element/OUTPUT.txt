@@ -1,0 +1,81 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------< org.patrodyne.jvnet:hisrc-higherjaxb-sample-element >---------
+[INFO] Building HiSrc HigherJAXB Assembly Sample [element] 2.1.0
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ hisrc-higherjaxb-sample-element ---
+[INFO] 
+[INFO] --- hisrc-higherjaxb-maven-plugin:2.1.0:generate (default) @ hisrc-higherjaxb-sample-element ---
+[INFO] Sources are not up-to-date, XJC will be executed.
+[INFO] Episode file [/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/assembly/samples/element/target/hisrc-higherjaxb-sample-element-2.1.0/target/generated-sources/xjc/META-INF/sun-jaxb.episode] was augmented with if-exists="true" attributes.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ hisrc-higherjaxb-sample-element ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ hisrc-higherjaxb-sample-element ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 3 source files with javac [debug release 11] to target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ hisrc-higherjaxb-sample-element ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:testCompile (default-testCompile) @ hisrc-higherjaxb-sample-element ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 1 source file with javac [debug release 11] to target/test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ hisrc-higherjaxb-sample-element ---
+[INFO] Surefire report directory: /home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/assembly/samples/element/target/hisrc-higherjaxb-sample-element-2.1.0/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.example.element.ElementTest
+17:07:20:502 DEBUG ElementTest - Testing samples, start
+17:07:20:517 DEBUG ElementTest - Sample directory [/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/assembly/samples/element/target/hisrc-higherjaxb-sample-element-2.1.0/src/test/samples].
+17:07:20:537 DEBUG ElementTest - Testing sample, start [Element101.xml].
+17:07:20:727 DEBUG ElementTest - Element:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<element Id="BGM01" Composite="Plastic">220</element>
+
+17:07:20:730 DEBUG ElementTest - Element Content Size: [1]
+17:07:20:732 DEBUG ElementTest - 0) Element Content Value Type: [class java.lang.String]
+17:07:20:732 DEBUG ElementTest - 0) Element Content Value: [220]
+17:07:20:735 INFO ElementTest - Testing sample, SUCCESS [Element101.xml].
+17:07:20:735 DEBUG ElementTest - Testing sample, start [Element102.xml].
+17:07:20:742 DEBUG ElementTest - Element:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<element Id="BGM02" Composite="Ceramic">
+    <subelement Id="BGM02-01" Composite="Concrete"/>
+    <subelement Id="BGM02-02" Composite="Wood"/>
+	220
+</element>
+
+17:07:20:742 DEBUG ElementTest - Element Content Size: [3]
+17:07:20:742 DEBUG ElementTest - 0) Element Content Value Type: [class org.example.element.Subelement]
+17:07:20:742 DEBUG ElementTest - 0) Element Content Value: [org.example.element.Subelement@7b227d8d]
+17:07:20:742 DEBUG ElementTest - 1) Element Content Value Type: [class org.example.element.Subelement]
+17:07:20:742 DEBUG ElementTest - 1) Element Content Value: [org.example.element.Subelement@7219ec67]
+17:07:20:742 DEBUG ElementTest - 2) Element Content Value Type: [class java.lang.String]
+17:07:20:742 DEBUG ElementTest - 2) Element Content Value: [
+	220
+]
+17:07:20:742 INFO ElementTest - Testing sample, SUCCESS [Element102.xml].
+17:07:20:743 DEBUG ElementTest - Testing samples, finish
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.245 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.769 s
+[INFO] Finished at: 2023-03-12T17:07:20-04:00
+[INFO] ------------------------------------------------------------------------
