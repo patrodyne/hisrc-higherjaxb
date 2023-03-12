@@ -1,0 +1,4 @@
+<Animal Id="101" Species="Dog">
+	<Name>Fido</Name>
+	<Born>2022-07-14T13:15:00Z</Born>
+</Animal>

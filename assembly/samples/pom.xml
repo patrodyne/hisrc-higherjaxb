@@ -17,6 +17,7 @@
 		<root.basedir>${basedir}/../..</root.basedir>
 	</properties>
 	<modules>
+		<module>animal</module>
 		<module>any-content</module>
 		<module>catalog</module>
 		<module>custom-name</module>

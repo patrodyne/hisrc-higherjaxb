@@ -1,0 +1,4 @@
+<Animal Id="101" Species="Cat">
+	<Name>Tabby</Name>
+	<Born>2023-03-12T09:30:00Z</Born>
+</Animal>
