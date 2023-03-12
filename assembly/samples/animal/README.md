@@ -76,7 +76,7 @@ The JUnit test class, [AnimalTest][4], scans for the sample files and invokes th
 
 <!-- References -->
 
-[1]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/animal/pom.xml
+[1]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/animal/project-pom.xml
 [2]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/animal/src/main/resources/animal.xsd
 [3]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/animal/src/main/resources/animal.xjb
 [4]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/animal/src/test/java/org/example/animal/AnimalTest.java
