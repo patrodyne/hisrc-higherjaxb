@@ -79,7 +79,7 @@ The model for this example consists of a root element with attributes, child ele
 ~~~
 element: root mixed="true"
     Id: attribute
-    Compisite: attribute
+    Composite: attribute
     subelement: children
     VALUE
 ~~~
