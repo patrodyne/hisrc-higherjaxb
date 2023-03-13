@@ -14,7 +14,7 @@ The [output][6] shows the test results.
 
 ### Problem
 
-Use the *HiSrc HigherJAXB Maven Plugin* to generate JAXB classes from an XML Schema.
+Use the *HiSrc HigherJAXB Maven Plugin* to generate JAXB classes from an XML Schema and demonstrate a mixed complex type element that contains attributes, elements, and text.
 
 ### Solution
 
@@ -84,5 +84,3 @@ The JUnit test class, [ElementTest][4], scans for the sample files and invokes t
 [4]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/element/src/test/java/org/example/element/ElementTest.java
 [5]: https://github.com/patrodyne/hisrc-higherjaxb/tree/master/assembly/samples/element/src/test/samples
 [6]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/element/OUTPUT.txt
-
-
