@@ -72,9 +72,25 @@ target/generated-sources/xjc/
         ObjectFactory.java
 ~~~
 
+#### Model
+
+The model for this example consists of a root element with attributes, child elements and a value.
+
+~~~
+element: root mixed="true"
+    Id: attribute
+    Compisite: attribute
+    subelement: children
+    VALUE
+~~~
+
+To enable a character VALUE to appear within the root element *together with subelements*, its `complexType` must have a mixed attribute set to "true".
+
 #### Testing
 
 The JUnit test class, [ElementTest][4], scans for the sample files and invokes the method `checkSample(File sample)` to provide each file to the tester. For this project, a `JAXBContext` is created and each file in the [samples][5] path is *unmarshaled* to an `element` object. When successful, the `element` object is *marshaled* for logging and your review.
+
+> **Note:** For *mixed* content types, JAXB generates a `List` field named `content` to store an array of the sub-elements and value(s) found. There can be multiple values interspersed among the sub-elements. The `List` preserves the order of the sub-elements and values. If white-space is used to format the content, it will be bound to the neighboring values! A better alternative may be to eliminate the need for *mixed* content by declaring individual elements, in the model, for each data value.
 
 <!-- References -->
 
