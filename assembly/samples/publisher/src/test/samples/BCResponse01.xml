@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<BCResponse>
+  <publisher>ACME</publisher>
+  <content>
+    <Response>
+      <ResponseStatus>
+        <statusType>ERROR</statusType>
+      </ResponseStatus>
+    </Response>
+  </content>
+</BCResponse>

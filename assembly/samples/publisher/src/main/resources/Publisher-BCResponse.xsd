@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ns2="http://uri.abc.com/ML"
+>
+
+  <xs:import namespace="http://uri.abc.com/ML" schemaLocation="Publisher-Request.xsd"/>
+
+  <xs:element name="BCResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="publisher" type="xs:string"/>
+        <xs:element name="content" >
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="ns2:Request" />
+              <xs:element name="Response">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ResponseStatus">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="statusType" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+<!-- vi:set tabstop=2 hardtabs=2 shiftwidth=2 expandtab:-->

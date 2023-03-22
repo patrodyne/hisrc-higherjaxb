@@ -1,0 +1,104 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------< org.patrodyne.jvnet:hisrc-higherjaxb-sample-publisher >--------
+[INFO] Building HiSrc HigherJAXB Assembly Sample [publisher] 2.1.0
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ hisrc-higherjaxb-sample-publisher ---
+[INFO] Deleting publisher/target/hisrc-higherjaxb-sample-publisher-2.1.0/target
+[INFO] 
+[INFO] --- hisrc-higherjaxb-maven-plugin:2.1.0:generate (default) @ hisrc-higherjaxb-sample-publisher ---
+[INFO] Sources are not up-to-date, XJC will be executed.
+[INFO] Episode file [publisher/target/hisrc-higherjaxb-sample-publisher-2.1.0/target/generated-sources/xjc/META-INF/sun-jaxb.episode] was augmented with if-exists="true" attributes.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ hisrc-higherjaxb-sample-publisher ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 3 resources
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ hisrc-higherjaxb-sample-publisher ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 10 source files with javac [debug release 11] to target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ hisrc-higherjaxb-sample-publisher ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:testCompile (default-testCompile) @ hisrc-higherjaxb-sample-publisher ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 1 source file with javac [debug release 11] to target/test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ hisrc-higherjaxb-sample-publisher ---
+[INFO] Surefire report directory: publisher/target/hisrc-higherjaxb-sample-publisher-2.1.0/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.models.PublisherTest
+14:19:03:956 DEBUG PublisherTest - Testing samples, start
+14:19:03:971 DEBUG PublisherTest - Sample directory [publisher/target/hisrc-higherjaxb-sample-publisher-2.1.0/src/test/samples].
+14:19:03:994 DEBUG PublisherTest - Testing sample, start [BCResponse01.xml].
+14:19:04:168 DEBUG PublisherTest - BCResponse:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<BCResponse xmlns:ns2="http://uri.abc.com/ML">
+    <publisher>ACME</publisher>
+    <content>
+        <Response>
+            <ResponseStatus>
+                <statusType>ERROR</statusType>
+            </ResponseStatus>
+        </Response>
+    </content>
+</BCResponse>
+
+14:19:04:172 INFO PublisherTest - Testing sample, SUCCESS [BCResponse01.xml].
+14:19:04:172 DEBUG PublisherTest - Testing sample, start [BCResponse02.xml].
+14:19:04:181 DEBUG PublisherTest - BCResponse:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<BCResponse xmlns:ns2="http://uri.abc.com/ML">
+    <publisher>ACME</publisher>
+    <content>
+        <ns2:Request>
+            <legalEntity>
+                <partyId>
+                    <id>ID-001</id>
+                </partyId>
+            </legalEntity>
+        </ns2:Request>
+        <Response>
+            <ResponseStatus>
+                <statusType>ERROR</statusType>
+            </ResponseStatus>
+        </Response>
+    </content>
+</BCResponse>
+
+14:19:04:181 INFO PublisherTest - Testing sample, SUCCESS [BCResponse02.xml].
+14:19:04:181 DEBUG PublisherTest - Testing sample, start [Request01.xml].
+14:19:04:192 DEBUG PublisherTest - Request:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:Request xmlns:ns2="http://uri.abc.com/ML">
+    <legalEntity>
+        <partyId>
+            <id>ID-001</id>
+        </partyId>
+    </legalEntity>
+</ns2:Request>
+
+14:19:04:192 INFO PublisherTest - Testing sample, SUCCESS [Request01.xml].
+14:19:04:192 DEBUG PublisherTest - Testing samples, finish
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.24 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.700 s
+[INFO] Finished at: 2023-03-22T14:19:04-04:00
+[INFO] ------------------------------------------------------------------------

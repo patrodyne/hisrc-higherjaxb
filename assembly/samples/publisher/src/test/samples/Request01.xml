@@ -1,0 +1,7 @@
+<ns2:Request xmlns:ns2="http://uri.abc.com/ML">
+  <legalEntity>
+    <partyId>
+      <id>ID-001</id>
+    </partyId>
+  </legalEntity>
+</ns2:Request>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://uri.abc.com/ML"
+  targetNamespace="http://uri.abc.com/ML"
+>
+  <xs:element name="Request">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="legalEntity" >
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="partyId" >
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="id" type="xs:string"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+<!-- vi:set tabstop=2 hardtabs=2 shiftwidth=2 expandtab:-->

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<BCResponse xmlns:ns2="http://uri.abc.com/ML">
+  <publisher>ACME</publisher>
+  <content>
+    <ns2:Request>
+      <legalEntity>
+        <partyId>
+          <id>ID-001</id>
+        </partyId>
+      </legalEntity>
+    </ns2:Request>
+    <Response>
+      <ResponseStatus>
+        <statusType>ERROR</statusType>
+      </ResponseStatus>
+    </Response>
+  </content>
+</BCResponse>
