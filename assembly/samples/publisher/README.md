@@ -158,6 +158,12 @@ The JUnit test class, [PublisherTest.java][7], scans for the sample files and in
 
 In this approach the JAXB classes are created by you. Here's how they should look:
 
+**package-info.java**
+~~~
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://uri.abc.com/ML")
+package com.models.request;
+~~~
+
 **Request.java**
 ~~~
 package com.models.request;
