@@ -280,7 +280,7 @@ public class Content implements Serializable
 
 **Response.java**
 ~~~
-ackage com.models.response;
+package com.models.response;
 
 import java.io.Serializable;
 import jakarta.xml.bind.annotation.*;
