@@ -44,6 +44,14 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<argLine>${env.JVM_SYS_ARGS}</argLine>
+					<systemPropertiesFile>\${basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
+				</configuration>
+			</plugin>
 			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
 			<!-- mvn hisrc-higherjaxb:generate -->
 			<plugin>

@@ -24,6 +24,7 @@
 		<module>dtd</module>
 		<module>element</module>
 		<module>episode</module>
+		<module>invoices</module>
 		<module>jaxbplugins</module>
 		<module>po</module>
 		<module>publisher</module>

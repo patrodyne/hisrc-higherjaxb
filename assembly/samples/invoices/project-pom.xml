@@ -25,15 +25,20 @@
 		<!-- HiSrc BasicJAXB -->
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-runtime</artifactId>
+			<version>\${hisrc-basicjaxb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-basicjaxb-testing</artifactId>
 			<version>\${hisrc-basicjaxb.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<!-- SLF4J Implementation -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>\${slf4j.version}</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -52,6 +57,14 @@
 					<systemPropertiesFile>\${basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${exec-maven-plugin.version}</version>
+				<configuration>
+					<mainClass>namespace.my.invoices.Aufgabe4</mainClass>
+				</configuration>
+			</plugin>
 			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
 			<!-- mvn hisrc-higherjaxb:generate -->
 			<plugin>
@@ -63,6 +76,21 @@
 						<goals>
 							<goal>generate</goal>
 						</goals>
+						<configuration>
+							<args>
+								<arg>-no-header</arg>
+								<arg>-XhashCode</arg>
+								<arg>-Xequals</arg>
+								<arg>-XtoString</arg>
+							</args>
+							<plugins>
+								<plugin>
+									<groupId>org.patrodyne.jvnet</groupId>
+									<artifactId>hisrc-basicjaxb-plugins</artifactId>
+									<version>\${hisrc-basicjaxb.version}</version>
+								</plugin>
+							</plugins>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

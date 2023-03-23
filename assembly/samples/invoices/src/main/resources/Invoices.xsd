@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="my.namespace/Invoices"
+           elementFormDefault="qualified"
+           xmlns="my.namespace/Invoices"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="invoice-list">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="invoice" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name="invoice-identifier" type="invoice-number-type"/>
+                            <xs:element name="invoice-date" type="xs:date"/>
+
+                            <xs:element name="company">
+                                <xs:complexType>
+                                    <xs:all>
+                                        <xs:element name="name" type="xs:string"/>
+                                        <xs:element name="address" type="addressType"/>
+                                        <xs:element name="contact" type="contactType" minOccurs="0"/>
+                                        <xs:element name="tax-number" type="tax-number-type"/>
+                                    </xs:all>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="customer-info">
+                                <xs:complexType>
+                                    <xs:all>
+                                        <xs:element name="customer">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="salution"/>
+                                                    <xs:element name="first-name" minOccurs="0"/>
+                                                    <xs:element name="last-name"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="address" type="addressType"/>
+                                    </xs:all>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="items">
+                                <xs:complexType>
+                                    <xs:sequence maxOccurs="unbounded">
+                                        <xs:element name="item" type="itemType" minOccurs="0"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="billing-types" type="billing-type" minOccurs="0"/>
+                            <xs:element name="sum-net" type="currencyType"/>
+                            <xs:element name="sum-gross" type="currencyType"/>
+                            <xs:element name="taxes" type="taxesType"/>
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+    </xs:element>
+
+    <xs:simpleType name="mail-type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value=".*@.+\..+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="currency-codes-type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="EUR"/>
+            <xs:enumeration value="USD"/>
+            <xs:enumeration value="CAD"/>
+            <xs:enumeration value="JPY"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="tel-number-type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="0[1-9]{2,4}([/ ])[0-9]{5,}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="invoice-number-type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]|([- /]))+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="tax-number-type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="DE [0-9]{9}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="zip-code-type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([A-Z]{2}-|)[0-9]{4,7}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="iban-type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z]{2}[0-9]{2}( |)([0-9]{4}( |)){4}[0-9]{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="billing-type">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element name="billing-info">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="bank-details" type="bank-details-type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="bank-details-type">
+        <xs:choice>
+            <xs:element name="IBAN" type="iban-type"/>
+            <xs:sequence>
+                <xs:element name="BIC" type="xs:string"/>
+                <xs:element name="konto-nr" type="xs:string"/>
+            </xs:sequence>
+            <xs:element name="other">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="description" type="xs:string"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="addressType">
+        <xs:sequence>
+            <xs:element name="street" type="xs:string"/>
+            <xs:element name="street-number" type="xs:string"/>
+            <xs:element name="zip" type="zip-code-type"/>
+            <xs:element name="city" type="xs:string"/>
+            <xs:element name="country" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="contactType">
+        <xs:sequence>
+            <xs:element name="phone" type="tel-number-type"/>
+            <xs:element name="fax" type="tel-number-type" minOccurs="0"/>
+            <xs:element name="mail" type="mail-type" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="currencyType">
+        <xs:simpleContent>
+            <xs:extension base="xs:double">
+                <xs:attribute name="currency" type="currency-codes-type"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="taxesType">
+        <xs:simpleContent>
+            <xs:extension base="xs:double">
+                <xs:attribute name="unit" default="percentage">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="percentage"/>
+                            <xs:enumeration value="currency"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="currency" type="currency-codes-type"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="itemType">
+        <xs:all>
+            <xs:element name="position" type="xs:int"/>
+            <xs:element name="date" type="xs:date" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="taxes" type="taxesType" minOccurs="0"/>
+            <xs:element name="price-per-unit" type="currencyType" minOccurs="0"/>
+            <xs:element name="item-sum" type="currencyType"/>
+        </xs:all>
+        <xs:attribute name="pieces" type="xs:int" default="1"/>
+    </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,38 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------< org.patrodyne.jvnet:hisrc-higherjaxb-sample-invoices >--------
+[INFO] Building HiSrc HigherJAXB Assembly Sample [invoices] 2.1.0
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- hisrc-higherjaxb-maven-plugin:2.1.0:generate (default) @ hisrc-higherjaxb-sample-invoices ---
+[INFO] Sources are not up-to-date, XJC will be executed.
+[INFO] Episode file [hisrc-higherjaxb-sample-invoices-2.1.0/target/generated-sources/xjc/META-INF/sun-jaxb.episode] was augmented with if-exists="true" attributes.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ hisrc-higherjaxb-sample-invoices ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 3 resources
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ hisrc-higherjaxb-sample-invoices ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 19 source files with javac [debug release 11] to target/classes
+[INFO] 
+[INFO] --- exec-maven-plugin:3.1.0:java (default-cli) @ hisrc-higherjaxb-sample-invoices ---
+17:11:13:858 INFO Aufgabe4 - Invoice: 01-1
+
+Invoice@5ce7fee3[01-1, 2017-01-15, Company@31bc8f9b[Kleintier Meier GmbH, AddressType@313b3e87[Meierring, 3, 81828, Machthausen, Germany], ContactType@3d26cfb2[0777 987987, 0777 987789, klein.meier@tiere.de], DE 881282822], CustomerInfo@14ded20a[Customer@414b475d[[salution: null], [first-name: null], [last-name: null]], AddressType@296c86f5[Am Süttelbach, 17, 77070, Siedelsuderstadt, Germany]], Items@223c9735[{ItemType@40904ffa[1, 2017-01-01, Antike Holzwürmer, TaxesType@5bfa991a[19.0, percentage, <null>(default)], CurrencyType@166ce7be[1.5, EUR], CurrencyType@50af4f79[150.0, EUR], 100],ItemType@12822509[2, 2017-12-01, Holzwurmfutter, TaxesType@1d3f5c0a[19.0, percentage, <null>(default)], CurrencyType@6c9f0904[2.0, EUR], CurrencyType@46e15769[34.45, EUR], 1],ItemType@454888d1[3, 2017-12-01, Steinlaus, Petrophaga lorioti, TaxesType@22f0437e[19.0, percentage, <null>(default)], CurrencyType@36b3a90d[777.77, EUR], CurrencyType@7a25eaad[777.77, EUR], 1]}], <null>(default), CurrencyType@7baafb38[808.59, EUR], CurrencyType@5b61ac80[962.22, EUR], TaxesType@70319d20[153.63, percentage(default), EUR]]
+
+17:11:13:859 INFO Aufgabe4 - Invoice: 02-1
+
+Invoice@4fd37f11[02-1, 2017-08-08, Company@3e009683[Rochade-La Hoff Pharma GmbH, AddressType@1ebf648[An der Chemie, 17, 79639, Grenzych-Wahlen, Germany], ContactType@6ce5f0bf[07624/666333999, 07624/666333990, <null>(default)], DE 333666999], CustomerInfo@381a31c5[Customer@2140ccb[[salution: null], [first-name: null], [last-name: null]], AddressType@5c13f377[Soddelstrudel, 5a, 13023, Zottenheim, Germany]], Items@1fb08042[{ItemType@76cd0e68[1, <null>(default), Grippemittel "Tumifla", TaxesType@549d362e[19.0, percentage(default), <null>(default)], CurrencyType@1756ef81[120.0, <null>(default)], CurrencyType@c7fdfb9[360.0, <null>(default)], 3],ItemType@125f2e10[2, <null>(default), Beratung pauschal, TaxesType@2f4e5633[19.0, percentage(default), <null>(default)], <null>(default), CurrencyType@f448ebc[50.0, <null>(default)], 1(default)],ItemType@7d340afa[3, <null>(default), Abführmittel "Wech damit", TaxesType@167084e2[19.0, percentage(default), <null>(default)], CurrencyType@4b52b7d1[99.99, <null>(default)], CurrencyType@60c8f169[199.98, <null>(default)], 2],ItemType@3d764450[4, <null>(default), Energieriegel "Satto", TaxesType@2fb39088[7.0, percentage(default), <null>(default)], CurrencyType@71014690[5.98, <null>(default)], CurrencyType@5665b260[11.96, <null>(default)], 2]}], <null>(default), CurrencyType@593e2838[490.22, <null>(default)], CurrencyType@6abac447[621.94, <null>(default)], TaxesType@11f42a46[116.74, percentage(default), <null>(default)]]
+
+17:11:13:859 INFO Aufgabe4 - Invoice: 03-1
+
+Invoice@6a797caa[03-1, 2017-10-19, Company@42aef635[Bestattungen Unterberg, AddressType@7e0a9adb[Oberbergweg, 5a, DE-43210, Ultursingen, Germany], ContactType@4e9c2946[0478/777555, <null>(default), unter@berg.de], DE 987654321], CustomerInfo@6f219013[Customer@5a0bdc9c[[salution: null], <null>(default), [last-name: null]], AddressType@70fd4944[Ulturenstrasse, 764, 43210, Ultursingen, Germany]], Items@5f848804[{ItemType@3c463aef[1, <null>(default), Urne, Eiche massiv, <null>(default), <null>(default), CurrencyType@38adfec7[299.99, <null>(default)], 1(default)],ItemType@228037ff[2, <null>(default), Überführung Krematorium Feuerbach inkl. Begleitpersonal, <null>(default), <null>(default), CurrencyType@59bf5f03[349.0, <null>(default)], 1(default)],ItemType@54a39799[3, <null>(default), Dekoration, <null>(default), <null>(default), CurrencyType@32f000c[149.5, <null>(default)], 1(default)],ItemType@2033e059[4, <null>(default), Trauerkarten inkl. Briefmarken, <null>(default), CurrencyType@357f41b[2.0, <null>(default)], CurrencyType@4b00a4b7[80.0, <null>(default)], 40]}], BillingType@30d4f2bb[{BillingInfo@fdaedd0[{BankDetailsType@3311371c[DE16 6605 0101 0077 8899 11, <null>(default), <null>(default), <null>(default)],BankDetailsType@7dfa08d5[<null>(default), <null>(default), <null>(default), Other@6a2c7cfb[Die schreib ich nicht ab, Bitcoin address]]}]}], CurrencyType@3240a803[878.49, <null>(default)], CurrencyType@853c080[738.23, <null>(default)], TaxesType@25c2ddff[140.26, percentage(default), <null>(default)]]
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.130 s
+[INFO] Finished at: 2023-03-23T17:11:13-04:00
+[INFO] ------------------------------------------------------------------------

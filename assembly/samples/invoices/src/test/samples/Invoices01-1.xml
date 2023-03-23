@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<invoice-list xmlns="my.namespace/Invoices"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="my.namespace/Invoices ./doctypes/invoice.xsd"
+>
+    <invoice>
+        <invoice-identifier>01-1</invoice-identifier>
+        <invoice-date>2017-01-15</invoice-date>
+        <company>
+            <name>Kleintier Meier GmbH</name>
+            <address>
+                <street>Meierring</street>
+                <street-number>3</street-number>
+                <zip>81828</zip>
+                <city>Machthausen</city>
+                <country>Germany</country>
+            </address>
+            <contact>
+                <phone>0777 987987</phone>
+                <fax>0777 987789</fax>
+                <mail>klein.meier@tiere.de</mail>
+            </contact>
+            <tax-number>DE 881282822</tax-number>
+        </company>
+        <customer-info>
+            <customer>
+                <salution>Frau</salution>
+                <first-name>Sybille</first-name>
+                <last-name>Sonder-Suttelrau</last-name>
+            </customer>
+            <address>
+                <street>Am Süttelbach</street>
+                <street-number>17</street-number>
+                <zip>77070</zip>
+                <city>Siedelsuderstadt</city>
+                <country>Germany</country>
+            </address>
+        </customer-info>
+        <items>
+            <item pieces="100">
+                <position>1</position>
+                <date>2017-01-01</date>
+                <description>Antike Holzwürmer</description>
+                <taxes unit="percentage">19</taxes>
+                <price-per-unit currency="EUR">1.50</price-per-unit>
+                <item-sum currency="EUR">150</item-sum>
+            </item>
+            <item pieces="1">
+                <position>2</position>
+                <date>2017-12-01</date>
+                <description>Holzwurmfutter</description>
+                <taxes unit="percentage">19</taxes>
+                <price-per-unit currency="EUR">2</price-per-unit>
+                <item-sum currency="EUR">34.45</item-sum>
+            </item>
+            <item pieces="1">
+                <position>3</position>
+                <date>2017-12-01</date>
+                <description>Steinlaus, Petrophaga lorioti</description>
+                <taxes unit="percentage">19</taxes>
+                <price-per-unit currency="EUR">777.77</price-per-unit>
+                <item-sum currency="EUR">777.77</item-sum>
+            </item>
+        </items>
+        <sum-net currency="EUR">808.59</sum-net>
+        <sum-gross currency="EUR">962.22</sum-gross>
+        <taxes currency="EUR">153.63</taxes>
+    </invoice>
+    <invoice>
+        <invoice-identifier>02-1</invoice-identifier>
+        <invoice-date>2017-08-08</invoice-date>
+        <company>
+            <name>Rochade-La Hoff Pharma GmbH</name>
+            <address>
+                <street>An der Chemie</street>
+                <street-number>17</street-number>
+                <zip>79639</zip>
+                <city>Grenzych-Wahlen</city>
+                <country>Germany</country>
+            </address>
+            <contact>
+                <phone>07624/666333999</phone>
+                <fax>07624/666333990</fax>
+            </contact>
+            <tax-number>DE 333666999</tax-number>
+        </company>
+        <customer-info>
+            <customer>
+                <salution>Dr</salution>
+                <first-name>Cyprian</first-name>
+                <last-name>Zottel</last-name>
+            </customer>
+            <address>
+                <street>Soddelstrudel</street>
+                <street-number>5a</street-number>
+                <zip>13023</zip>
+                <city>Zottenheim</city>
+                <country>Germany</country>
+            </address>
+        </customer-info>
+        <items>
+            <item pieces="3">
+                <position>1</position>
+                <description>Grippemittel "Tumifla"</description>
+                <price-per-unit>120</price-per-unit>
+                <item-sum>360</item-sum>
+                <taxes>19</taxes>
+            </item>
+            <item>
+                <position>2</position>
+                <description>Beratung pauschal</description>
+                <item-sum>50</item-sum>
+                <taxes>19</taxes>
+            </item>
+            <item pieces="2">
+                <position>3</position>
+                <description>Abführmittel "Wech damit"</description>
+                <price-per-unit>99.99</price-per-unit>
+                <item-sum>199.98</item-sum>
+                <taxes>19</taxes>
+            </item>
+            <item pieces="2">
+                <position>4</position>
+                <description>Energieriegel "Satto"</description>
+                <price-per-unit>5.98</price-per-unit>
+                <item-sum>11.96</item-sum>
+                <taxes>7</taxes>
+            </item>
+        </items>
+        <sum-net>490.22</sum-net>
+        <sum-gross>621.94</sum-gross>
+        <taxes>116.74</taxes>
+    </invoice>
+    <invoice>
+        <invoice-identifier>03-1</invoice-identifier>
+        <invoice-date>2017-10-19</invoice-date>
+        <company>
+            <name>Bestattungen Unterberg</name>
+            <address>
+                <street>Oberbergweg</street>
+                <street-number>5a</street-number>
+                <zip>DE-43210</zip>
+                <city>Ultursingen</city>
+                <country>Germany</country>
+            </address>
+            <contact>
+                <phone>0478/777555</phone>
+                <mail>unter@berg.de</mail>
+            </contact>
+            <tax-number>DE 987654321</tax-number>
+        </company>
+        <customer-info>
+            <customer>
+                <salution>Familie</salution>
+                <last-name>Urmel</last-name>
+            </customer>
+            <address>
+                <street>Ulturenstrasse</street>
+                <street-number>764</street-number>
+                <zip>43210</zip>
+                <city>Ultursingen</city>
+                <country>Germany</country>
+            </address>
+        </customer-info>
+        <items>
+            <item>
+                <position>1</position>
+                <description>Urne, Eiche massiv</description>
+                <item-sum>299.99</item-sum>
+            </item>
+            <item>
+                <position>2</position>
+                <description>Überführung Krematorium Feuerbach inkl. Begleitpersonal</description>
+                <item-sum>349.00</item-sum>
+            </item>
+            <item>
+                <position>3</position>
+                <description>Dekoration</description>
+                <item-sum>149.50</item-sum>
+            </item>
+            <item pieces="40">
+                <position>4</position>
+                <description>Trauerkarten inkl. Briefmarken</description>
+                <price-per-unit>2.00</price-per-unit>
+                <item-sum>80.00</item-sum>
+            </item>
+        </items>
+        <billing-types>
+            <billing-info>
+                <bank-details>
+                    <IBAN>DE16 6605 0101 0077 8899 11</IBAN>
+                </bank-details>
+                <bank-details>
+                    <other description="Bitcoin address">Die schreib ich nicht ab</other>
+                </bank-details>
+            </billing-info>
+        </billing-types>
+        <sum-net>878.49</sum-net>
+        <sum-gross>738.23</sum-gross>
+        <taxes>140.26</taxes>
+    </invoice>
+</invoice-list>

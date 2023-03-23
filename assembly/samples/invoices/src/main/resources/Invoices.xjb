@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings jaxb:version="3.0"
+  xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+>
+  <!--  Global Bindings -->
+  <jaxb:globalBindings localScoping="toplevel">
+    <jaxb:serializable uid="20230301" />
+  </jaxb:globalBindings>
+
+  <!--  Schema Bindings -->
+  <!--
+  <jaxb:bindings schemaLocation="Invoices.xsd">
+
+    <jaxb:schemaBindings>
+      <jaxb:package name="namespace.my.invoices"/>
+    </jaxb:schemaBindings>
+
+  </jaxb:bindings>
+  -->
+
+</jaxb:bindings>
+<!-- vi:set tabstop=2 hardtabs=2 shiftwidth=2 expandtab:-->
