@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings jaxb:version="3.0"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+>
+	<!--  Global Bindings -->
+	<jaxb:globalBindings localScoping="toplevel">
+		<jaxb:serializable uid="20230301" />
+	</jaxb:globalBindings>
+</jaxb:bindings>
+<!-- vi:set tabstop=4 hardtabs=4 shiftwidth=4 noexpandtab:-->

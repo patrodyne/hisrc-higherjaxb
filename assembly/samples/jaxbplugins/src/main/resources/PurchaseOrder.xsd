@@ -1,4 +1,10 @@
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://example.org/po"
+	targetNamespace="http://example.org/po"
+	elementFormDefault="qualified"
+>
 
   <xsd:annotation>
     <xsd:documentation xml:lang="en">
@@ -7,19 +13,19 @@
     </xsd:documentation>
   </xsd:annotation>
 
-  <xsd:element name="purchaseOrder" type="PurchaseOrderType"/>
-
   <xsd:element name="comment" type="xsd:string"/>
 
-  <xsd:complexType name="PurchaseOrderType">
-    <xsd:sequence>
-      <xsd:element name="shipTo" type="USAddress"/>
-      <xsd:element name="billTo" type="USAddress"/>
-      <xsd:element ref="comment" minOccurs="0"/>
-      <xsd:element name="items"  type="Items"/>
-    </xsd:sequence>
-    <xsd:attribute name="orderDate" type="xsd:date"/>
-  </xsd:complexType>
+  <xsd:element name="purchaseOrder">
+	  <xsd:complexType>
+	    <xsd:sequence>
+	      <xsd:element name="shipTo" type="tns:USAddress"/>
+	      <xsd:element name="billTo" type="tns:USAddress"/>
+	      <xsd:element ref="tns:comment" minOccurs="0"/>
+	      <xsd:element name="items"  type="tns:Items"/>
+	    </xsd:sequence>
+	    <xsd:attribute name="orderDate" type="xsd:date"/>
+	  </xsd:complexType>
+  </xsd:element>
 
   <xsd:complexType name="USAddress">
     <xsd:sequence>
@@ -47,10 +53,10 @@
               </xsd:simpleType>
             </xsd:element>
             <xsd:element name="USPrice"  type="xsd:decimal"/>
-            <xsd:element ref="comment"   minOccurs="0"/>
+            <xsd:element ref="tns:comment"   minOccurs="0"/>
             <xsd:element name="shipDate" type="xsd:date" minOccurs="0"/>
           </xsd:sequence>
-          <xsd:attribute name="partNum" type="SKU" use="required"/>
+          <xsd:attribute name="partNum" type="tns:SKU" use="required"/>
         </xsd:complexType>
       </xsd:element>
     </xsd:sequence>
@@ -64,3 +70,4 @@
   </xsd:simpleType>
 
 </xsd:schema>
+<!-- vi:set tabstop=4 hardtabs=4 shiftwidth=4 noexpandtab:-->
