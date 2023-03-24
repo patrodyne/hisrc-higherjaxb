@@ -75,7 +75,7 @@ target/generated-sources/xjc/
 
 Use **JAXB** to generate Java classes from XML Schema file(s) using its **XJC** compiler. This solution uses a Maven project to invoke **XJC** using the [hisrc-higherjaxb-maven-plugin][9].
 
-[Here][1] is a Maven project named **PurchaseOrder** using the standard file layout. This project includes:
+[Here][1] is a Maven project named **jaxbplugins** using the standard file layout. This project includes:
 
 + An XML Schema file [PurchaseOrder.xsd][4] for the `Invoice` model
 + An XML Sample file [po.xml][5] for unmarshalling
@@ -150,11 +150,11 @@ mvn compile exec:java "src/test/samples/po.xml"
 [2]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/OUTPUT.txt
 [3]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/project-pom.xml
 [4]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/src/main/resources/PurchaseOrder.xsd
-[5]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/src/test/samples/PurchaseOrder01-1.xml
+[5]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/src/test/samples/po.xml
 [6]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/src/main/resources/PurchaseOrder.xjb
-[7]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/src/test/java/namespace/my/jaxbplugins/PurchaseOrderTest.java
+[7]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/src/test/java/org/example/po/PurchaseOrderTest.java
 [8]: https://github.com/patrodyne/hisrc-higherjaxb/tree/master/assembly/samples/jaxbplugins/src/test/samples
 [9]: https://github.com/patrodyne/hisrc-higherjaxb#readme
 [10]: https://github.com/patrodyne/hisrc-basicjaxb#readme
-[11]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/src/main/java/namespace/my/jaxbplugins/Aufgabe4.java
+[11]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/jaxbplugins/src/main/java/org/example/po/Main.java
 
