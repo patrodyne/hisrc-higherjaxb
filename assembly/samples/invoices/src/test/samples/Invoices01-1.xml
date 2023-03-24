@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <invoice-list xmlns="my.namespace/Invoices"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="my.namespace/Invoices ./doctypes/invoice.xsd"
+			  xsi:schemaLocation="my.namespace/Invoices ../../main/resources/Invoices.xsd"
 >
     <invoice>
         <invoice-identifier>01-1</invoice-identifier>
