@@ -84,7 +84,7 @@ public class InvoicesTest extends AbstractSamplesTest
 			}
 		}
 		else
-			fail("Object is not instance of Request or BCResponse: " + root);
+			fail("Object is not instance of InvoiceList: " + root);
 	}
 
 	// Marshall a JAXB object into a String for logging, etc.
