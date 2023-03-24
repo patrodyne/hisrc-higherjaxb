@@ -160,7 +160,7 @@ mvn compile exec:java "src/test/samples/Invoices01-1.xml"
 [4]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/invoices/src/main/resources/Invoices.xsd
 [5]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/invoices/src/test/samples/Invoices01-1.xml
 [6]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/invoices/src/main/resources/Invoices.xjb
-[7]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/invoices/src/test/java/com/models/InvoicesTest.java
+[7]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/invoices/src/test/java/namespace/my/invoices/InvoicesTest.java
 [8]: https://github.com/patrodyne/hisrc-higherjaxb/tree/master/assembly/samples/invoices/src/test/samples
 [9]: https://github.com/patrodyne/hisrc-higherjaxb#readme
 [10]: https://github.com/patrodyne/hisrc-basicjaxb#readme
