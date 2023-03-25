@@ -20,7 +20,7 @@ The [output][2] shows the test results.
 
 ### Solution
 
-+ [hisrc-higherjaxb-maven-plugin][9] - Maven plugin for JAXB 4.x.
++ [hisrc-higherjaxb-maven-plugin][9] - Maven plugin for JAXB 4.x forked from *maven-jaxb2-plugin*.
 + [hisrc-basicjaxb-plugins][10] - JAXB plugins forked from *jaxb2-basics*.
 
 > **Note:** The source/target (release) compatibility for the above is at Java 11, up from Java 8. And, JDK 17 is used for the build. JAXB dependencies are at version 4.x.
