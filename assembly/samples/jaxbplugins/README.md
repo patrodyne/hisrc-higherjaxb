@@ -77,7 +77,7 @@ Use **JAXB** to generate Java classes from XML Schema file(s) using its **XJC** 
 
 [Here][1] is a Maven project named **jaxbplugins** using the standard file layout. This project includes:
 
-+ An XML Schema file [PurchaseOrder.xsd][4] for the `Invoice` model
++ An XML Schema file [PurchaseOrder.xsd][4] for the `PurchaseOrder` model
 + An XML Sample file [po.xml][5] for unmarshalling
 + A JAXB *binding* file [PurchaseOrder.xjb][6] for configuration
 + A JUnit test class [PurchaseOrderTest.java][7] to verify (un)marshalling
