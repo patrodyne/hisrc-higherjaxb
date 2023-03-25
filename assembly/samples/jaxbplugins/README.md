@@ -82,7 +82,7 @@ Use **JAXB** to generate Java classes from XML Schema file(s) using its **XJC** 
 + A JAXB *binding* file [PurchaseOrder.xjb][6] for configuration
 + A JUnit test class [PurchaseOrderTest.java][7] to verify (un)marshalling
 + Sample XML [file(s)][8] with `purchaseOrder` data.
-+ A Main class to demonstrate a simple use case.
++ A [Main][11] class to demonstrate a simple use case.
 + The Maven POM file with `hisrc-higherjaxb-maven-plugin`
 
 ~~~
