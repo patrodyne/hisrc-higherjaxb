@@ -96,5 +96,14 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<!-- All modules for testing, etc. -->
+		<profile>
+			<id>all</id>
+			<modules>
+			</modules>
+		</profile>
+	</profiles>
 </project>
 <!-- vi:set tabstop=4 hardtabs=4 shiftwidth=4 noexpandtab:-->

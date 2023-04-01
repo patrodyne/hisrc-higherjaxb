@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="1.0" jaxb:version="3.0"
+	targetNamespace="h-spamfilter-p://it.test.newmodel"
+	xmlns:tns="h-spamfilter-p://it.test.newmodel"
+	xmlns:tnsBaseModel="h-spamfilter-p://it.test.base.model"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+>
+
+    <xs:import namespace="h-spamfilter-p://it.test.base.model"/>
+
+	<!--
+		Note: JAXB/XJC generates @XmlRootElement for XML Schema
+		elements with anonymous complexType.
+	-->
+	<xs:element name="testInfo">
+		<xs:complexType>
+	        <xs:complexContent>
+	            <xs:extension base="tnsBaseModel:requestBase">
+	                <xs:sequence>
+	                    <xs:element name="body" type="tns:other"/>
+	                </xs:sequence>
+	            </xs:extension>
+	        </xs:complexContent>
+	    </xs:complexType>
+	</xs:element>
+
+    <xs:simpleType name="other">
+        <xs:restriction base="xs:string">
+            <xs:pattern value=".*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="1.0" jaxb:version="3.0"
+	targetNamespace="h-spamfilter-p://it.test.base.model"
+	xmlns:tnsBaseModel="h-spamfilter-p://it.test.base.model"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="unqualified"
+>
+
+	<xs:complexType name="requestBase">
+		<xs:sequence>
+			<xs:element name="errorMSG" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

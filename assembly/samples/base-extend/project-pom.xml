@@ -9,7 +9,7 @@
 	<groupId>org.patrodyne.jvnet</groupId>
 	<artifactId>${project.artifactId}</artifactId>
 	<version>${hisrc-higherjaxb-maven-plugin.version}</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<name>${project.name}</name>
 
 	<properties>
@@ -21,24 +21,78 @@
 		<slf4j.version>${slf4j.version}</slf4j.version>
 	</properties>
 
+	<!-- Default modules for installation -->
+	<modules>
+		<module>base</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- SLF4J Implementation -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>\${slf4j.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<!-- HiSrc BasicJAXB -->
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
-			<artifactId>hisrc-basicjaxb-testing</artifactId>
+			<artifactId>hisrc-basicjaxb-runtime</artifactId>
 			<version>\${hisrc-basicjaxb.version}</version>
 		</dependency>
-		<!-- SLF4J Implementation -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>\${slf4j.version}</version>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-testing</artifactId>
+			<version>\${hisrc-basicjaxb.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>${exec-maven-plugin.version}</version>
+				</plugin>
+				<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+				<!-- mvn hisrc-higherjaxb:generate -->
+				<plugin>
+					<groupId>org.patrodyne.jvnet</groupId>
+					<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+					<version>\${hisrc-higherjaxb-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+							<configuration>
+								<args>
+									<arg>-no-header</arg>
+									<arg>-XhashCode</arg>
+									<arg>-Xequals</arg>
+									<arg>-XtoString</arg>
+								</args>
+								<plugins>
+									<plugin>
+										<groupId>org.patrodyne.jvnet</groupId>
+										<artifactId>hisrc-basicjaxb-plugins</artifactId>
+										<version>\${hisrc-basicjaxb.version}</version>
+									</plugin>
+								</plugins>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -52,28 +106,27 @@
 					<systemPropertiesFile>\${basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
 				</configuration>
 			</plugin>
-			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
-			<!-- mvn hisrc-higherjaxb:generate -->
+		</plugins>
+
+	</build>
+
+	<reporting>
+		<plugins>
 			<plugin>
-				<groupId>org.patrodyne.jvnet</groupId>
-				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
-				<version>\${hisrc-higherjaxb-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jxr-plugin</artifactId>
 			</plugin>
 		</plugins>
-	</build>
+	</reporting>
 
 	<profiles>
 		<!-- All modules for testing, etc. -->
 		<profile>
 			<id>all</id>
 			<modules>
+				<module>extend</module>
 			</modules>
 		</profile>
 	</profiles>

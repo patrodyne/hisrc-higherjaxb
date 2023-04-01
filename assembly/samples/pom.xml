@@ -19,6 +19,7 @@
 	<modules>
 		<module>animal</module>
 		<module>any-content</module>
+		<module>base-extend</module>
 		<module>catalog</module>
 		<module>custom-name</module>
 		<module>dtd</module>

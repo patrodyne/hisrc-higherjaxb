@@ -10,8 +10,6 @@
 	<name>${project.name}</name>
 	<modules>
 		<module>a</module>
-		<module>b</module>
-		<module>c</module>
 	</modules>
 	<properties>
 		<maven.compiler.release>${maven.compiler.release}</maven.compiler.release>
@@ -180,5 +178,16 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<profiles>
+		<!-- All modules for testing, etc. -->
+		<profile>
+			<id>all</id>
+			<modules>
+				<module>b</module>
+				<module>c</module>
+			</modules>
+		</profile>
+	</profiles>
 </project>
 <!-- vi:set tabstop=4 hardtabs=4 shiftwidth=4 noexpandtab:-->

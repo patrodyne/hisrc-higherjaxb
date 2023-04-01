@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.patrodyne.jvnet</groupId>
+		<artifactId>${project.artifactId}</artifactId>
+		<version>${hisrc-higherjaxb-maven-plugin.version}</version>
+	</parent>
+
+	<artifactId>${project.artifactId}-extend</artifactId>
+	<packaging>jar</packaging>
+	<name>HiSrc HigherJAXB Plugin Sample [base-extend-extend]</name>
+
+	<dependencies>
+		<!-- Base-Extend, Base Dependency -->
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-higherjaxb-sample-base-extend-base</artifactId>
+			<version>${hisrc-higherjaxb-maven-plugin.version}</version>
+		</dependency>
+
+		<!-- SLF4J Implementation -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<defaultGoal>package</defaultGoal>
+		<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+		<!-- mvn hisrc-higherjaxb:generate -->
+		<plugins>
+			<plugin>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<episodes>
+								<episode>
+									<groupId>org.patrodyne.jvnet</groupId>
+									<artifactId>${project.artifactId}-base</artifactId>
+								</episode>
+							</episodes>
+							<!-- Using catalogs to resolve schema URIs in strict mode is known to be problematic and may fail. -->
+							<strict>false</strict>
+							<catalog>src/main/resources/catalog.xml</catalog>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

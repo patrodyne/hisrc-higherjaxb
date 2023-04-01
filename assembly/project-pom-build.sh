@@ -61,10 +61,10 @@ menu_actions()
 			"f)")	${BUILDER} dependency:resolve-plugins ;;
 			"g)")	${BUILDER} dependency:analyze ;;
 			"h)")	${BUILDER} dependency:sources dependency:resolve -Dclassifier=javadoc ;;
-			"i)")	${BUILDER} -DskipTests=false clean test ;;
-			"j)")	${BUILDER} -DskipTests=true  clean package ;;
+			"i)")	${BUILDER} -DskipTests=false -Pall clean test ;;
+			"j)")	${BUILDER} -DskipTests=true  -Pall clean package ;;
 			"k)")	${BUILDER} -DskipTests=true  clean install ;;
-			"l)")	${BUILDER} -DskipTests=false clean site ;;
+			"l)")	${BUILDER} -DskipTests=false -Pall clean site ;;
 			"v)")	vim . ;;
 		esac	
 		read -p "Press any key to continue..." anykey
