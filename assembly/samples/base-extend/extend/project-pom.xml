@@ -23,19 +23,21 @@
 			<artifactId>hisrc-higherjaxb-sample-base-extend-base</artifactId>
 			<version>${hisrc-higherjaxb-maven-plugin.version}</version>
 		</dependency>
-
-		<!-- SLF4J Implementation -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
-		<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
-		<!-- mvn hisrc-higherjaxb:generate -->
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>h_spamfilter_p.it_test.Main</mainClass>
+					<cleanupDaemonThreads>false</cleanupDaemonThreads>
+				</configuration>
+			</plugin>
+			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+			<!-- mvn hisrc-higherjaxb:generate -->
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>

@@ -99,6 +99,10 @@
 				<version>${maven-compiler-plugin.version}</version>
 			</plugin>
 			<plugin>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven-site-plugin.version}</version>
+			</plugin>
+			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
@@ -113,15 +117,22 @@
 	<reporting>
 		<plugins>
 			<plugin>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>${maven-project-info-reports-plugin.version}</version>
+			</plugin>
+			<plugin>
 				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>${maven-surefire-report-plugin.version}</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-jxr-plugin</artifactId>
+				<version>${maven-jxr-plugin.version}</version>
 			</plugin>
 		</plugins>
 	</reporting>
 
 	<profiles>
+
 		<!-- All modules for testing, etc. -->
 		<profile>
 			<id>all</id>
@@ -129,6 +140,38 @@
 				<module>extend</module>
 			</modules>
 		</profile>
+
+		<!-- Execution mode -->
+		<profile>
+			<id>exec</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>\${basedir}/src/test/resources</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+
+		<!-- Test mode -->
+		<profile>
+			<id>test</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
 	</profiles>
 </project>
 <!-- vi:set tabstop=4 hardtabs=4 shiftwidth=4 noexpandtab:-->
