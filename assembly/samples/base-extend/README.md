@@ -29,7 +29,7 @@ mvn -Pexec clean compile exec:java
 Only the first execution is necessary to demonstrate the solution and this [output][12] shows the test results. The other executions provide more insight, as follows:
 
 `mvn -Pall,test clean test`
-: This solution contains a top-level [POM][13] project with two sub-modules: `base` and `extend`. The goal of this first execution is to `clean`, `compile` and `test` *all* three projects using the Maven [*reactor*][7]. **Note: ** The reactor keeps all modules on the classpath; thus, the `extend` module is able to resolve the `base` module, *cleverly*.
+: This solution contains a top-level [POM][13] project with two sub-modules: `base` and `extend`. The goal of this first execution is to `clean`, `compile` and `test` *all* three projects using the Maven [*reactor*][7]. **Note:** The reactor keeps all modules on the classpath; thus, the `extend` module is able to resolve the `base` module, *cleverly*.
 
 `mvn -Ptest clean install`
 : To resolve the `base` artifact *outside* of the reactor, you need to install the artifact into your local repository. **Note:** A profile named `test` is used to add the [SLF4J][8] *implementation* into the build for its test phase, only.
