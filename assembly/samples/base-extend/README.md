@@ -29,19 +29,20 @@ mvn -Pexec clean compile exec:java
 Only the first execution is necessary to demonstrate the solution and this [output][12] shows the test results. The other executions provide more insight, as follows:
 
 `mvn -Pall,test clean test`
-: This solution contains a top-level [POM][13] project with two sub-modules: `base` and `extend`. The goal of this first execution is to `clean`, `compile` and `test` *all* three projects using the Maven [*reactor*][7]. **Note:** The reactor keeps all modules on the classpath; thus, the `extend` module is able to resolve the `base` module, *cleverly*.
+>This solution contains a top-level [POM][13] project with two sub-modules: `base` and `extend`. The goal of this first execution is to `clean`, `compile` and `test` *all* three projects using the Maven [*reactor*][7]. **Note:** The reactor keeps all modules on the classpath; thus, the `extend` module is able to resolve the `base` module, *cleverly*.
 
 `mvn -Ptest clean install`
-: To resolve the `base` artifact *outside* of the reactor, you need to install the artifact into your local repository. **Note:** A profile named `test` is used to add the [SLF4J][8] *implementation* into the build for its test phase, only.
+> To resolve the `base` artifact *outside* of the reactor, you need to install the artifact into your local repository. **Note:** A profile named `test` is used to add the [SLF4J][8] *implementation* into the build for its test phase, only.
 
 `cd extend`
-: Change to the `extend` sub-module for testing and execution outside of the multi-module reactor.
+> Change to the `extend` sub-module for testing and execution outside of the multi-module reactor.
 
 `mvn -Ptest clean test`
-: Perform a clean test using the `test` profile for [unit testing][49].
+> Perform a clean test using the `test` profile for [unit testing][49].
 
 `mvn -Pexec clean compile exec:java`
-: Execute a simple Java [application][44] to demonstrate the unmarshalling of this sample [TestInfo.xml][45]. **Note:** The `exec` profile adds the [simplelogger.properties][48] and [SLF4J][8] *implementation* into the classpath for this execution only.
+> Execute a simple Java [application][44] to demonstrate the unmarshalling of this sample [TestInfo.xml][45]. **Note:** The `exec` profile adds the [simplelogger.properties][48] and [SLF4J][8] *implementation* into the classpath for this execution only.
+
 
 #### Catalog and Episode Configuration
 
