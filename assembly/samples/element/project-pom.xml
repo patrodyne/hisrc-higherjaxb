@@ -28,13 +28,6 @@
 			<artifactId>hisrc-basicjaxb-testing</artifactId>
 			<version>\${hisrc-basicjaxb.version}</version>
 		</dependency>
-		<!-- SLF4J Implementation -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>\${slf4j.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -75,6 +68,39 @@
 			<id>all</id>
 			<modules>
 			</modules>
+		</profile>
+
+		<!-- Execution mode -->
+		<profile>
+			<id>exec</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<version>\${slf4j.version}</version>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>\${basedir}/src/test/resources</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+
+		<!-- Test mode -->
+		<profile>
+			<id>test</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<version>\${slf4j.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
 		</profile>
 	</profiles>
 </project>

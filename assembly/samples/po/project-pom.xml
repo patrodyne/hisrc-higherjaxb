@@ -15,6 +15,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<hisrc-higherjaxb-maven-plugin.version>${hisrc-higherjaxb-maven-plugin.version}</hisrc-higherjaxb-maven-plugin.version>
 		<jaxb-api.version>${jaxb-api.version}</jaxb-api.version>
+		<slf4j.version>${slf4j.version}</slf4j.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -180,6 +181,39 @@
 			<id>all</id>
 			<modules>
 			</modules>
+		</profile>
+
+		<!-- Execution mode -->
+		<profile>
+			<id>exec</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<version>\${slf4j.version}</version>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>\${basedir}/src/test/resources</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+
+		<!-- Test mode -->
+		<profile>
+			<id>test</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<version>\${slf4j.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
 		</profile>
 	</profiles>
 </project>

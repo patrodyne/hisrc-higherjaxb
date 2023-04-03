@@ -62,12 +62,6 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>\${slf4j.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>\${slf4j.version}</version>
-			<scope>test</scope>
-		</dependency>
 		<!-- JUnit -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -248,6 +242,39 @@
 			<id>all</id>
 			<modules>
 			</modules>
+		</profile>
+
+		<!-- Execution mode -->
+		<profile>
+			<id>exec</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<version>\${slf4j.version}</version>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>\${basedir}/src/test/resources</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+
+		<!-- Test mode -->
+		<profile>
+			<id>test</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<version>\${slf4j.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
 		</profile>
 	</profiles>
 </project>
