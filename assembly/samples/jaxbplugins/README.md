@@ -145,7 +145,7 @@ The JUnit test class, [PurchaseOrderTest.java][7], scans for the sample files an
 A Java standard engine application with a `main(...)` method is at [`org.example.po.Main`][11]. This application is executed using:
 
 ~~~
-mvn compile exec:java "src/test/samples/po.xml"
+mvn compile exec:java -Dexec.args="src/test/samples/po.xml"
 ~~~
 
 <!-- References -->

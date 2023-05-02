@@ -47,7 +47,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
-					<argLine>${env.JVM_SYS_ARGS}</argLine>
+					<argLine>\${env.JVM_SYS_ARGS}</argLine>
 					<systemPropertiesFile>\${basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
 				</configuration>
 			</plugin>
@@ -123,6 +123,9 @@
 			</dependencies>
 			<build>
 				<resources>
+					<resource>
+						<directory>\${basedir}/src/main/resources</directory>
+					</resource>
 					<resource>
 						<directory>\${basedir}/src/test/resources</directory>
 					</resource>

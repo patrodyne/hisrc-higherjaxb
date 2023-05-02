@@ -162,7 +162,7 @@ The JUnit test class, [InvoicesTest.java][7], scans for the sample files and inv
 A Java standard engine application with a `main(...)` method is at [`namespace.my.invoices.Aufgabe4`][11]. This application is executed using:
 
 ~~~
-mvn compile exec:java "src/test/samples/Invoices01-1.xml"
+mvn compile exec:java -Dexec.args="src/test/samples/Invoices01-1.xml"
 ~~~
 
 <!-- References -->

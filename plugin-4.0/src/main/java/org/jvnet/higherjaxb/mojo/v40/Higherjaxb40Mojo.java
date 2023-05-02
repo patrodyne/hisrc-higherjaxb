@@ -110,10 +110,13 @@ public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 		throws MojoExecutionException
 	{
 		if (getVerbose())
-			getLog().info("Parsing input schema(s)...");
+			getLog().info("Parsing input schema(s): Start");
 		
 		final Model model = ModelLoader.load(options, new JCodeModel(),
 			new LoggingErrorReceiver("Error while parsing schema(s).", getLog(), getVerbose()));
+		
+		if (getVerbose())
+			getLog().info("Parsing input schema(s): Finished");
 		
 		if (model != null)
 		{

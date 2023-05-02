@@ -1,5 +1,13 @@
-#!/bin/sh
-MAIN_CLASS=${1:-namespace.my.invoices.Aufgabe4}
-mvn compile exec:java \
-	-Dexec.mainClass="$MAIN_CLASS" \
-	-Dexec.args="$2 $3 $4 $5 $6 $7 $8 $9"
+#!/bin/bash
+
+if grep -q "<packaging>jar</packaging>" pom.xml; then
+	BASEDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+	source ${BASEDIR}/build-cfg.sh
+	source ${BASEDIR}/build-inc.sh
+	export MAVEN_OPTS="${MAVEN_OPTS} ${JVM_SYS_PROPS}"
+
+	mvn ${MAVEN_ARGS} -Pexec clean compile exec:java
+else
+    echo "Not a JAR project!"
+fi
+

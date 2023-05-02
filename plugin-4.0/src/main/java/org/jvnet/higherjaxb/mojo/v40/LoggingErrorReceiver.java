@@ -7,47 +7,55 @@ import com.sun.tools.xjc.ErrorReceiver;
 
 public class LoggingErrorReceiver extends ErrorReceiver
 {
-	private final Log log;
-	private final boolean verbose;
-	private final String messagePrefix;
+	private Log logger;
+	public Log getLogger() { return logger; }
+	public void setLogger(Log logger) { this.logger = logger; }
 
-	public LoggingErrorReceiver(String messagePrefix, Log log, boolean verbose)
+	private boolean verbose = false;
+    public boolean isVerbose() { return verbose; }
+	public void setVerbose(boolean verbose) { this.verbose = verbose; }
+	
+	private String messagePrefix = "ERROR";
+	public String getMessagePrefix() { return messagePrefix; }
+	public void setMessagePrefix(String messagePrefix) { this.messagePrefix = messagePrefix; }
+
+	public LoggingErrorReceiver(String messagePrefix, Log logger, boolean verbose)
 	{
-		this.log = log;
-		this.verbose = verbose;
-		this.messagePrefix = messagePrefix;
+		setMessagePrefix(messagePrefix);
+		setLogger(logger);
+		setVerbose(verbose);
 	}
 
 	public void warning(SAXParseException saxex)
 	{
-		if (verbose)
-			log.warn(getMessage(saxex), saxex);
+		if (isVerbose())
+			getLogger().warn(getMessage(saxex), saxex);
 		else
 		{
 			if ( saxex.getMessage().contains("experimental") )
-				log.warn("Current configuration is experimental!");
+				getLogger().warn("Current configuration is experimental!");
 			else
 			{
-				log.warn(saxex.getMessage());
-				log.warn(getMessage(saxex));
+				getLogger().warn(saxex.getMessage());
+				getLogger().warn(getMessage(saxex));
 			}
 		}
 	}
 
 	public void error(SAXParseException saxex)
 	{
-		log.error(getMessage(saxex), saxex);
+		getLogger().error(getMessage(saxex), saxex);
 	}
 
 	public void fatalError(SAXParseException saxex)
 	{
-		log.error(getMessage(saxex), saxex);
+		getLogger().error(getMessage(saxex), saxex);
 	}
 
 	public void info(SAXParseException saxex)
 	{
-		if (verbose)
-			log.info(getMessage(saxex));
+		if (isVerbose())
+			getLogger().info(getMessage(saxex));
 	}
 
 	private String getMessage(SAXParseException ex)
@@ -57,7 +65,7 @@ public class LoggingErrorReceiver extends ErrorReceiver
 		final String sys = ex.getSystemId();
 		final String pub = ex.getPublicId();
 
-		return messagePrefix + " Location [" + (sys != null ? " " + sys : "")
+		return getMessagePrefix() + " Location [" + (sys != null ? " " + sys : "")
 			+ (pub != null ? " " + pub : "")
 			+ (row > 0 ? "{" + row + (col > 0 ? "," + col : "") + "}" : "")
 			+ " ].";
