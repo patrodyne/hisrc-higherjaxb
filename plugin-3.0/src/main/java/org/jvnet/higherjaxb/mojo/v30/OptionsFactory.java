@@ -1,11 +1,13 @@
 package org.jvnet.higherjaxb.mojo.v30;
 
+import static java.lang.String.format;
+
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
-import java.text.MessageFormat;
 import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.jvnet.higherjaxb.mojo.CoreOptionsFactory;
 import org.jvnet.higherjaxb.mojo.OptionsConfiguration;
 import org.jvnet.higherjaxb.mojo.util.StringUtils;
 import org.xml.sax.InputSource;
@@ -15,7 +17,7 @@ import com.sun.tools.xjc.Language;
 import com.sun.tools.xjc.Options;
 import com.sun.tools.xjc.api.SpecVersion;
 
-public class OptionsFactory implements org.jvnet.higherjaxb.mojo.CoreOptionsFactory<Options>
+public class OptionsFactory implements CoreOptionsFactory<Options>
 {
 	/**
 	 * Creates and initializes an instance of XJC options.
@@ -24,7 +26,6 @@ public class OptionsFactory implements org.jvnet.higherjaxb.mojo.CoreOptionsFact
 		throws MojoExecutionException
 	{
 		final Options options = new Options();
-		
 		options.verbose = optionsConfiguration.isVerbose();
 		options.debugMode = optionsConfiguration.isDebugMode();
 		options.classpaths.addAll(optionsConfiguration.getPlugins());
@@ -73,7 +74,7 @@ public class OptionsFactory implements org.jvnet.higherjaxb.mojo.CoreOptionsFact
 		}
 		catch (BadCommandLineException bclex)
 		{
-			throw new MojoExecutionException("Error parsing the command line [" + arguments + "]", bclex);
+			throw new MojoExecutionException(format("Error parsing the command line [%s]", arguments), bclex);
 		}
 		
 		return options;
@@ -88,13 +89,13 @@ public class OptionsFactory implements org.jvnet.higherjaxb.mojo.CoreOptionsFact
 		try
 		{
 			if (!Charset.isSupported(encoding))
-				throw new MojoExecutionException(MessageFormat.format("Unsupported encoding [{0}].", encoding));
+				throw new MojoExecutionException(format("Unsupported encoding [%s].", encoding));
 
 			return encoding;
 		}
 		catch (IllegalCharsetNameException icne)
 		{
-			throw new MojoExecutionException(MessageFormat.format("Unsupported encoding [{0}].", encoding));
+			throw new MojoExecutionException(format("Unsupported encoding [%s].", encoding));
 		}
 	}
 
@@ -112,6 +113,6 @@ public class OptionsFactory implements org.jvnet.higherjaxb.mojo.CoreOptionsFact
 		else if ("WSDL".equalsIgnoreCase(schemaLanguage))
 			return Language.WSDL;
 		else
-			throw new MojoExecutionException("Unknown schemaLanguage [" + schemaLanguage + "].");
+			throw new MojoExecutionException(format("Unknown schemaLanguage [%s].", schemaLanguage));
 	}
 }
