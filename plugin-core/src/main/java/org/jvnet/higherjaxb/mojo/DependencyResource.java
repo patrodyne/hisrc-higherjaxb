@@ -23,6 +23,7 @@ public class DependencyResource extends Dependency
 		setScope(Artifact.SCOPE_RUNTIME);
 	}
 
+	@Override
 	public String toString()
 	{
 		return "Dependency {groupId=" + getGroupId() + ", artifactId=" + getArtifactId() + ", version=" + getVersion()

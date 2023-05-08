@@ -72,6 +72,7 @@ public class ArtifactUtils
 
 	public static final Function<Artifact, File> GET_FILE = new Function<Artifact, File>()
 	{
+		@Override
 		public File eval(Artifact argument)
 		{
 			return argument.getFile();

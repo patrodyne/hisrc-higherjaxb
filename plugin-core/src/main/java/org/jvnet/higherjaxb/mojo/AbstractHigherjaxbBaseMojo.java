@@ -286,6 +286,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	 * Execute the maven2 mojo to invoke the XJC compiler based on any
 	 * configuration settings.
 	 */
+	@Override
 	public void execute() throws MojoExecutionException
 	{
 		synchronized (lock)
@@ -825,6 +826,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	/**
 	 * Log the configuration settings. Shown when exception thrown or when verbose is true.
 	 */
+	@Override
 	protected void logConfiguration() throws MojoExecutionException
 	{
 		super.logConfiguration();
@@ -1063,6 +1065,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 		final Function<URI, Long> LAST_MODIFIED = new Function<URI, Long>()
 		{
+			@Override
 			public Long eval(URI uri)
 			{
 				return getURILastModifiedResolver().getLastModified(uri);

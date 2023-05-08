@@ -43,6 +43,7 @@ public class IOUtils {
 	}
 
 	public static final Function<File, URL> GET_URL = new Function<File, URL>() {
+		@Override
 		public URL eval(File file) {
 			try {
 				return file.toURI().toURL();

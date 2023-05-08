@@ -10,6 +10,7 @@ public class CollectionUtils {
 
 	public static class PositiveComparatorWithNullAsGreatest<V extends Object & Comparable<? super V>>
 			implements Comparator<V> {
+		@Override
 		public int compare(V o1, V o2) {
 			if (o1 == null && o2 == null)
 				return 0;
@@ -24,6 +25,7 @@ public class CollectionUtils {
 
 	public static class NegativeComparatorWithNullAsSmallest<V extends Object & Comparable<? super V>>
 			implements Comparator<V> {
+		@Override
 		public int compare(V o1, V o2) {
 			if (o1 == null && o2 == null)
 				return 0;

@@ -22,6 +22,7 @@ public class OptionsFactory implements CoreOptionsFactory<Options>
 	/**
 	 * Creates and initializes an instance of XJC options.
 	 */
+	@Override
 	public Options createOptions(OptionsConfiguration optionsConfiguration)
 		throws MojoExecutionException
 	{

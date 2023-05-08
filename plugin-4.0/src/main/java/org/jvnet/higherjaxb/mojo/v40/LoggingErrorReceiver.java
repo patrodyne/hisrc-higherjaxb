@@ -26,6 +26,7 @@ public class LoggingErrorReceiver extends ErrorReceiver
 		setVerbose(verbose);
 	}
 
+	@Override
 	public void warning(SAXParseException saxex)
 	{
 		if (isVerbose())
@@ -42,16 +43,19 @@ public class LoggingErrorReceiver extends ErrorReceiver
 		}
 	}
 
+	@Override
 	public void error(SAXParseException saxex)
 	{
 		getLogger().error(getMessage(saxex), saxex);
 	}
 
+	@Override
 	public void fatalError(SAXParseException saxex)
 	{
 		getLogger().error(getMessage(saxex), saxex);
 	}
 
+	@Override
 	public void info(SAXParseException saxex)
 	{
 		if (isVerbose())

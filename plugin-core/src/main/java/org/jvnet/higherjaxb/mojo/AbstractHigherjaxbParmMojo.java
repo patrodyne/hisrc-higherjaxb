@@ -871,6 +871,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		}
 	}
 
+	@Override
 	public URL resolveDependencyResource(DependencyResource dependencyResource)
 		throws MojoExecutionException
 	{
