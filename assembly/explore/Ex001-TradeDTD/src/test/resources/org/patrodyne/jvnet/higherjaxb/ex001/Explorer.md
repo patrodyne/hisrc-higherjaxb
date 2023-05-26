@@ -514,7 +514,7 @@ When you configure your logger to DEBUG level for the equals strategy, your log 
 [6]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/src/main/resources/Trade.dtd?ts=4
 [7]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/src/main/resources/Trade.xjs?ts=4
 [8]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/doc/xjs.dtd?ts=4
-[9]: file:src/test/resources/schema-relations.png
+[9]: https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/assembly/explore/Ex001-TradeDTD/src/test/resources/schema-relations.png
 [10]: https://eclipse-ee4j.github.io/jaxb-ri/
 [11]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/explore/Ex001-TradeDTD/src/main/java/org/patrodyne/jvnet/higherjaxb/ex001/model/Bind.java?ts=4
 [12]: https://en.wikipedia.org/wiki/ISO_8601
