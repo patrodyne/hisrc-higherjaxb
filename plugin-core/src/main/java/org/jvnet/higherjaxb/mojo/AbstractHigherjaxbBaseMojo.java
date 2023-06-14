@@ -961,12 +961,27 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		CatalogResolver catalogResolver = null;
 		
 		final CatalogManager catalogManager = new CatalogManager();
+		
 		catalogManager.setIgnoreMissingProperties(true);
 		catalogManager.setUseStaticCatalog(false);
-
+		
 		// Enable verbose logging
 		if (getLog().isDebugEnabled())
-			catalogManager.setVerbosity(Integer.MAX_VALUE);
+		{
+			// CatalogManager lazily reads its properties...
+			int cmVerbosity = catalogManager.getVerbosity();
+			catalogManager.setVerbosity(cmVerbosity);
+			
+			getLog().debug("CatalogManager (system, file)");
+			getLog().debug("  xml.catalog.ignoreMissing, NONE.................: " + catalogManager.getIgnoreMissingProperties());
+			getLog().debug("  xml.catalog.files, catalogs.....................: " + catalogManager.getCatalogFiles());
+			getLog().debug("  NONE, relative-catalogs.........................: " + catalogManager.getRelativeCatalogs());
+			getLog().debug("  xml.catalog.verbosity, verbosity................: " + catalogManager.getVerbosity());
+			getLog().debug("  xml.catalog.prefer, prefer......................: " + catalogManager.getPreferPublic());
+			getLog().debug("  xml.catalog.staticCatalog, static-catalog.......: " + catalogManager.getUseStaticCatalog());
+			getLog().debug("  xml.catalog.allowPI, allow-oasis-xml-catalog-pi.: " + catalogManager.getAllowOasisXMLCatalogPI());
+			getLog().debug("  xml.catalog.className, catalog-class-name.......: " + catalogManager.getCatalogClassName());
+		}
 		
 		if (getCatalogResolver() == null)
 			catalogResolver =  new MavenCatalogResolver(catalogManager, this, getLog());
