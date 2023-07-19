@@ -1290,7 +1290,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 	public OptionsConfiguration createOptionsConfiguration() throws MojoExecutionException
 	{
-		final OptionsConfiguration optionsConfiguration = new OptionsConfiguration(
+		final OptionsConfiguration optionsConfiguration = new OptionsConfiguration
+		(
 			getEncoding(),
 			getSchemaLanguage(),
 			getGrammars(),
@@ -1313,7 +1314,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			getDebug(),
 			getArguments(),
 			getXjcPluginURLs(),
-			getSpecVersion());
+			getSpecVersion()
+		);
 		return optionsConfiguration;
 	}
 

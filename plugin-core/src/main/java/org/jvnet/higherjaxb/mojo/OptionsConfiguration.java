@@ -1,65 +1,113 @@
 package org.jvnet.higherjaxb.mojo;
 
+import static java.lang.String.format;
+
 import java.io.File;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
-public class OptionsConfiguration {
-
+public class OptionsConfiguration
+{
 	private final String encoding;
-
+	public String getEncoding() { return encoding; }
+	
 	private final String schemaLanguage;
+	public String getSchemaLanguage() { return schemaLanguage; }
+
 	private List<InputSource> grammars;
+	public List<InputSource> getGrammars() { return grammars; }
+
 	private List<InputSource> bindFiles;
+	public List<InputSource> getBindFiles() { return bindFiles; }
 
 	private final EntityResolver entityResolver;
+	public EntityResolver getEntityResolver() { return entityResolver; }
 
 	private final String generatePackage;
+	public String getGeneratePackage() { return generatePackage; }
 
 	private final File generateDirectory;
+	public File getGenerateDirectory() { return generateDirectory; }
 
 	private final boolean readOnly;
+	public boolean isReadOnly() { return readOnly; }
 
 	private final boolean packageLevelAnnotations;
+	public boolean isPackageLevelAnnotations() { return packageLevelAnnotations; }
+
 	private final boolean noFileHeader;
+	public boolean isNoFileHeader() { return noFileHeader; }
+
 	private final boolean enableIntrospection;
+	public boolean isEnableIntrospection() { return enableIntrospection; }
+
 	private final boolean disableXmlSecurity;
+	public boolean isDisableXmlSecurity() { return disableXmlSecurity; }
+
 	private final String accessExternalSchema;
+	public String getAccessExternalSchema() { return accessExternalSchema; }
+
 	private final String accessExternalDTD;
+	public String getAccessExternalDTD() { return accessExternalDTD; }
+	
 	private final boolean enableExternalEntityProcessing;
+	public boolean isEnableExternalEntityProcessing() { return enableExternalEntityProcessing; }
+
 	private final boolean contentForWildcard;
+	public boolean isContentForWildcard() { return contentForWildcard; }
 
 	private final boolean extension;
+	public boolean isExtension() { return extension; }
 
 	private final boolean strict;
+	public boolean isStrict() { return strict; }
 
 	private final boolean verbose;
+	public boolean isVerbose() { return verbose; }
 
 	private final boolean debugMode;
+	public boolean isDebugMode() { return debugMode; }
 
 	private final List<String> arguments;
+	public List<String> getArguments() { return arguments; }
 
 	private final List<URL> plugins;
-
+	public List<URL> getPlugins() { return plugins; }
+	
 	private final String specVersion;
+	public String getSpecVersion() { return specVersion; }
 
-	public OptionsConfiguration(String encoding, String schemaLanguage,
-			List<InputSource> grammars, List<InputSource> bindFiles,
-			EntityResolver entityResolver, String generatePackage,
-			File generateDirectory, boolean readOnly,
-			boolean packageLevelAnnotations, boolean noFileHeader,
-			boolean enableIntrospection, boolean disableXmlSecurity,
-			String accessExternalSchema, String accessExternalDTD,
-			boolean enableExternalEntityProcessing,
-			boolean contentForWildcard,
-			boolean extension, boolean strict, boolean verbose,
-			boolean debugMode, List<String> arguments, List<URL> plugins,
-			String specVersion) {
+	public OptionsConfiguration
+	(
+		String encoding,
+		String schemaLanguage,
+		List<InputSource> grammars,
+		List<InputSource> bindFiles,
+		EntityResolver entityResolver,
+		String generatePackage,
+		File generateDirectory,
+		boolean readOnly,
+		boolean packageLevelAnnotations,
+		boolean noFileHeader,
+		boolean enableIntrospection,
+		boolean disableXmlSecurity,
+		String accessExternalSchema,
+		String accessExternalDTD,
+		boolean enableExternalEntityProcessing,
+		boolean contentForWildcard,
+		boolean extension,
+		boolean strict,
+		boolean verbose,
+		boolean debugMode,
+		List<String> arguments,
+		List<URL> plugins,
+		String specVersion
+	)
+	{
 		super();
 		this.encoding = encoding;
 		this.schemaLanguage = schemaLanguage;
@@ -86,172 +134,66 @@ public class OptionsConfiguration {
 		this.specVersion = specVersion;
 	}
 
-	public String getEncoding() {
-		return encoding;
-	}
-
-	public String getSchemaLanguage() {
-		return schemaLanguage;
-	}
-
-	public List<InputSource> getGrammars() {
-		return grammars;
-	}
-
-	public List<InputSource> getBindFiles() {
-		return bindFiles;
-	}
-
-	public EntityResolver getEntityResolver() {
-		return entityResolver;
-	}
-
-	public String getGeneratePackage() {
-		return generatePackage;
-	}
-
-	public File getGenerateDirectory() {
-		return generateDirectory;
-	}
-
-	public boolean isReadOnly() {
-		return readOnly;
-	}
-
-	public boolean isPackageLevelAnnotations() {
-		return packageLevelAnnotations;
-	}
-
-	public boolean isNoFileHeader() {
-		return noFileHeader;
-	}
-
-	public boolean isEnableIntrospection() {
-		return enableIntrospection;
-	}
-
-	public boolean isDisableXmlSecurity() {
-		return disableXmlSecurity;
-	}
-
-	public String getAccessExternalSchema() {
-		return accessExternalSchema;
-	}
-
-	public String getAccessExternalDTD() {
-		return accessExternalDTD;
-	}
-	
-	public boolean isEnableExternalEntityProcessing() {
-		return enableExternalEntityProcessing;
-	}
-
-	public boolean isContentForWildcard() {
-		return contentForWildcard;
-	}
-
-	public boolean isExtension() {
-		return extension;
-	}
-
-	public boolean isStrict() {
-		return strict;
-	}
-
-	public boolean isVerbose() {
-		return verbose;
-	}
-
-	public boolean isDebugMode() {
-		return debugMode;
-	}
-
-	public List<String> getArguments() {
-		return arguments;
-	}
-
-	public String getSpecVersion() {
-		return specVersion;
-	}
-
-	public List<URL> getPlugins() {
-		return plugins;
-	}
-
 	@Override
-	public String toString() {
-		return MessageFormat.format(
-				"OptionsConfiguration [" +
-				//
-
-						"specVersion={0}\n " +
-						//
-						"generateDirectory={1}\n " +
-						//
-						"generatePackage={2}\n " +
-						//
-						"schemaLanguage={3}\n " +
-						//
-						"grammars.systemIds={4}\n " +
-						//
-						"bindFiles.systemIds={5}\n " +
-						//
-						"plugins={6}\n " +
-						//
-						"readOnly={7}\n " +
-						//
-						"packageLevelAnnotations={8}\n " +
-						//
-						"noFileHeader={9}\n " +
-						//
-						"enableIntrospection={10}\n " +
-						//
-						"disableXmlSecurity={11}\n " +
-						//
-						"accessExternalSchema={12}\n " +
-						//
-						"accessExternalDTD={13}\n " +
-						//
-						"contentForWildcard={14}\n " +
-						//
-						"extension={15}\n " +
-						//
-						"strict={16}\n " +
-						//
-						"verbose={17}\n " +
-						//
-						"debugMode={18}\n " +
-						//
-						"arguments={19}" +
-						//
-						"]",
-				// 0
-				specVersion, generateDirectory, generatePackage,
-				schemaLanguage,
-				getSystemIds(grammars),
-				// 5
-				getSystemIds(bindFiles), plugins, readOnly,
-				packageLevelAnnotations, noFileHeader,
-				// 10
-				enableIntrospection, disableXmlSecurity, accessExternalSchema,
-				accessExternalDTD, contentForWildcard,
-				// 15
-				extension, strict, verbose, debugMode, arguments);
+	public String toString()
+	{
+		return format
+		(
+			"OptionsConfiguration [" +
+				"specVersion=%s\n " +
+				"generateDirectory=%s\n " +
+				"generatePackage=%s\n " +
+				"schemaLanguage=%s\n " +
+				"grammars.systemIds=%s\n " +
+				"bindFiles.systemIds=%s\n " +
+				"plugins=%s\n " +
+				"readOnly=%s\n " +
+				"packageLevelAnnotations=%s\n " +
+				"noFileHeader=%s\n " +
+				"enableIntrospection=%s\n " +
+				"disableXmlSecurity=%s\n " +
+				"accessExternalSchema=%s\n " +
+				"accessExternalDTD=%s\n " +
+				"contentForWildcard=%s\n " +
+				"extension=%s\n " +
+				"strict=%s\n " +
+				"verbose=%s\n " +
+				"debugMode=%s\n " +
+				"arguments=%s" +
+			"]",
+			specVersion,
+			generateDirectory,
+			generatePackage,
+			schemaLanguage,
+			getSystemIds(grammars),
+			getSystemIds(bindFiles),
+			plugins,
+			readOnly,
+			packageLevelAnnotations,
+			noFileHeader,
+			enableIntrospection,
+			disableXmlSecurity,
+			accessExternalSchema,
+			accessExternalDTD,
+			contentForWildcard,
+			extension,
+			strict,
+			verbose,
+			debugMode,
+			arguments
+		);
 
 	}
 
-	private List<String> getSystemIds(List<InputSource> inputSources) {
-		if (inputSources == null) {
-			return null;
-		} else {
-			final List<String> systemIds = new ArrayList<String>(
-					inputSources.size());
-			for (InputSource inputSource : inputSources) {
-				systemIds.add(inputSource == null ? null : inputSource
-						.getSystemId());
-			}
-			return systemIds;
+	private List<String> getSystemIds(List<InputSource> inputSources)
+	{
+		List<String> systemIds = null;
+		if ( inputSources != null )
+		{
+			systemIds = new ArrayList<String>(inputSources.size());
+			for (InputSource inputSource : inputSources)
+				systemIds.add( (inputSource == null) ? null : inputSource .getSystemId() );
 		}
+		return systemIds;
 	}
-
 }

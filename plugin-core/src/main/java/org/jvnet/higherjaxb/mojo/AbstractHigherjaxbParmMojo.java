@@ -387,7 +387,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 
 	/**
 	 * If 'true', enables correct generation of Boolean getters/setters to
-	 * enable Bean Introspection apis; xjc's -enableIntrospection option.
+	 * enable Bean Introspection APIs; xjc's -enableIntrospection option.
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".enableIntrospection", defaultValue = "false")
 	private boolean enableIntrospection = false;

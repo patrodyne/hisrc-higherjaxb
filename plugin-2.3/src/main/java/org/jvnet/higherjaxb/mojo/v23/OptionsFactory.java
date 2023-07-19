@@ -27,47 +27,35 @@ public class OptionsFactory implements CoreOptionsFactory<Options>
 		throws MojoExecutionException
 	{
 		final Options options = new Options();
-		options.verbose = optionsConfiguration.isVerbose();
-		options.debugMode = optionsConfiguration.isDebugMode();
-		options.classpaths.addAll(optionsConfiguration.getPlugins());
-		options.target = SpecVersion.V2_2;
 		
 		final String encoding = optionsConfiguration.getEncoding();
 		if (encoding != null)
 			options.encoding = createEncoding(encoding);
-		
 		options.setSchemaLanguage(createLanguage(optionsConfiguration.getSchemaLanguage()));
-		options.entityResolver = optionsConfiguration.getEntityResolver();
-		
 		for (InputSource grammar : optionsConfiguration.getGrammars())
 			options.addGrammar(grammar);
-		
 		for (InputSource bindFile : optionsConfiguration.getBindFiles())
 			options.addBindFile(bindFile);
-		
-		// Setup Other Options
+		options.entityResolver = optionsConfiguration.getEntityResolver();
 		options.defaultPackage = optionsConfiguration.getGeneratePackage();
 		options.targetDir = optionsConfiguration.getGenerateDirectory();
-		options.strictCheck = optionsConfiguration.isStrict();
 		options.readOnly = optionsConfiguration.isReadOnly();
 		options.packageLevelAnnotations = optionsConfiguration.isPackageLevelAnnotations();
 		options.noFileHeader = optionsConfiguration.isNoFileHeader();
 		options.enableIntrospection = optionsConfiguration.isEnableIntrospection();
 		options.disableXmlSecurity = optionsConfiguration.isDisableXmlSecurity();
-		
 		if (optionsConfiguration.getAccessExternalSchema() != null)
 			System.setProperty("javax.xml.accessExternalSchema", optionsConfiguration.getAccessExternalSchema());
-		
 		if (optionsConfiguration.getAccessExternalDTD() != null)
 			System.setProperty("javax.xml.accessExternalDTD", optionsConfiguration.getAccessExternalDTD());
-		
 		if (optionsConfiguration.isEnableExternalEntityProcessing())
 			System.setProperty("enableExternalEntityProcessing", Boolean.TRUE.toString());
-		
 		options.contentForWildcard = optionsConfiguration.isContentForWildcard();
 		if (optionsConfiguration.isExtension())
 			options.compatibilityMode = Options.EXTENSION;
-		
+		options.strictCheck = optionsConfiguration.isStrict();
+		options.verbose = optionsConfiguration.isVerbose();
+		options.debugMode = optionsConfiguration.isDebugMode();
 		final List<String> arguments = optionsConfiguration.getArguments();
 		try
 		{
@@ -77,7 +65,10 @@ public class OptionsFactory implements CoreOptionsFactory<Options>
 		{
 			throw new MojoExecutionException(format("Error parsing the command line [%s]", arguments), bclex);
 		}
-		
+		options.classpaths.addAll(optionsConfiguration.getPlugins());
+
+		options.target = SpecVersion.V2_2;
+
 		return options;
 	}
 
