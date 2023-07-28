@@ -148,7 +148,8 @@
 						<include>**/Run*Mojo.java</include>
 						-->
 					</includes>
-					<forkMode>once</forkMode>
+					<forkCount>1</forkCount>
+					<reuseForks>true</reuseForks>
 					<!-- need more memory than the default for our unit tests -->
 					<!-- OpenJDK 64-Bit Server VM warning: Ignoring option MaxPermSize; support was removed in 8.0 -->
 					<!--
