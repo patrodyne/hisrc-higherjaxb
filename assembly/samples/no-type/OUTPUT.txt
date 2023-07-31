@@ -1,0 +1,72 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------< org.patrodyne.jvnet:hisrc-higherjaxb-sample-notype >---------
+[INFO] Building HiSrc HigherJAXB Assembly Sample [notype] 2.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ hisrc-higherjaxb-sample-notype ---
+[INFO] Deleting hisrc-higherjaxb-sample-notype-2.1.0/target
+[INFO] 
+[INFO] --- hisrc-higherjaxb:2.1.0:generate (default) @ hisrc-higherjaxb-sample-notype ---
+[INFO] Sources are not up-to-date, XJC will be executed.
+[INFO] Episode file [hisrc-higherjaxb-sample-notype-2.1.0/target/generated-sources/xjc/META-INF/sun-jaxb.episode] was augmented with if-exists="true" attributes.
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ hisrc-higherjaxb-sample-notype ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] Copying 1 resource from target/generated-sources/xjc to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ hisrc-higherjaxb-sample-notype ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 6 source files with javac [debug release 11] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ hisrc-higherjaxb-sample-notype ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ hisrc-higherjaxb-sample-notype ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 1 source file with javac [debug release 11] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.0.0-M8:test (default-test) @ hisrc-higherjaxb-sample-notype ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.example.notype.NoTypeTest
+14:51:24:920 DEBUG Testing samples, start
+14:51:24:926 DEBUG Sample directory [hisrc-higherjaxb-sample-notype-2.1.0/src/test/samples].
+14:51:24:936 DEBUG Testing sample, start [ParentElement.xml].
+14:51:25:090 DEBUG ParentElement:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PARENT_ELEMENT xmlns:ns2="http://example.org/notype">
+    <ns2:Version xsi:type="version" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <major>10</major>
+        <minor>2</minor>
+    </ns2:Version>
+</PARENT_ELEMENT>
+
+14:51:25:091 INFO Version: 10.2
+14:51:25:091 INFO Testing sample, SUCCESS [ParentElement.xml].
+14:51:25:092 DEBUG Testing sample, start [SomeOtherElement.xml].
+14:51:25:096 DEBUG SomeOtherElement:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SOME_OTHER_ELEMENT Version="10.2" xmlns:ns2="http://example.org/notype"/>
+
+14:51:25:096 INFO Version: 10.2
+14:51:25:096 INFO Testing sample, SUCCESS [SomeOtherElement.xml].
+14:51:25:096 DEBUG Testing samples, finish
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.278 s - in org.example.notype.NoTypeTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.801 s
+[INFO] Finished at: 2023-07-31T14:51:25-04:00
+[INFO] ------------------------------------------------------------------------

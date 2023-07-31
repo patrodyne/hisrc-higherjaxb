@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings
+	jxb:version="3.0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
+	xmlns:anx="http://jvnet.org/basicjaxb/xjc/annox" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jaxb https://jakarta.ee/xml/ns/jaxb/bindingschema_3_0.xsd"
+>
+
+	<jxb:globalBindings localScoping="toplevel" generateElementProperty="false"
+		typesafeEnumMaxMembers="1000" collectionType="java.util.ArrayList">
+		<jxb:serializable uid="20230701" />
+		<!-- JAXB RI: simple (experimental)
+			1. Some content model definitions, such as A,B,A, compile out of the box.
+			2. Some choice definitions use individual fields instead of List<>.
+			3. When repeatable elements are bound, the method name will become plural. 
+			See https://javaee.github.io/jaxb-v2/doc/user-guide/ch05.html
+		-->
+		<xjc:simple/>
+	</jxb:globalBindings>
+
+    <jxb:bindings schemaLocation="XSD_IN_QUESTION.xsd">
+        <jxb:bindings node="//xs:element[@name='PARENT_ELEMENT']/xs:complexType">
+        	<anx:annotate>@jakarta.xml.bind.annotation.XmlRootElement(name = "PARENT_ELEMENT")</anx:annotate>
+        	<jxb:class name="ParentElement"/>
+            <jxb:bindings node="//xs:element[@name='Version']">
+            	<jxb:property name="VersionElement"/>
+				<!--
+                <jxb:javaType name="java.lang.String" parseMethod="javax.xml.bind.annotation.adapters.CollapsedStringAdapter"/>
+				-->
+            </jxb:bindings>
+			<ci:code>
+	public String getVersion() { return (getVersionElement() != null) ? getVersionElement().toString() : null; }
+	public void setVersion(String version) { setVersionElement(new org.example.model.Version(version)); }
+			</ci:code>
+        </jxb:bindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="SOME_OTHER_XSD.xsd">
+        <jxb:bindings node="//xs:element[@name='SOME_OTHER_ELEMENT']/xs:complexType">
+        	<anx:annotate>@jakarta.xml.bind.annotation.XmlRootElement(name = "SOME_OTHER_ELEMENT")</anx:annotate>
+        	<jxb:class name="SomeOtherElement"/>
+            <jxb:bindings node="//xs:attribute[@name='Version']">
+                <jxb:property name="VersionAttribute"/>
+            </jxb:bindings>
+			<ci:code>
+	public String getVersion() { return (getVersionAttribute() != null) ? getVersionAttribute() : null; }
+	public void setVersion(String version) { setVersionAttribute(version); }
+			</ci:code>
+        </jxb:bindings>
+    </jxb:bindings>
+
+</jxb:bindings>

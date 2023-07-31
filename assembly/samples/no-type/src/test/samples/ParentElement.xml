@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PARENT_ELEMENT xmlns:ns1="http://example.org/notype">
+    <ns1:Version xsi:type="version" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <major>10</major>
+        <minor>2</minor>
+    </ns1:Version>
+</PARENT_ELEMENT>

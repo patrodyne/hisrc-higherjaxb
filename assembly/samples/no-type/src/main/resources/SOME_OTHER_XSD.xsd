@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://example.org/notype"
+	targetNamespace="http://example.org/notype"
+>
+	<!-- A root element is declared using an anonymous complex type. -->
+    <xs:element name="SOME_OTHER_ELEMENT">
+	    <xs:complexType>
+			<xs:attribute name="Version"/> <!-- No Type specified -->
+	    </xs:complexType>
+    </xs:element>
+</xs:schema>
