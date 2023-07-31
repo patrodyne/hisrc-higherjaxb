@@ -28,9 +28,6 @@
         	<jxb:class name="ParentElement"/>
             <jxb:bindings node="//xs:element[@name='Version']">
             	<jxb:property name="VersionElement"/>
-				<!--
-                <jxb:javaType name="java.lang.String" parseMethod="javax.xml.bind.annotation.adapters.CollapsedStringAdapter"/>
-				-->
             </jxb:bindings>
 			<ci:code>
 	public String getVersion() { return (getVersionElement() != null) ? getVersionElement().toString() : null; }
@@ -44,11 +41,18 @@
         	<anx:annotate>@jakarta.xml.bind.annotation.XmlRootElement(name = "SOME_OTHER_ELEMENT")</anx:annotate>
         	<jxb:class name="SomeOtherElement"/>
             <jxb:bindings node="//xs:attribute[@name='Version']">
-                <jxb:property name="VersionAttribute"/>
+                <jxb:property name="VersionAttribute">
+					<jxb:baseType>
+						<jxb:javaType name="java.math.BigDecimal"
+							parseMethod="jakarta.xml.bind.DatatypeConverter.parseDecimal"
+							printMethod="jakarta.xml.bind.DatatypeConverter.printDecimal"
+						/>
+					</jxb:baseType>
+				</jxb:property>
             </jxb:bindings>
 			<ci:code>
-	public String getVersion() { return (getVersionAttribute() != null) ? getVersionAttribute() : null; }
-	public void setVersion(String version) { setVersionAttribute(version); }
+	public String getVersion() { return (getVersionAttribute() != null) ? getVersionAttribute().toString() : null; }
+	public void setVersion(String version) { setVersionAttribute(new java.math.BigDecimal(version)); }
 			</ci:code>
         </jxb:bindings>
     </jxb:bindings>
