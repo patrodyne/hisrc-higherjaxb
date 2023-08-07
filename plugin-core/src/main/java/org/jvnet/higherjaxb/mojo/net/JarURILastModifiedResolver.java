@@ -1,12 +1,13 @@
 package org.jvnet.higherjaxb.mojo.net;
 
+import static java.util.Objects.requireNonNull;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.apache.commons.lang3.Validate;
 import org.apache.maven.plugin.logging.Log;
 
 public class JarURILastModifiedResolver extends
@@ -19,7 +20,7 @@ public class JarURILastModifiedResolver extends
 
 	public JarURILastModifiedResolver(Log logger, URILastModifiedResolver parent) {
 		super(SCHEME, logger);
-		this.parent = Validate.notNull(parent);
+		this.parent = requireNonNull(parent);
 	}
 
 	private URILastModifiedResolver getParent() {

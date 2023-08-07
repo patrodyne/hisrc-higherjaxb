@@ -1,5 +1,7 @@
 package org.jvnet.higherjaxb.mojo.net;
 
+import static java.util.Objects.requireNonNull;
+
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -18,7 +20,7 @@ public class CompositeURILastModifiedResolver implements
 	private final Log logger;
 
 	public CompositeURILastModifiedResolver(Log logger) {
-		this.logger = Validate.notNull(logger);
+		this.logger = requireNonNull(logger);
 		addResolvers(new FileURILastModifiedResolver(logger),
 				new JarURILastModifiedResolver(logger, this),
 				new HttpURILastModifiedResolver(logger),

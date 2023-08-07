@@ -1,5 +1,7 @@
 package org.jvnet.higherjaxb.mojo.net;
 
+import static java.util.Objects.requireNonNull;
+
 import java.net.URI;
 import java.text.MessageFormat;
 
@@ -13,8 +15,8 @@ public abstract class AbstractSchemeAwareURILastModifiedResolver implements
 	private final String scheme;
 
 	public AbstractSchemeAwareURILastModifiedResolver(String scheme, Log logger) {
-		this.scheme = Validate.notNull(scheme);
-		this.logger = Validate.notNull(logger);
+		this.scheme = requireNonNull(scheme);
+		this.logger = requireNonNull(logger);
 	}
 
 	@Override
