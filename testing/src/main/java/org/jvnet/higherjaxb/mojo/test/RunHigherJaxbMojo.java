@@ -18,12 +18,12 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Aleksei Valikov
  */
-public class RunHigherjaxbMojo
+public class RunHigherJaxbMojo
 {
 	/**
-	 * Logger.
+	 * SLF4J Logger.
 	 */
-	protected Logger log = LoggerFactory.getLogger(RunHigherjaxbMojo.class);
+	protected Logger logger = LoggerFactory.getLogger(RunHigherJaxbMojo.class);
 
 	@Test
 	public void testExecute() throws Exception
@@ -46,6 +46,7 @@ public class RunHigherjaxbMojo
 	
 	protected void configureMojo(final AbstractHigherjaxbParmMojo<?> mojo)
 	{
+		mojo.setLog(new SLF4JLogger(logger));
 		mojo.setProject(new MavenProject());
 		mojo.setSchemaDirectory(getSchemaDirectory());
 		mojo.setGenerateDirectory(getGenerateDirectory());

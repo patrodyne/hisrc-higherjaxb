@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import org.jvnet.higherjaxb.mojo.test.RunHigherjaxbMojo;
+import org.jvnet.higherjaxb.mojo.test.RunHigherJaxbMojo;
 
-public class RunFooPlugin extends RunHigherjaxbMojo {
+public class RunFooPlugin extends RunHigherJaxbMojo {
 
 	@Override
 	public File getSchemaDirectory() {

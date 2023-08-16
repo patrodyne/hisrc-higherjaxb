@@ -3,9 +3,9 @@ package org.jvnet.higherjaxb.mojo.tests.jvnet_issue_77;
 import java.io.File;
 
 import org.jvnet.higherjaxb.mojo.AbstractHigherjaxbParmMojo;
-import org.jvnet.higherjaxb.mojo.test.RunHigherjaxbMojo;
+import org.jvnet.higherjaxb.mojo.test.RunHigherJaxbMojo;
 
-public class RunJvnetIssue77Mojo extends RunHigherjaxbMojo
+public class RunJvnetIssue77Mojo extends RunHigherJaxbMojo
 {
 	@Override
 	protected void configureMojo(AbstractHigherjaxbParmMojo<?> mojo)

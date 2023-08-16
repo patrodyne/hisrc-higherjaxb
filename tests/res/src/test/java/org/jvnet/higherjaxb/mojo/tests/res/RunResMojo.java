@@ -5,9 +5,9 @@ import java.io.File;
 import org.jvnet.higherjaxb.mojo.AbstractHigherjaxbParmMojo;
 import org.jvnet.higherjaxb.mojo.DependencyResource;
 import org.jvnet.higherjaxb.mojo.ResourceEntry;
-import org.jvnet.higherjaxb.mojo.test.RunHigherjaxbMojo;
+import org.jvnet.higherjaxb.mojo.test.RunHigherJaxbMojo;
 
-public class RunResMojo extends RunHigherjaxbMojo
+public class RunResMojo extends RunHigherJaxbMojo
 {
 	@Override
 	protected void configureMojo(AbstractHigherjaxbParmMojo<?> mojo)
