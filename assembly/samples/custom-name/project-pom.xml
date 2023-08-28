@@ -207,6 +207,7 @@
 						<configuration>
 							<noFileHeader>true</noFileHeader>
 							<extension>true</extension>
+							<debug>true</debug>
 							<args>
 								<arg>-Xannotate</arg>
 							</args>

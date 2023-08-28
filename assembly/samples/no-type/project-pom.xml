@@ -68,6 +68,7 @@
 						</goals>
 						<configuration>
 							<extension>true</extension>
+							<debug>true</debug>
 							<args>
 								<arg>-Xannotate</arg>
 								<arg>-Xinject-code</arg>
