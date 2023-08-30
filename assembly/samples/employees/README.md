@@ -18,7 +18,7 @@ How would I marshal/ unmarshal a List of java objects to an XML without a root e
 
 ### Solution
 
-Although JAXB requires a top level XML element, it does not require the physical container to be a file. The message can be unmarshaled as an input stream, etc. This example reads each line of an input file as a `Base64` encoded stream. Each encoded line contains one `Employee` XML element; thus, each line can be unmarshaled and put into a list of `Employee` objects.
+Although JAXB requires a top level XML element, it does not require the physical container to be a file. The message can be unmarshaled as an input stream, etc. We use this observation to *contain* each XML message in its own `Base64` stream which can then be stored as a list of streams in one *meta-container* file. This example reads each line of an input file as a `Base64` encoded stream. Each encoded line contains one `Employee` XML element; thus, each line can be unmarshaled and put into a list of `Employee` objects.
 
 Create a Maven project named **Employees** using the standard file layout. This project includes:
 
