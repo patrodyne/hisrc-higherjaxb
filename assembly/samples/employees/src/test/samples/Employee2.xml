@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employee>
+    <id>2</id>
+    <firstName>John</firstName>
+    <lastName>Mclane</lastName>
+    <income>200.0</income>
+</employee>

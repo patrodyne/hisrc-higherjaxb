@@ -1,0 +1,75 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------< org.patrodyne.jvnet:hisrc-higherjaxb-sample-employees >--------
+[INFO] Building HiSrc HigherJAXB Assembly Sample [employees] 2.1.1
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ hisrc-higherjaxb-sample-employees ---
+[INFO] Deleting hisrc-higherjaxb-sample-employees-2.1.1/target
+[INFO] 
+[INFO] --- hisrc-higherjaxb:2.1.1:generate (default) @ hisrc-higherjaxb-sample-employees ---
+[INFO] Sources are not up-to-date, XJC will be executed.
+[INFO] Episode file [hisrc-higherjaxb-sample-employees-2.1.1/target/generated-sources/xjc/META-INF/sun-jaxb.episode] was augmented with if-exists="true" attributes.
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ hisrc-higherjaxb-sample-employees ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 1 resource from target/generated-sources/xjc to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ hisrc-higherjaxb-sample-employees ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 2 source files with javac [debug release 11] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ hisrc-higherjaxb-sample-employees ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ hisrc-higherjaxb-sample-employees ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 1 source file with javac [debug release 11] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ hisrc-higherjaxb-sample-employees ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.example.employee.EmployeeTest
+16:20:11:830 DEBUG EmployeeTest - Testing samples, start
+16:20:11:836 DEBUG EmployeeTest - Sample directory [hisrc-higherjaxb-sample-employees-2.1.1/src/test/samples].
+16:20:11:853 DEBUG EmployeeTest - Testing sample, start [Employee1.xml].
+16:20:11:980 DEBUG EmployeeTest - Employee:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employee>
+    <id>1</id>
+    <firstName>Lokesh</firstName>
+    <lastName>Gupta</lastName>
+    <income>100.0</income>
+</employee>
+
+16:20:11:982 INFO EmployeeTest - Testing sample, SUCCESS [Employee1.xml].
+16:20:11:982 DEBUG EmployeeTest - Testing sample, start [Employee2.xml].
+16:20:11:986 DEBUG EmployeeTest - Employee:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employee>
+    <id>2</id>
+    <firstName>John</firstName>
+    <lastName>Mclane</lastName>
+    <income>200.0</income>
+</employee>
+
+16:20:11:986 INFO EmployeeTest - Testing sample, SUCCESS [Employee2.xml].
+16:20:11:986 DEBUG EmployeeTest - Testing samples, finish
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.265 s -- in org.example.employee.EmployeeTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.133 s
+[INFO] Finished at: 2023-08-30T16:20:12-04:00
+[INFO] ------------------------------------------------------------------------
