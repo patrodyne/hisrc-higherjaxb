@@ -1,0 +1,51 @@
+vim tests/po-scd/src/main/resources/bindings.xjb
+vim tests/po-scd/src/main/resources/purchaseorder.xsd
+vim tests/po/src/main/resources/purchaseorder.xsd
+vim tests/tse/src/main/resources/a.xsd
+vim tests/tse/src/main/java/a/ObjectFactory.java
+vim tests/tse/src/main/java/a/A2Enum.java
+vim tests/catalog-xml/src/main/resources/schema_b.xsd
+vim tests/catalog-xml/src/main/resources/schema_a.xsd
+vim tests/p o/src/main/resources/binding.xjb
+vim tests/p o/src/main/resources/purchaseorder.xsd
+vim tests/catalog/src/main/resources/schema_b.xsd
+vim tests/catalog/src/main/resources/schema_a.xsd
+vim tests/jvnet-issue-70/src/main/resources/bindings.xjb
+vim tests/jvnet-issue-53/a/src/main/resources/a.xsd
+vim tests/xjc-simple/src/main/resources/purchaseorder.xjb
+vim tests/xjc-simple/src/main/resources/purchaseorder.xsd
+vim tests/jvnet-issue-77/service/src/main/resources/META-INF/project/schemas/ISOCurrencyCodeType-V2008.xsd
+vim tests/jvnet-issue-77/common-types/src/main/resources/META-INF/project/schemas/ISOCurrencyCodeType-V2008.xsd
+vim tests/two/src/main/resources/schema.xsd
+
+vim testing/src/test/resources/purchaseorder.xsd
+
+vim plugin/src/main/resources/META-INF/m2e/lifecycle-mapping-metadata.xml
+vim plugin/src/test/resources/purchaseorder.xsd
+
+vim assembly/samples/episode/a/src/main/resources/a.xsd
+vim assembly/samples/po/src/main/resources/purchaseorder.xsd
+vim assembly/samples/publisher/src/main/resources/Publisher.xjb
+vim assembly/samples/publisher/src/main/resources/Publisher-BCResponse.xsd
+vim assembly/samples/publisher/src/main/resources/Publisher-Request.xsd
+vim assembly/samples/jaxbplugins/src/main/resources/PurchaseOrder.xjb
+vim assembly/samples/jaxbplugins/src/main/resources/PurchaseOrder.xsd
+vim assembly/samples/any-content/src/main/resources/response.xsd
+vim assembly/samples/any-content/src/main/resources/response.xjb
+vim assembly/samples/employees/src/main/resources/employee.xsd
+vim assembly/samples/employees/src/main/resources/employee.xjb
+vim assembly/samples/catalog/src/main/resources/schema_b.xsd
+vim assembly/samples/catalog/src/main/resources/schema_a.xsd
+vim assembly/samples/custom-name/src/main/resources/vehicle.xsd
+vim assembly/samples/custom-name/src/main/resources/vehicle.xjb
+vim assembly/samples/animal/src/main/resources/animal.xsd
+vim assembly/samples/animal/src/main/resources/animal.xjb
+vim assembly/samples/dtd/src/main/resources/hibernate-mapping.dtd
+vim assembly/samples/dtd/src/main/resources/binding.xjb
+vim assembly/samples/element/src/main/resources/element.xsd
+vim assembly/samples/element/src/main/resources/element.xjb
+vim assembly/samples/base-extend/base/src/main/resources/basemodel.xjb
+vim assembly/samples/base-extend/extend/src/main/resources/model2.xjb
+vim assembly/samples/invoices/src/main/resources/Invoices.xsd
+vim assembly/samples/invoices/src/main/resources/Invoices.xjb
+vim assembly/samples/invoices/src/test/samples/Invoices01-1.xml
