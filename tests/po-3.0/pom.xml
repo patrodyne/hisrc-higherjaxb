@@ -20,12 +20,35 @@
 			<artifactId>jakarta.xml.bind-api</artifactId>
 			<version>${jaxb-api30.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-runtime</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb30-maven-plugin</artifactId>
+				<configuration>
+					<extension>true</extension>
+					<debug>true</debug>
+					<args>
+						<arg>-XtoString</arg>
+						<arg>-Xequals</arg>
+						<arg>-XhashCode</arg>
+						<arg>-Xsetters</arg>
+						<arg>-Xsetters-mode=accessor</arg>
+						<arg>-Xsimplify</arg>
+					</args>
+					<plugins>
+						<plugin>
+							<groupId>org.patrodyne.jvnet</groupId>
+							<artifactId>hisrc-basicjaxb-plugins</artifactId>
+							<version>${hisrc-basicjaxb.version}</version>
+						</plugin>
+					</plugins>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

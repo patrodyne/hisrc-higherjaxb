@@ -20,6 +20,11 @@
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-higherjaxb-maven-plugin-core</artifactId>
 		</dependency>
+		<!-- SLF4J dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
 		<!-- JAXB API dependencies -->
 		<dependency>
 			<groupId>javax.annotation</groupId>
