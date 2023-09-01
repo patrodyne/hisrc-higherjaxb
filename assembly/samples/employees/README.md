@@ -2,16 +2,6 @@
 
 This is a Maven project to demonstrate the unmarshalling of XML files using an XML Schema to generate the JAXB classes. As a special case, a sample file containing a list of Base64 encoded XML elements is unmarshaled and marshaled.
 
-## Execution
-
-This is a stand-alone Maven project. You can run the test using:
-
-~~~
-mvn -Ptest clean test
-~~~
-
-The [output][6] shows the test results.
-
 ### Problem from StackOverflow #[76964263](https://stackoverflow.com/questions/76964263/)
 
 How would I marshal/ unmarshal a List of java objects to an XML without a root element?
@@ -21,6 +11,16 @@ How would I marshal/ unmarshal a List of java objects to an XML without a root e
 Although JAXB requires a top level XML element, it does not require the immediate, physical container to be a file. Alternatively, the message can be unmarshaled as an input stream from anywhere. We can use this observation to *contain* each XML message in its own `Base64` stream which can then be stored as a *list of streams* in one *meta-container* file.
 
 This example ([zip][7]) reads each line of an input file as a `Base64` encoded stream. Each encoded line contains one `Employee` XML element; thus, each line can be unmarshaled and put into a list of `Employee` objects. Also, the object list can be marshaled, encoded and stored as a single file.
+
+## Execution
+
+This is a stand-alone Maven project. You can run the test using:
+
+~~~
+mvn -Ptest clean test
+~~~
+
+The [output][6] shows the test results.
 
 This Maven project includes:
 
