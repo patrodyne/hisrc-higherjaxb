@@ -62,6 +62,7 @@ public class EmployeeTest extends AbstractSamplesTest
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		Decoder decoder = Base64.getDecoder();
 		File employeesB64Source = new File("src/test/samples/Employees.b64");
+		// Read Source
 		try ( FileReader fr = new FileReader(employeesB64Source) )
 		{
 			LineNumberReader lnr = new LineNumberReader(fr);
@@ -82,6 +83,7 @@ public class EmployeeTest extends AbstractSamplesTest
 		Encoder encoder = Base64.getEncoder();
 		String nl = System.getProperty("line.separator");
 		File employeesB64Target = new File("target/Employees.b64");
+		// Write Target
 		try ( FileWriter fw = new FileWriter(employeesB64Target) )
 		{
 			for ( Employee employee : employeeList )

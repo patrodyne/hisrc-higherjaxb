@@ -1,4 +1,4 @@
-# Sample: Employees
+# Sample: Employees List
 
 This is a Maven project to demonstrate the unmarshalling of XML files using an XML Schema to generate the JAXB classes. As a special case, a sample file containing a list of Base64 encoded XML elements is unmarshaled and marshaled.
 
@@ -18,15 +18,17 @@ How would I marshal/ unmarshal a List of java objects to an XML without a root e
 
 ### Solution
 
-Although JAXB requires a top level XML element, it does not require the immediate, physical container to be a file. The message can be unmarshaled as an input stream from anywhere, etc. We use this observation to *contain* each XML message in its own `Base64` stream which can then be stored as a list of streams in one *meta-container* file. This example reads each line of an input file as a `Base64` encoded stream. Each encoded line contains one `Employee` XML element; thus, each line can be unmarshaled and put into a list of `Employee` objects. Also, the list can be marshaled, encoded and stored as a single file.
+Although JAXB requires a top level XML element, it does not require the immediate, physical container to be a file. Alternatively, the message can be unmarshaled as an input stream from anywhere. We can use this observation to *contain* each XML message in its own `Base64` stream which can then be stored as a *list of streams* in one *meta-container* file.
 
-Create a Maven project named **Employees** using the standard file layout. This project includes:
+This example ([zip][7]) reads each line of an input file as a `Base64` encoded stream. Each encoded line contains one `Employee` XML element; thus, each line can be unmarshaled and put into a list of `Employee` objects. Also, the object list can be marshaled, encoded and stored as a single file.
+
+This Maven project includes:
 
 + An XML Schema file [employee.xsd][2] for the `Employee` model
 + A JAXB *binding* file [employee.xjb][3] for customizations
-+ A JUnit test class to demonstrate (un)marshalling
-+ Sample XML files with `Employee` data.
-+ The Maven POM file with `hisrc-higherjaxb-maven-plugin`
++ A JUnit test class [EmployeeTest][4] to demonstrate (un)marshalling
++ Sample XML files with `Employee` [data][5].
++ The Maven [POM][1] file with `hisrc-higherjaxb-maven-plugin`
 
 ~~~
 Employees
@@ -44,6 +46,7 @@ Employees
             samples
                 Employee1.xml
                 Employee2.xml
+                Employees.b64
     pom.xml
 ~~~
 
@@ -77,6 +80,65 @@ target/generated-sources/xjc/
 
 The JUnit test class, [EmployeeTest][4], scans for the sample files and invokes the method `checkSample(File sample)` to provide each file to the tester. For this project, a `JAXBContext` is created and each file in the [samples][5] path is *unmarshaled* to an `employee` object. When successful, the `employee` object is *marshaled* for logging and your review.
 
+In particular, the data file [Employees.b64][8] demonstrates how a list of XML streams can be stored on one file. The sample file contains two Base64 encoded streams, each on its own line; but, there can be any number of such lines, each representing an XML stream that JAXB can unmarshal.
+
+This code fragment from [`EmployeeTest`][4] shows how a source file can be read line-by-line to decode and unmarshal the `Employee` data. Then, in reverse, each `Employee` object is marshaled and encoded before writing the list to a target file.
+
+**EmployeeTest#testEmployees()**
+~~~
+...
+// Read Source
+try ( FileReader fr = new FileReader(employeesB64Source) )
+{
+    LineNumberReader lnr = new LineNumberReader(fr);
+    String employeeB64 = null;
+    while ( (employeeB64 = lnr.readLine()) != null )
+    {
+        String employeeXml = new String(decoder.decode(employeeB64), UTF_8);
+        Object root = unmarshaller.unmarshal(new StringReader(employeeXml));
+        if ( root instanceof Employee )
+            employeeList.add((Employee) root);
+    }
+}
+...
+...
+// Write Target
+try ( FileWriter fw = new FileWriter(employeesB64Target) )
+{
+    for ( Employee employee : employeeList )
+    {
+        String employeeXml = null;
+        employeeXml = marshalToString(employee, marshaller);
+        String employeeB64 = encoder.encodeToString(employeeXml.getBytes(UTF_8));
+        fw.write(employeeB64 + nl);
+    }
+}
+~~~
+
+#### Bash Bonus
+
+As a bonus, the Linux Bash [`base64`][9] command can be used to quickly decode *all* lines in the [b64][8] file:
+
+**Bash Shell**
+~~~
+$ base64 --decode Employees.b64
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employee>
+    <id>1</id>
+    <firstName>Lokesh</firstName>
+    <lastName>Gupta</lastName>
+    <income>100.0</income>
+</employee>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employee>
+    <id>2</id>
+    <firstName>John</firstName>
+    <lastName>Mclane</lastName>
+    <income>200.0</income>
+</employee>
+~~~
+
 <!-- References -->
 
 [1]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/employees/project-pom.xml
@@ -85,5 +147,9 @@ The JUnit test class, [EmployeeTest][4], scans for the sample files and invokes 
 [4]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/employees/src/test/java/org/example/employee/EmployeeTest.java
 [5]: https://github.com/patrodyne/hisrc-higherjaxb/tree/master/assembly/samples/employees/src/test/samples
 [6]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/employees/OUTPUT.txt
+[7]: https://github.com/patrodyne/hisrc-higherjaxb/releases/download/2.1.1/hisrc-higherjaxb-sample-employees-2.1.1-mvn-src.zip
+[8]: https://github.com/patrodyne/hisrc-higherjaxb/tree/master/assembly/samples/employees/src/test/samples/Employees.b64
+[9]: https://linux.die.net/man/1/base64
+
 
 
