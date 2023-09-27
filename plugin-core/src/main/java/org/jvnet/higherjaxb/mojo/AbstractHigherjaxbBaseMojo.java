@@ -289,15 +289,18 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	@Override
 	public void execute() throws MojoExecutionException
 	{
-		Map<?, ?> pc = getPluginContext();
-		if ( pc != null )
+		if ( getLog().isDebugEnabled() )
 		{
-			for ( Object key : pc.keySet() )
+			Map<?, ?> pc = getPluginContext();
+			if ( pc != null )
 			{
-				Object value = pc.get(key);
-				getLog().debug("Key: " + key + "; Value: " + value);
+				for ( Object key : pc.keySet() )
+				{
+					Object value = pc.get(key);
+					getLog().debug("Key: " + key + "; Value: " + value);
+				}
+				getLog().debug("PC Size: "+ pc.size());
 			}
-			getLog().debug("PC Size: "+ pc.size());
 		}
 		synchronized (lock)
 		{
