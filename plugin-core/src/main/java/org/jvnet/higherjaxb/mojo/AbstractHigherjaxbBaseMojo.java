@@ -843,20 +843,20 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	protected void logConfiguration() throws MojoExecutionException
 	{
 		super.logConfiguration();
-		getLog().info("catalogURIs (calculated):" + getCatalogURIs());
-		getLog().info("resolvedCatalogURIs (calculated):" + getResolvedCatalogURIs());
-		getLog().info("schemaFiles (calculated):" + getSchemaFiles());
-		getLog().info("schemaURIs (calculated):" + getSchemaURIs());
-		getLog().info("resolvedSchemaURIs (calculated):" + getResolvedSchemaURIs());
-		getLog().info("bindingFiles (calculated):" + getBindingFiles());
-		getLog().info("bindingURIs (calculated):" + getBindingURIs());
-		getLog().info("resolvedBindingURIs (calculated):" + getResolvedBindingURIs());
-		getLog().info("xjcPluginArtifacts (resolved):" + getXjcPluginArtifacts());
-		getLog().info("xjcPluginFiles (resolved):" + getXjcPluginFiles());
-		getLog().info("xjcPluginURLs (resolved):" + getXjcPluginURLs());
-		getLog().info("episodeArtifacts (resolved):" + getEpisodeArtifacts());
-		getLog().info("episodeFiles (resolved):" + getEpisodeFiles());
-		getLog().info("dependsURIs (resolved):" + getDependsURIs());
+		getLog().info("XJC (calculated) catalogURIs:" + getCatalogURIs());
+		getLog().info("XJC (calculated) resolvedCatalogURIs:" + getResolvedCatalogURIs());
+		getLog().info("XJC (calculated) schemaFiles:" + getSchemaFiles());
+		getLog().info("XJC (calculated) schemaURIs:" + getSchemaURIs());
+		getLog().info("XJC (calculated) resolvedSchemaURIs:" + getResolvedSchemaURIs());
+		getLog().info("XJC (calculated) bindingFiles:" + getBindingFiles());
+		getLog().info("XJC (calculated) bindingURIs:" + getBindingURIs());
+		getLog().info("XJC (calculated) resolvedBindingURIs:" + getResolvedBindingURIs());
+		getLog().info("XJC (resolved) xjcPluginArtifacts:" + getXjcPluginArtifacts());
+		getLog().info("XJC (resolved) xjcPluginFiles:" + getXjcPluginFiles());
+		getLog().info("XJC (resolved) xjcPluginURLs:" + getXjcPluginURLs());
+		getLog().info("XJC (resolved) episodeArtifacts:" + getEpisodeArtifacts());
+		getLog().info("XJC (resolved) episodeFiles:" + getEpisodeFiles());
+		getLog().info("XJC (resolved) dependsURIs:" + getDependsURIs());
 	}
 
 	private void collectBindingUrisFromDependencies(List<URI> bindingUris) throws MojoExecutionException
@@ -958,7 +958,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 	protected EntityResolver createEntityResolver(CatalogResolver catalogResolver)
 	{
-		final EntityResolver entityResolver = new ReResolvingEntityResolverWrapper(catalogResolver);
+		final EntityResolver entityResolver =
+			new ReResolvingEntityResolverWrapper(catalogResolver, getLog());
 		return entityResolver;
 	}
 
