@@ -50,7 +50,7 @@
 						<configuration>
 							<extension>true</extension>
 							<verbose>true</verbose>
-							<debug>true</debug>
+							<debug>false</debug>
 							<args>
 								<arg>-Xinheritance</arg>
 							</args>

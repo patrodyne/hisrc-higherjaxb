@@ -39,7 +39,7 @@
 					<schemaIncludes>
 						<include>b/b.xsd</include>
 					</schemaIncludes>
-					<debug>true</debug>
+					<debug>false</debug>
 					<strict>false</strict>
 					<catalog>src/main/resources/b/b.cat</catalog>
 				</configuration>

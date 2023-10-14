@@ -32,7 +32,7 @@
 				<artifactId>hisrc-higherjaxb30-maven-plugin</artifactId>
 				<configuration>
 					<extension>true</extension>
-					<debug>true</debug>
+					<debug>false</debug>
 					<args>
 						<arg>-XtoString</arg>
 						<arg>-Xequals</arg>

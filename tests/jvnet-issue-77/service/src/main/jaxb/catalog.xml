@@ -18,7 +18,6 @@
 	/>
 	<!--
 		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-77-common-types:jar::!/META-INF/project/schemas/CommonTypes.xsd"
-		uri="/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/tests/jvnet-issue-77/common-types/src/main/resources/META-INF/project/schemas/CommonTypes.xsd"
 		uri="CommonTypes.xsd"
 	-->
 
@@ -28,7 +27,6 @@
 	/>
 	<!--
 		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-77-common-types:jar::!/META-INF/project/schemas/ISOCurrencyCodeType-V2008.xsd"
-		uri="/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/tests/jvnet-issue-77/common-types/src/main/resources/META-INF/project/schemas/ISOCurrencyCodeType-V2008.xsd"
 	-->
 
 	<system

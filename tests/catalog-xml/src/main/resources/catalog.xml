@@ -1,5 +1,9 @@
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
-         prefer="public">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE catalog
+    PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+           "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"
+>
+<!-- See https://www.oasis-open.org/committees/entity/spec.html -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
 	<rewriteSystem systemIdStartString="http://example.org/schemas" rewritePrefix="."/>
 </catalog>

@@ -33,7 +33,7 @@
 				<artifactId>hisrc-higherjaxb23-maven-plugin</artifactId>
 				<configuration>
 					<extension>true</extension>
-					<debug>true</debug>
+					<debug>false</debug>
 					<args>
 						<arg>-XtoString</arg>
 						<arg>-Xequals</arg>
