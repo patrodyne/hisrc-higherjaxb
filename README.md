@@ -44,6 +44,15 @@ original `maven-jaxb2-plugin` name.
 * Index
 	* [Central Repository](https://repo1.maven.org/maven2/org/patrodyne/jvnet/)
 
+#### JavaDoc
+
+* [hisrc-higherjaxb23-maven-plugin][40]
+* [hisrc-higherjaxb30-maven-plugin][41]
+* [hisrc-higherjaxb40-maven-plugin][42]
+* [hisrc-higherjaxb-maven-plugin][43]
+* [hisrc-higherjaxb-maven-plugin-core][44]
+* [hisrc-higherjaxb-maven-plugin-testing][45]
+
 ### Goals
 
 New goals for the next release are:
@@ -159,3 +168,9 @@ New goals for the next release are:
   [32]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.0.0
   [33]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.1.0
   [34]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.1.1
+  [40]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb23-maven-plugin/latest/index.html
+  [41]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb30-maven-plugin/latest/index.html
+  [42]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb40-maven-plugin/latest/index.html
+  [43]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-maven-plugin/latest/index.html
+  [44]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-maven-plugin-core/latest/index.html
+  [45]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-maven-plugin-testing/latest/index.html
