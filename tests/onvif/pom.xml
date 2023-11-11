@@ -42,6 +42,7 @@
 							<verbose>true</verbose>
 							<args>
 								<arg>-Xinheritance</arg>
+								<arg>-XvalueConstructor</arg>
 							</args>
 							<!--
 							<catalogDirectory>src/main/catalog</catalogDirectory>
