@@ -796,7 +796,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 				try
 				{
 					xmlElementRefClass.getMethod("required");
-					getLog().info("Detected JAXB API version [2.2].");
+					getLog().info("Detected JAXB API version [2.2] or greater.");
 				}
 				catch (NoSuchMethodException nsmex2)
 				{
