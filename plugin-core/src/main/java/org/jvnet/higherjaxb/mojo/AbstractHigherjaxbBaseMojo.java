@@ -1,5 +1,20 @@
 package org.jvnet.higherjaxb.mojo;
 
+import static org.apache.maven.artifact.Artifact.SCOPE_COMPILE;
+import static org.codehaus.plexus.util.FileUtils.deleteDirectory;
+import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.getFiles;
+import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.mergeDependencyWithDefaults;
+import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.resolve;
+import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.resolveTransitively;
+import static org.jvnet.higherjaxb.mojo.util.CollectionUtils.apply;
+import static org.jvnet.higherjaxb.mojo.util.CollectionUtils.bestValue;
+import static org.jvnet.higherjaxb.mojo.util.CollectionUtils.gtWithNullAsGreatest;
+import static org.jvnet.higherjaxb.mojo.util.CollectionUtils.ltWithNullAsSmallest;
+import static org.jvnet.higherjaxb.mojo.util.IOUtils.GET_URL;
+import static org.jvnet.higherjaxb.mojo.util.IOUtils.getInputSource;
+import static org.jvnet.higherjaxb.mojo.util.IOUtils.scanDirectoryForFiles;
+import static org.jvnet.higherjaxb.mojo.util.LocaleUtils.valueOf;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,18 +60,13 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
-import org.codehaus.plexus.util.FileUtils;
 import org.jvnet.higherjaxb.mojo.net.CompositeURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.FileURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.URILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ReResolvingEntityResolverWrapper;
-import org.jvnet.higherjaxb.mojo.util.ArtifactUtils;
-import org.jvnet.higherjaxb.mojo.util.CollectionUtils;
 import org.jvnet.higherjaxb.mojo.util.CollectionUtils.Function;
-import org.jvnet.higherjaxb.mojo.util.IOUtils;
-import org.jvnet.higherjaxb.mojo.util.LocaleUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -150,7 +160,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			for (ResourceEntry resourceEntry : schemas)
 			{
-				schemaURIs.addAll(createResourceEntryUris(resourceEntry, getSchemaDirectory().getAbsolutePath(),
+				schemaURIs.addAll(createResourceEntryURIs(resourceEntry, getSchemaDirectory().getAbsolutePath(),
 					getSchemaIncludes(), getSchemaExcludes()));
 			}
 		}
@@ -232,27 +242,27 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			}
 		}
 
-		final List<URI> bindingUris = new ArrayList<URI>(bindingFiles.size());
+		final List<URI> bindingURIs = new ArrayList<URI>(bindingFiles.size());
 		for (final File bindingFile : bindingFiles)
 		{
 			URI uri;
 			uri = bindingFile.toURI();
-			bindingUris.add(uri);
+			bindingURIs.add(uri);
 		}
 		
 		if (getBindings() != null)
 		{
 			for (ResourceEntry resourceEntry : getBindings())
 			{
-				bindingUris.addAll(createResourceEntryUris(resourceEntry, getBindingDirectory().getAbsolutePath(),
+				bindingURIs.addAll(createResourceEntryURIs(resourceEntry, getBindingDirectory().getAbsolutePath(),
 					getBindingIncludes(), getBindingExcludes()));
 			}
 		}
 
 		if (getScanDependenciesForBindings())
-			collectBindingUrisFromDependencies(bindingUris);
+			collectBindingURIsFromDependencies(bindingURIs);
 
-		return bindingUris;
+		return bindingURIs;
 	}
 
 	private List<InputSource> createBindFiles() throws MojoExecutionException
@@ -316,7 +326,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			
 			try
 			{
-				final Locale locale = LocaleUtils.valueOf(getLocale());
+				final Locale locale = valueOf(getLocale());
 				Locale.setDefault(locale);
 				//
 				doExecute();
@@ -371,12 +381,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			final Dependency dependency = (Dependency) dependencyMap.get(key);
 			if (dependency != null)
 			{
-				ArtifactUtils.mergeDependencyWithDefaults(dependency, managedDependency);
+				mergeDependencyWithDefaults(dependency, managedDependency);
 			}
 		}
 	}
 
-	protected void resolveArtifacts() throws MojoExecutionException {
+	protected void resolveArtifacts() throws MojoExecutionException
+	{
 		try
 		{
 			resolveXJCPluginArtifacts();
@@ -399,28 +410,48 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	protected void resolveXJCPluginArtifacts()
 		throws ArtifactResolutionException, ArtifactNotFoundException, InvalidDependencyVersionException
 	{
-		setXjcPluginArtifacts(ArtifactUtils.resolveTransitively(getArtifactFactory(), getArtifactResolver(),
-			getLocalRepository(), getArtifactMetadataSource(), getPlugins(), getProject()));
-		setXjcPluginFiles(ArtifactUtils.getFiles(getXjcPluginArtifacts()));
-		setXjcPluginURLs(CollectionUtils.apply(getXjcPluginFiles(), IOUtils.GET_URL));
+		setXjcPluginArtifacts
+		(
+			resolveTransitively
+			(
+				getArtifactFactory(),
+				getArtifactResolver(),
+				getLocalRepository(),
+				getArtifactMetadataSource(),
+				getPlugins(),
+				getProject()
+			)
+		);
+		setXjcPluginFiles(getFiles(getXjcPluginArtifacts()));
+		setXjcPluginURLs(apply(getXjcPluginFiles(), GET_URL));
 	}
 
 	protected void resolveEpisodeArtifacts()
 		throws ArtifactResolutionException, ArtifactNotFoundException, InvalidDependencyVersionException
 	{
 		setEpisodeArtifacts(new LinkedHashSet<Artifact>());
+		
+		// Resolve episode dependencies.
 		{
-			final Collection<Artifact> episodeArtifacts = ArtifactUtils.resolve(getArtifactFactory(),
-				getArtifactResolver(), getLocalRepository(), getArtifactMetadataSource(), getEpisodes(),
-				getProject());
+			final Collection<Artifact> episodeArtifacts = resolve
+			(
+				getArtifactFactory(),
+				getArtifactResolver(),
+				getLocalRepository(),
+				getArtifactMetadataSource(),
+				getEpisodes(),
+				getProject()
+			);
 			getEpisodeArtifacts().addAll(episodeArtifacts);
 		}
+		
+		// Filter episodes
 		{
 			if (getUseDependenciesAsEpisodes())
 			{
 				final Collection<Artifact> projectArtifacts = getProject().getArtifacts();
 				final AndArtifactFilter filter = new AndArtifactFilter();
-				filter.add(new ScopeArtifactFilter(DefaultArtifact.SCOPE_COMPILE));
+				filter.add(new ScopeArtifactFilter(SCOPE_COMPILE));
 				filter.add(new TypeArtifactFilter("jar"));
 				for (Artifact artifact : projectArtifacts)
 				{
@@ -429,7 +460,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				}
 			}
 		}
-		setEpisodeFiles(ArtifactUtils.getFiles(getEpisodeArtifacts()));
+		
+		setEpisodeFiles(getFiles(getEpisodeArtifacts()));
 	}
 
 	protected ClassLoader createClassLoader(ClassLoader parent)
@@ -699,7 +731,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			try
 			{
-				FileUtils.deleteDirectory(this.getGenerateDirectory());
+				deleteDirectory(this.getGenerateDirectory());
 			}
 			catch (IOException ex)
 			{
@@ -730,7 +762,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			}
 			else if (schemaDirectory.isDirectory())
 			{
-				setSchemaFiles(IOUtils.scanDirectoryForFiles(getBuildContext(), schemaDirectory,
+				setSchemaFiles(scanDirectoryForFiles(getBuildContext(), schemaDirectory,
 					getSchemaIncludes(), getSchemaExcludes(), !getDisableDefaultExcludes()));
 
 			}
@@ -757,7 +789,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				setBindingFiles(Collections.emptyList());
 			else if (bindingDirectory.isDirectory())
 			{
-				setBindingFiles(IOUtils.scanDirectoryForFiles(getBuildContext(), bindingDirectory,
+				setBindingFiles(scanDirectoryForFiles(getBuildContext(), bindingDirectory,
 					getBindingIncludes(), getBindingExcludes(), !getDisableDefaultExcludes()));
 			}
 			else
@@ -789,7 +821,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			try
 			{
-				List<File> otherDependsFiles = IOUtils.scanDirectoryForFiles(getBuildContext(),
+				List<File> otherDependsFiles = scanDirectoryForFiles(getBuildContext(),
 					getProject().getBasedir(), getOtherDependsIncludes(), getOtherDependsExcludes(),
 					!getDisableDefaultExcludes());
 				
@@ -817,7 +849,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		final List<URI> producesURIs = new LinkedList<URI>();
 		try
 		{
-			final List<File> producesFiles = IOUtils.scanDirectoryForFiles(getBuildContext(), getGenerateDirectory(),
+			final List<File> producesFiles = scanDirectoryForFiles(getBuildContext(), getGenerateDirectory(),
 				getProduces(), new String[0], !getDisableDefaultExcludes());
 			
 			if (producesFiles != null)
@@ -843,23 +875,26 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	protected void logConfiguration() throws MojoExecutionException
 	{
 		super.logConfiguration();
-		getLog().info("XJC (calculated) catalogURIs:" + getCatalogURIs());
-		getLog().info("XJC (calculated) resolvedCatalogURIs:" + getResolvedCatalogURIs());
-		getLog().info("XJC (calculated) schemaFiles:" + getSchemaFiles());
-		getLog().info("XJC (calculated) schemaURIs:" + getSchemaURIs());
-		getLog().info("XJC (calculated) resolvedSchemaURIs:" + getResolvedSchemaURIs());
-		getLog().info("XJC (calculated) bindingFiles:" + getBindingFiles());
-		getLog().info("XJC (calculated) bindingURIs:" + getBindingURIs());
-		getLog().info("XJC (calculated) resolvedBindingURIs:" + getResolvedBindingURIs());
-		getLog().info("XJC (resolved) xjcPluginArtifacts:" + getXjcPluginArtifacts());
-		getLog().info("XJC (resolved) xjcPluginFiles:" + getXjcPluginFiles());
-		getLog().info("XJC (resolved) xjcPluginURLs:" + getXjcPluginURLs());
-		getLog().info("XJC (resolved) episodeArtifacts:" + getEpisodeArtifacts());
-		getLog().info("XJC (resolved) episodeFiles:" + getEpisodeFiles());
-		getLog().info("XJC (resolved) dependsURIs:" + getDependsURIs());
+		if (getLog().isInfoEnabled())
+		{
+			getLog().info("XJC (calculated) catalogURIs:" + getCatalogURIs());
+			getLog().info("XJC (calculated) resolvedCatalogURIs:" + getResolvedCatalogURIs());
+			getLog().info("XJC (calculated) schemaFiles:" + getSchemaFiles());
+			getLog().info("XJC (calculated) schemaURIs:" + getSchemaURIs());
+			getLog().info("XJC (calculated) resolvedSchemaURIs:" + getResolvedSchemaURIs());
+			getLog().info("XJC (calculated) bindingFiles:" + getBindingFiles());
+			getLog().info("XJC (calculated) bindingURIs:" + getBindingURIs());
+			getLog().info("XJC (calculated) resolvedBindingURIs:" + getResolvedBindingURIs());
+			getLog().info("XJC (resolved) xjcPluginArtifacts:" + getXjcPluginArtifacts());
+			getLog().info("XJC (resolved) xjcPluginFiles:" + getXjcPluginFiles());
+			getLog().info("XJC (resolved) xjcPluginURLs:" + getXjcPluginURLs());
+			getLog().info("XJC (resolved) episodeArtifacts:" + getEpisodeArtifacts());
+			getLog().info("XJC (resolved) episodeFiles:" + getEpisodeFiles());
+			getLog().info("XJC (resolved) dependsURIs:" + getDependsURIs());
+		}
 	}
 
-	private void collectBindingUrisFromDependencies(List<URI> bindingUris) throws MojoExecutionException
+	private void collectBindingURIsFromDependencies(List<URI> bindingURIs) throws MojoExecutionException
 	{
 		final Collection<Artifact> projectArtifacts = getProject().getArtifacts();
 		final List<Artifact> compileScopeArtifacts = new ArrayList<Artifact>(projectArtifacts.size());
@@ -874,11 +909,11 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		for (Artifact artifact : compileScopeArtifacts)
 		{
 			getLog().debug(MessageFormat.format("Scanning artifact [{0}] for JAXB binding files.", artifact));
-			collectBindingUrisFromArtifact(artifact.getFile(), bindingUris);
+			collectBindingURIsFromArtifact(artifact.getFile(), bindingURIs);
 		}
 	}
 
-	void collectBindingUrisFromArtifact(File file, List<URI> bindingUris) throws MojoExecutionException
+	void collectBindingURIsFromArtifact(File file, List<URI> bindingURIs) throws MojoExecutionException
 	{
 		try (JarFile jarFile = new JarFile(file))
 		{
@@ -890,7 +925,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				{
 					try
 					{
-						bindingUris.add(new URI("jar:" + file.toURI() + "!/" + entry.getName()));
+						bindingURIs.add(new URI("jar:" + file.toURI() + "!/" + entry.getName()));
 					}
 					catch (URISyntaxException urisex)
 					{
@@ -1105,15 +1140,15 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			"Checking the last modification timestamp of the source resources [{0}].",
 			dependsURIs));
 
-		final Long dependsTimestamp = CollectionUtils.bestValue(dependsURIs, LAST_MODIFIED,
-			CollectionUtils.<Long>gtWithNullAsGreatest());
+		final Long dependsTimestamp = bestValue(dependsURIs, LAST_MODIFIED,
+			gtWithNullAsGreatest());
 
 		getLog().debug(MessageFormat.format(
 			"Checking the last modification timestamp of the target resources [{0}].",
 			producesURIs));
 
-		final Long producesTimestamp = CollectionUtils.bestValue(producesURIs, LAST_MODIFIED,
-			CollectionUtils.<Long>ltWithNullAsSmallest());
+		final Long producesTimestamp = bestValue(producesURIs, LAST_MODIFIED,
+			ltWithNullAsSmallest());
 
 		if (dependsTimestamp == null)
 		{
@@ -1379,7 +1414,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		final List<InputSource> inputSources = new ArrayList<InputSource>(uris.size());
 		for (final URI uri : uris)
 		{
-			InputSource inputSource = IOUtils.getInputSource(uri);
+			InputSource inputSource = getInputSource(uri);
 			final InputSource resolvedInputSource =
 				getEntityResolver().resolveEntity(inputSource.getPublicId(), inputSource.getSystemId());
 

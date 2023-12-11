@@ -90,7 +90,7 @@ public class ReResolvingInputSourceWrapper extends InputSource
 			try
 			{
 				InputSource resolvedEntity = getEntityResolver().resolveEntity( getPublicId(), getSystemId());
-				
+
 				if (resolvedEntity != null)
 					return resolvedEntity.getByteStream();
 				else

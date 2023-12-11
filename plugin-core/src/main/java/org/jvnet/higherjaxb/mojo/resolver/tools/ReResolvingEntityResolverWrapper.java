@@ -35,6 +35,7 @@ public class ReResolvingEntityResolverWrapper implements EntityResolver
 	 * Construct this wrapper with the given entity resolver.
 	 * 
 	 * @param entityResolver The entity resolver to be wrapped.
+	 * @param log The Maven API logger for providing feedback from the mojo.
 	 */
 	public ReResolvingEntityResolverWrapper(EntityResolver entityResolver, org.apache.maven.plugin.logging.Log log)
 	{
@@ -105,7 +106,7 @@ public class ReResolvingEntityResolverWrapper implements EntityResolver
 			
 			final String pId = publicId != null ? publicId : resolvedInputSource.getPublicId();
 			final String sId = systemId != null ? systemId : resolvedInputSource.getSystemId();
-			
+
 			return new ReResolvingInputSourceWrapper(getEntityResolver(), resolvedInputSource, pId, sId);
 		}
 	}

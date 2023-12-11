@@ -82,7 +82,7 @@ public class AbstractHigherjaxbBaseMojoTest {
 			}
 		}; 
 
-        mojo.collectBindingUrisFromArtifact(testJarFile, bindings);
+        mojo.collectBindingURIsFromArtifact(testJarFile, bindings);
 
         assertEquals(2, bindings.size());
         assertEquals(URI.create("jar:" + testJarFile.toURI() + "!/dir/nested.xjb"), bindings.get(0));
