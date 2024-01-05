@@ -7,7 +7,10 @@
 	elementFormDefault="qualified">
 
 	<xs:import namespace="http://company.com/project/schemas/common-types"/>
+	<!--
+	Included in common-types!
 	<xs:import namespace="http://company.com/project/schemas/iso/currency"/>
+	 -->
 
 	<xs:complexType name="ServiceRequest">
 		<xs:sequence>

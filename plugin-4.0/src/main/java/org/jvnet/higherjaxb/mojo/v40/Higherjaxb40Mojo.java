@@ -1,10 +1,10 @@
 package org.jvnet.higherjaxb.mojo.v40;
 
 import static com.sun.tools.xjc.Language.DTD;
+import static java.lang.String.format;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -15,8 +15,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.jvnet.higherjaxb.mojo.AbstractHigherjaxbBaseMojo;
 import org.jvnet.higherjaxb.mojo.CoreOptionsFactory;
-
-import jakarta.xml.bind.annotation.XmlSchema;
 
 import com.sun.codemodel.CodeWriter;
 import com.sun.codemodel.JCodeModel;
@@ -34,14 +32,17 @@ import com.sun.tools.xjc.model.nav.NClass;
 import com.sun.tools.xjc.outline.Outline;
 import com.sun.xml.txw2.annotation.XmlNamespace;
 
+import jakarta.xml.bind.annotation.XmlSchema;
+
 /**
- * This concrete higherjaxb V4.X mojo provides a version specific implementation.
+ * This concrete higherjaxb V4.X mojo provides a version specific
+ * implementation.
  * 
  * @author Rick O'Sullivan
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
-public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options> {
-
+public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options>
+{
 	private static final String JAXB_NSURI = "https://jakarta.ee/xml/ns/jaxb";
 	private static final String JAXB_EPISODE_PKG_NAME = "org.glassfish.jaxb.core.v2.schemagen.episode.package-info";
 
@@ -59,7 +60,8 @@ public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 	}
 
 	@Override
-	public void doExecute(Options options) throws MojoExecutionException
+	public void doExecute(Options options)
+		throws MojoExecutionException
 	{
 		final Model model = loadModel(options);
 		final Outline outline = generateCode(model);
@@ -113,7 +115,8 @@ public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 			getLog().info("Parsing input schema(s): Start");
 		
 		final Model model = ModelLoader.load(options, new JCodeModel(),
-			new LoggingErrorReceiver("Error while parsing schema(s).", getLog(), getVerbose()));
+			new LoggingErrorReceiver("Error while parsing schema(s).",
+				getLog(), getVerbose()));
 		
 		if (getVerbose())
 			getLog().info("Parsing input schema(s): Finished");
@@ -188,7 +191,7 @@ public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 			final File targetDirectory = model.options.targetDir;
 			
 			if (getVerbose())
-				getLog().info(MessageFormat.format("Writing output to [{0}].", targetDirectory.getAbsolutePath()));
+				getLog().info(format("Writing output to [%s].", targetDirectory.getAbsolutePath()));
 			
 			try
 			{
@@ -231,7 +234,7 @@ public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 				{
 					if (getVerbose())
 					{
-						getLog().info(MessageFormat.format("Cleaning directory [{0}] of the package [{1}].",
+						getLog().info(format("Cleaning directory [%s] of the package [%s].",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 					cleanPackageDirectory(packageDirectory);
@@ -240,8 +243,8 @@ public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options> {
 				{
 					if (getVerbose())
 					{
-						getLog().info(MessageFormat.format(
-							"Skipping directory [{0}] of the package [{1}] as it does not contain generated classes or resources.",
+						getLog().info(format(
+							"Skipping directory [%s] of the package [%s] as it does not contain generated classes or resources.",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 				}

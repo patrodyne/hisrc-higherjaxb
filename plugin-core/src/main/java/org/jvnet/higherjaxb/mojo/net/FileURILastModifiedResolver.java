@@ -1,5 +1,7 @@
 package org.jvnet.higherjaxb.mojo.net;
 
+import static java.lang.String.format;
+
 import java.io.File;
 import java.net.URI;
 import java.text.MessageFormat;
@@ -23,31 +25,22 @@ public class FileURILastModifiedResolver extends
 				long lastModified = file.lastModified();
 				if (lastModified != 0) {
 					getLogger()
-							.debug(MessageFormat
-									.format("Last modification timestamp of the file URI [{0}] is [{1,date,yyyy-MM-dd HH:mm:ss.SSS}].",
-											uri, lastModified));
+						.debug(MessageFormat
+							.format("Last modification timestamp of the file URI [{0}] is [{1,date,yyyy-MM-dd HH:mm:ss.SSS}].",
+								uri, lastModified));
 					return lastModified;
 				} else {
 					getLogger()
-							.error(MessageFormat
-									.format("Could not retrieve the last modification of the file [{0}] .",
-											file.getAbsolutePath()));
+							.error(format("Could not retrieve the last modification of the file [%s] .",
+								file.getAbsolutePath()));
 				}
 			} else {
-				getLogger().error(
-						MessageFormat.format("File [{0}] does not exist.",
-								file.getAbsolutePath()));
+				getLogger().error(format("File [%s] does not exist.", file.getAbsolutePath()));
 			}
 		} catch (Exception ex) {
-			getLogger()
-					.error(MessageFormat.format(
-							"Could not retrieve the last modification of the URI [{0}] .",
-							uri), ex);
+			getLogger().error(format("Could not retrieve the last modification of the URI [%s] .", uri), ex);
 		}
-		getLogger()
-				.warn(MessageFormat
-						.format("Last modification of the URI [{0}] is not known.",
-								uri));
+		getLogger().warn(format("Last modification of the URI [%s] is not known.", uri));
 		return null;
 	}
 }

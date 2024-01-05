@@ -65,8 +65,8 @@
 	</distributionManagement>
 	<properties>
 		<maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
-		<maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version>
-		<maven-bundle-plugin.version>5.1.8</maven-bundle-plugin.version>
+		<maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
+		<maven-bundle-plugin.version>5.1.9</maven-bundle-plugin.version>
 		<maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
 		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 		<maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
@@ -77,13 +77,13 @@
 		<maven-install-plugin.version>3.1.0</maven-install-plugin.version>
 		<maven-invoker-plugin.version>3.4.0</maven-invoker-plugin.version>
 		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-		<maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+		<maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
 		<maven-jxr-plugin.version>3.3.0</maven-jxr-plugin.version>
 		<maven-project-info-reports-plugin.version>3.4.2</maven-project-info-reports-plugin.version>
 		<maven-release-plugin.version>3.0.0-M7</maven-release-plugin.version>
-		<maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
-		<maven-site-plugin.version>3.12.1</maven-site-plugin.version>
-		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+		<maven-site-plugin.version>4.0.0-M12</maven-site-plugin.version>
+		<maven-source-plugin.version>3.3.0</maven-source-plugin.version>
 		<maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
 		<maven-surefire-report-plugin.version>3.1.2</maven-surefire-report-plugin.version>
 		<exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
@@ -96,6 +96,7 @@
 		<annotation.version>2.1.1</annotation.version>
 		<dtd-parser.version>1.5.0</dtd-parser.version>
 		<hisrc-basicjaxb.version>2.1.2-SNAPSHOT</hisrc-basicjaxb.version>
+		<guice.version>5.1.0</guice.version>
 		<jaxb-api23.version>2.3.1</jaxb-api23.version>
 		<jaxb-api30.version>3.0.1</jaxb-api30.version>
 		<jaxb-api40.version>4.0.0</jaxb-api40.version>
@@ -112,6 +113,7 @@
 		<maven-plugin-testing.version>3.3.0</maven-plugin-testing.version>
 		<maven-min.version>3.8.4</maven-min.version>
 		<maven-api.version>3.9.4</maven-api.version>
+		<maven-resolver.version>1.9.13</maven-resolver.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<slf4j.version>2.0.7</slf4j.version>
@@ -217,7 +219,15 @@
 				<version>${project.version}</version>
 			</dependency>
 
-			<!-- Maven plugin and api classes -->
+			<!-- Maven JSR-330 Dependency Injection -->
+			<dependency>
+				<groupId>com.google.inject</groupId>
+				<artifactId>guice</artifactId>
+				<version>${guice.version}</version>
+				<scope>provided</scope>
+			</dependency>
+	
+			<!-- Maven plugin and API classes -->
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
@@ -229,23 +239,32 @@
 				<artifactId>maven-plugin-api</artifactId>
 				<version>${maven-api.version}</version>
 				<scope>provided</scope>
+				<exclusions>
+					<!-- In favor of jakarta.annotation:jakarta.annotation-api -->
+					<exclusion>
+						<groupId>javax.annotation</groupId>
+						<artifactId>javax.annotation-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-core</artifactId>
+				<version>${maven-api.version}</version>
+				<scope>provided</scope>
+				<exclusions>
+					<!-- In favor of jakarta.inject:jakarta.inject-api -->
+					<exclusion>
+						<groupId>javax.inject</groupId>
+						<artifactId>javax.inject</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-model</artifactId>
 				<version>${maven-api.version}</version>
 				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.maven</groupId>
-				<artifactId>maven-compat</artifactId>
-				<version>${maven-api.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.maven</groupId>
-				<artifactId>maven-core</artifactId>
-				<version>${maven-api.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -264,6 +283,33 @@
 				<artifactId>maven-plugin-annotations</artifactId>
 				<version>${maven-plugin-plugin.version}</version>
 			</dependency>
+
+			<!-- Maven Artifact Resolver and Transport -->
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-resolver-provider</artifactId>
+				<version>${maven-api.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.resolver</groupId>
+				<artifactId>maven-resolver-connector-basic</artifactId>
+				<version>${maven-resolver.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.resolver</groupId>
+				<artifactId>maven-resolver-transport-file</artifactId>
+				<version>${maven-resolver.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.resolver</groupId>
+				<artifactId>maven-resolver-transport-http</artifactId>
+				<version>${maven-resolver.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
@@ -298,6 +344,16 @@
 				<groupId>org.sonatype.plexus</groupId>
 				<artifactId>plexus-build-api</artifactId>
 				<version>0.0.7</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-testing</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-xml</artifactId>
+				<version>4.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
@@ -532,6 +588,7 @@
 				<executions>
 					<execution>
 						<?m2e ignore?>
+						<id>echo-build-properties</id>
 						<phase>validate</phase>
 						<goals>
 							<goal>run</goal>

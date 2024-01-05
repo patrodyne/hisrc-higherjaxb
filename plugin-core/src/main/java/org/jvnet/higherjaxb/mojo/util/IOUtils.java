@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,5 +105,30 @@ public class IOUtils {
 		}
 
 		return files;
+	}
+
+    /**
+     * Get the Maven project directory for a given target class.
+     * 
+	 * <p><b>Strategy:</b> Start with any project class and get the code source for its
+	 * protection domain. For standard Maven projects, the code source is
+	 * <code>"target/project-classes"</code> which is two sub-directories below the project
+	 * directory. <em>Note:</em> The original project class can be at any package depth.</p>
+     * 
+     * @param targetClass A Maven project target class.
+     * 
+     * @return The Maven project directory.
+     * 
+     * @throws URISyntaxException When the @{link CodeSource} location cannot be resolved.
+     */
+	public static File getMavenProjectDir(Class<?> targetClass) throws URISyntaxException
+	{
+		ProtectionDomain targetProtectionDomain = targetClass.getProtectionDomain();
+		CodeSource targetCodeSource = targetProtectionDomain.getCodeSource();
+		File targetClassesDir = new File(targetCodeSource.getLocation().toURI());
+		File targetClassesDirParentFile = targetClassesDir.getParentFile();
+		File targetClassesDirParentParentFile = targetClassesDirParentFile.getParentFile();
+		File targetClassesDirAbsoluteParentParentFile = targetClassesDirParentParentFile.getAbsoluteFile();
+		return targetClassesDirAbsoluteParentParentFile;
 	}
 }

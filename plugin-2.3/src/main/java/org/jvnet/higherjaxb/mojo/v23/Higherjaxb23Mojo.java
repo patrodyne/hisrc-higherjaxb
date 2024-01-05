@@ -1,10 +1,10 @@
 package org.jvnet.higherjaxb.mojo.v23;
 
 import static com.sun.tools.xjc.Language.DTD;
+import static java.lang.String.format;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -101,6 +101,7 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 		String xmlNamespaceClassName = XmlNamespace.class.getName();
 		String[] xmlNamespaceNames = null;
 		final XmlNamespace xmlNamespace = packageInfoClass.getAnnotation(XmlNamespace.class);
+		
 		if (xmlNamespace != null)
 		{
 			String xmlNamespaceValue = xmlNamespace.value();
@@ -108,6 +109,7 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 		}
 		else
 			xmlNamespaceNames = new String[] { null, xmlNamespaceClassName };
+		
 		return xmlNamespaceNames;
 	}
 
@@ -118,10 +120,11 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 			getLog().info("Parsing input schema(s): Start");
 		
 		final Model model = ModelLoader.load ( options, new JCodeModel(),
-			new LoggingErrorReceiver("Error while parsing schema(s).", getLog(), getVerbose()) );
+			new LoggingErrorReceiver("Error while parsing schema(s).",
+				getLog(), getVerbose()) );
 		
 		if (getVerbose())
-			getLog().info("Parsing input schema(s): Finish");
+			getLog().info("Parsing input schema(s): Finished");
 		
 		if (model != null)
 		{
@@ -193,7 +196,7 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 			final File targetDirectory = model.options.targetDir;
 
 			if (getVerbose())
-				getLog().info(MessageFormat.format("Writing output to [{0}].", targetDirectory.getAbsolutePath()));
+				getLog().info(format("Writing output to [%s].", targetDirectory.getAbsolutePath()));
 			
 			try
 			{
@@ -204,6 +207,7 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 					
 					cleanPackageDirectories(targetDirectory, codeModel);
 				}
+				
 				final CodeWriter codeWriter =
 					new LoggingCodeWriter(model.options.createCodeWriter(), getLog(), getVerbose());
 				codeModel.build(codeWriter);
@@ -235,7 +239,7 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 				{
 					if (getVerbose())
 					{
-						getLog().info(MessageFormat.format("Cleaning directory [{0}] of the package [{1}].",
+						getLog().info(format("Cleaning directory [%s] of the package [%s].",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 					cleanPackageDirectory(packageDirectory);
@@ -244,8 +248,8 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 				{
 					if (getVerbose())
 					{
-						getLog().info(MessageFormat.format(
-							"Skipping directory [{0}] of the package [{1}] as it does not contain generated classes or resources.",
+						getLog().info(format(
+							"Skipping directory [%s] of the package [%s] as it does not contain generated classes or resources.",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 				}

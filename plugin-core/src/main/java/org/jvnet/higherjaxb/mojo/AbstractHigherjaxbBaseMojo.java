@@ -1,5 +1,6 @@
 package org.jvnet.higherjaxb.mojo;
 
+import static java.lang.String.format;
 import static org.apache.maven.artifact.Artifact.SCOPE_COMPILE;
 import static org.codehaus.plexus.util.FileUtils.deleteDirectory;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.getFiles;
@@ -47,17 +48,13 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
-import org.apache.maven.artifact.resolver.filter.TypeArtifactFilter;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
 import org.jvnet.higherjaxb.mojo.net.CompositeURILastModifiedResolver;
@@ -141,14 +138,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	
 	private void setupSchemas() throws MojoExecutionException
 	{
-		setSchemaURIs(createSchemaURIs());
+		setSchemaURIs(createSchemaURIs(getSchemaFiles()));
 		setResolvedSchemaURIs(resolveURIs(getSchemaURIs()));
-		setGrammars(createGrammars());
+		setGrammars(createGrammars(getSchemaURIs()));
 	}
 
-	private List<URI> createSchemaURIs() throws MojoExecutionException
+	private List<URI> createSchemaURIs(List<File> schemaFiles) throws MojoExecutionException
 	{
-		final List<File> schemaFiles = getSchemaFiles();
 		final List<URI> schemaURIs = new ArrayList<URI>(schemaFiles.size());
 		for (final File schemaFile : schemaFiles)
 		{
@@ -167,11 +163,10 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return schemaURIs;
 	}
 
-	private List<InputSource> createGrammars() throws MojoExecutionException
+	private List<InputSource> createGrammars(List<URI> schemaURIs) throws MojoExecutionException
 	{
 		try
 		{
-			final List<URI> schemaURIs = getSchemaURIs();
 			return createInputSources(schemaURIs);
 		}
 		catch (IOException ioex)
@@ -229,7 +224,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 		for (final File episodeFile : getEpisodeFiles())
 		{
-			getLog().debug(MessageFormat.format("Checking episode file [{0}].", episodeFile.getAbsolutePath()));
+			getLog().debug(format("Checking episode file [%s].", episodeFile.getAbsolutePath()));
 			if (episodeFile.isDirectory())
 			{
 				final File episodeMetaInfFile = new File(episodeFile, "META-INF");
@@ -393,33 +388,23 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			resolveXJCPluginArtifacts();
 			resolveEpisodeArtifacts();
 		}
-		catch (ArtifactResolutionException arex)
+		catch (MojoExecutionException mfex)
 		{
-			throw new MojoExecutionException("Could not resolve the artifact.", arex);
-		}
-		catch (ArtifactNotFoundException anfex)
-		{
-			throw new MojoExecutionException("Artifact not found.", anfex);
-		}
-		catch (InvalidDependencyVersionException idvex)
-		{
-			throw new MojoExecutionException("Invalid dependency version.", idvex);
+			throw new MojoExecutionException("Could not resolve the artifacts/episodes.", mfex);
 		}
 	}
 
 	protected void resolveXJCPluginArtifacts()
-		throws ArtifactResolutionException, ArtifactNotFoundException, InvalidDependencyVersionException
+		throws MojoExecutionException
 	{
 		setXjcPluginArtifacts
 		(
 			resolveTransitively
 			(
-				getArtifactFactory(),
-				getArtifactResolver(),
-				getLocalRepository(),
-				getArtifactMetadataSource(),
 				getPlugins(),
-				getProject()
+				getRepoSystem(),
+				getRepoSession(),
+				getRemoteRepos()
 			)
 		);
 		setXjcPluginFiles(getFiles(getXjcPluginArtifacts()));
@@ -427,7 +412,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	}
 
 	protected void resolveEpisodeArtifacts()
-		throws ArtifactResolutionException, ArtifactNotFoundException, InvalidDependencyVersionException
+		throws MojoExecutionException
 	{
 		setEpisodeArtifacts(new LinkedHashSet<Artifact>());
 		
@@ -435,12 +420,10 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			final Collection<Artifact> episodeArtifacts = resolve
 			(
-				getArtifactFactory(),
-				getArtifactResolver(),
-				getLocalRepository(),
-				getArtifactMetadataSource(),
 				getEpisodes(),
-				getProject()
+				getRepoSystem(),
+				getRepoSession(),
+				getRemoteRepos()
 			);
 			getEpisodeArtifacts().addAll(episodeArtifacts);
 		}
@@ -452,7 +435,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				final Collection<Artifact> projectArtifacts = getProject().getArtifacts();
 				final AndArtifactFilter filter = new AndArtifactFilter();
 				filter.add(new ScopeArtifactFilter(SCOPE_COMPILE));
-				filter.add(new TypeArtifactFilter("jar"));
 				for (Artifact artifact : projectArtifacts)
 				{
 					if (filter.include(artifact))
@@ -530,7 +512,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			doExecute(options);
 			addIfExistsToEpisodeSchemaBindings();
 			final BuildContext buildContext = getBuildContext();
-			getLog().debug(MessageFormat.format("Refreshing the generated directory [{0}].",
+			getLog().debug(format("Refreshing the generated directory [%s].",
 					getGenerateDirectory().getAbsolutePath()));
 			buildContext.refresh(getGenerateDirectory());
 		}
@@ -553,16 +535,16 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			final String xmlSchemaClassname = xmlSchemaNames[1];
 			if (xmlSchemaClassname == null)
 			{
-				getLog().warn(MessageFormat.format(
-					"Class [{0}] is missing the [{1}] annotation. Processing bindings will probably fail.",
+				getLog().warn(format(
+					"Class [%s] is missing the [%s] annotation. Processing bindings will probably fail.",
 					packageInfoClassName, xmlSchemaClassname));
 			}
 			else
 			{
 				if (!getJaxbNamespaceURI().equals(xmlSchemaNamespace))
 				{
-					getLog().warn(MessageFormat.format(
-						"Namespace of the [{0}] annotation is [{1}] and does not match [{2}]. Processing bindings will probably fail.",
+					getLog().warn(format(
+						"Namespace of the [%s] annotation is [%s] and does not match [%s]. Processing bindings will probably fail.",
 						xmlSchemaClassname, xmlSchemaNamespace, getJaxbNamespaceURI()));
 				}
 			}
@@ -570,7 +552,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		catch (ClassNotFoundException cnfex)
 		{
 			getLog()
-				.warn(MessageFormat.format("Class [{0}] could not be found. Processing bindings will probably fail.",
+				.warn(format("Class [%s] could not be found. Processing bindings will probably fail.",
 					packageInfoClassName), cnfex);
 		}
 	}
@@ -589,16 +571,16 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			final String xmlSchemaClassname = xmlSchemaNames[1];
 			if (xmlSchemaNamespace == null)
 			{
-				getLog().warn(MessageFormat.format(
-					"Class [{0}] is missing the [{1}] annotation. Processing bindings will probably fail.",
+				getLog().warn(format(
+					"Class [%s] is missing the [%s] annotation. Processing bindings will probably fail.",
 					packageInfoClassName, xmlSchemaClassname));
 			}
 			else
 			{
 				if (!getJaxbNamespaceURI().equals(xmlSchemaNamespace))
 				{
-					getLog().warn(MessageFormat.format(
-						"Namespace of the [{0}] annotation is [{1}] and does not match [{2}]. Processing bindings will probably fail.",
+					getLog().warn(format(
+						"Namespace of the [%s] annotation is [%s] and does not match [%s]. Processing bindings will probably fail.",
 						xmlSchemaClassname, xmlSchemaNamespace, getJaxbNamespaceURI()));
 				}
 			}
@@ -606,7 +588,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		catch (ClassNotFoundException cnfex)
 		{
 			getLog()
-				.warn(MessageFormat.format("Class [{0}] could not be found. Processing bindings will probably fail.",
+				.warn(format("Class [%s] could not be found. Processing bindings will probably fail.",
 					packageInfoClassName), cnfex);
 		}
 	}
@@ -619,8 +601,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		final File episodeFile = getEpisodeFile();
 		if (!episodeFile.canWrite())
 		{
-			getLog().warn(MessageFormat.format(
-				"Episode file [{0}] is not writable, could not add if-exists attributes.",
+			getLog().warn(format(
+				"Episode file [%s] is not writable, could not add if-exists attributes.",
 				episodeFile));
 			return;
 		}
@@ -636,14 +618,14 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			final Transformer identityTransformer = transformerFactory.newTransformer();
 			identityTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			identityTransformer.transform(source, new StreamResult(episodeFile));
-			getLog().info(MessageFormat.format(
-				"Episode file [{0}] was augmented with if-exists=\"true\" attributes.",
+			getLog().info(format(
+				"Episode file [%s] was augmented with if-exists=\"true\" attributes.",
 				episodeFile));
 		}
 		catch (TransformerException | IOException ex)
 		{
-			throw new MojoExecutionException(MessageFormat.format(
-				"Error augmenting the episode file [{0}] with if-exists=\"true\" attributes. Transformation failed with an unexpected error.",
+			throw new MojoExecutionException(format(
+				"Error augmenting the episode file [%s] with if-exists=\"true\" attributes. Transformation failed with an unexpected error.",
 				episodeFile), ex);
 		}
 	}
@@ -769,8 +751,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			else
 			{
 				setSchemaFiles(Collections.emptyList());
-				getLog().warn(MessageFormat.format(
-					"Schema directory [{0}] is not a directory.", 
+				getLog().warn(format(
+					"Schema directory [%s] is not a directory.", 
 					schemaDirectory.getPath()));
 			}
 		}
@@ -795,7 +777,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			else
 			{
 				setBindingFiles(Collections.emptyList());
-				getLog().warn(MessageFormat.format("Binding directory [{0}] is not a directory.",
+				getLog().warn(format("Binding directory [%s] is not a directory.",
 						bindingDirectory.getPath()));
 			}
 		}
@@ -908,7 +890,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 		for (Artifact artifact : compileScopeArtifacts)
 		{
-			getLog().debug(MessageFormat.format("Scanning artifact [{0}] for JAXB binding files.", artifact));
+			getLog().debug(format("Scanning artifact [%s] for JAXB binding files.", artifact));
 			collectBindingURIsFromArtifact(artifact.getFile(), bindingURIs);
 		}
 	}
@@ -929,8 +911,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 					}
 					catch (URISyntaxException urisex)
 					{
-						throw new MojoExecutionException(MessageFormat.format(
-							"Could not create the URI of the binding file from [{0}]",
+						throw new MojoExecutionException(format(
+							"Could not create the URI of the binding file from [%s]",
 							entry.getName()), urisex);
 					}
 				}
@@ -1032,8 +1014,12 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			getLog().debug("  xml.catalog.className, catalog-class-name.......: " + catalogManager.getCatalogClassName());
 		}
 		
-		if (getCatalogResolver() == null)
+		if ( getCatalogResolver() == null )
 			catalogResolver =  new MavenCatalogResolver(catalogManager, this, getLog());
+		else if ( getCatalogResolver().equals(MavenCatalogResolver.class.getName()) )
+			catalogResolver =  new MavenCatalogResolver(catalogManager, this, getLog());
+		else if ( getCatalogResolver().equals(ClasspathCatalogResolver.class.getName()) )
+			catalogResolver =  new ClasspathCatalogResolver(getLog());
 		else
 		{
 			final String catalogResolverClassName = getCatalogResolver().trim();
@@ -1057,8 +1043,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 			if (!CatalogResolver.class.isAssignableFrom(draftCatalogResolverClass))
 			{
-				throw new MojoExecutionException(MessageFormat.format(
-					"Specified catalog resolver class [{0}] could not be casted to [{1}].",
+				throw new MojoExecutionException(format(
+					"Specified catalog resolver class [%s] could not be casted to [%s].",
 					catalogResolver, CatalogResolver.class));
 			}
 			else
@@ -1072,12 +1058,12 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		catch (ClassNotFoundException cnfex)
 		{
 			throw new MojoExecutionException(
-				MessageFormat.format("Could not find specified catalog resolver class [{0}].", catalogResolver), cnfex);
+				format("Could not find specified catalog resolver class [%s].", catalogResolver), cnfex);
 		}
 		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex )
 		{
 			throw new MojoExecutionException(
-				MessageFormat.format("Could not instantiate catalog resolver class [{0}].", catalogResolver), ex);
+				format("Could not instantiate catalog resolver class [%s].", catalogResolver), ex);
 		}
 	}
 
@@ -1091,7 +1077,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		final List<URI> dependsURIs = getDependsURIs();
 		final List<URI> producesURIs = getProducesURIs();
 
-		getLog().debug(MessageFormat.format("Up-to-date check for source resources [{0}] and target resources [{1}].",
+		getLog().debug(format("Up-to-date check for source resources [%s] and target resources [%s].",
 			dependsURIs, producesURIs));
 
 		boolean itIsKnownThatNoDependsURIsWereChanged = true;
@@ -1105,8 +1091,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 					{
 						if (getVerbose())
 						{
-							getLog().debug(MessageFormat.format(
-								"File [{0}] might have been changed since the last build.",
+							getLog().debug(format(
+								"File [%s] might have been changed since the last build.",
 								dependsFile.getAbsolutePath()));
 						}
 						// It is known that something was changed.
@@ -1136,15 +1122,15 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			}
 		};
 
-		getLog().debug(MessageFormat.format(
-			"Checking the last modification timestamp of the source resources [{0}].",
+		getLog().debug(format(
+			"Checking the last modification timestamp of the source resources [%s].",
 			dependsURIs));
 
 		final Long dependsTimestamp = bestValue(dependsURIs, LAST_MODIFIED,
 			gtWithNullAsGreatest());
 
-		getLog().debug(MessageFormat.format(
-			"Checking the last modification timestamp of the target resources [{0}].",
+		getLog().debug(format(
+			"Checking the last modification timestamp of the target resources [%s].",
 			producesURIs));
 
 		final Long producesTimestamp = bestValue(producesURIs, LAST_MODIFIED,
@@ -1209,15 +1195,14 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			
 			if (username != null)
 			{
-				getLog().warn(MessageFormat.format("Proxy username is configured to [{0}] but proxy host is missing. "
+				getLog().warn(format("Proxy username is configured to [%s] but proxy host is missing. "
 					+ "Proxy username will be ignored.", username));
 			}
 			
 			if (password != null)
 			{
-				getLog().warn(MessageFormat.format(
-					"Proxy password is set but proxy host is missing. " + "Proxy password will be ignored.",
-					password));
+				getLog().warn(format(
+					"Proxy password is set but proxy host is missing. Proxy password will be ignored."));
 			}
 			return null;
 		}
@@ -1239,9 +1224,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			{
 				if (password != null)
 				{
-					getLog().warn(MessageFormat.format(
-						"Proxy password is set but proxy username is missing. " + "Proxy password will be ignored.",
-						password));
+					getLog().warn(format(
+						"Proxy password is set but proxy username is missing. Proxy password will be ignored."));
 				}
 			}
 
@@ -1301,26 +1285,25 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			if (customHttpproxy != null)
 			{
-				getLog().warn(MessageFormat.format(
-					"Both [useActiveProxyAsHttpproxy=true] as well as custom proxy [{0}] are configured. " +
+				getLog().warn(format(
+					"Both [useActiveProxyAsHttpproxy=true] as well as custom proxy [%s] are configured. " +
 					"Please remove either [useActiveProxyAsHttpproxy=true] or custom proxy configuration.",
 					customHttpproxy));
 
-				getLog().debug(MessageFormat.format("Using custom proxy [{0}].", customHttpproxy));
+				getLog().debug(format("Using custom proxy [%s].", customHttpproxy));
 
 				httpproxy = customHttpproxy;
 			}
 			else if (activeHttpproxy != null)
 			{
-				getLog().debug(MessageFormat.format("Using active proxy [{0}] from Maven settings.", activeHttpproxy));
+				getLog().debug(format("Using active proxy [%s] from Maven settings.", activeHttpproxy));
 				httpproxy = activeHttpproxy;
 			}
 			else
 			{
-				getLog().warn(MessageFormat.format(
+				getLog().warn(format(
 					"Configured [useActiveProxyAsHttpproxy=true] but no active proxy is configured in Maven settings. " +
-					"Please configure an active proxy in Maven settings or remove [useActiveProxyAsHttpproxy=true].",
-					customHttpproxy));
+					"Please configure an active proxy in Maven settings or remove [useActiveProxyAsHttpproxy=true]."));
 				httpproxy = activeHttpproxy;
 			}
 		}
@@ -1328,7 +1311,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			if (customHttpproxy != null)
 			{
-				getLog().debug(MessageFormat.format("Using custom proxy [{0}].", customHttpproxy));
+				getLog().debug(format("Using custom proxy [%s].", customHttpproxy));
 				httpproxy = customHttpproxy;
 			}
 			else
@@ -1398,12 +1381,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			{
 				try
 				{
+					// Ignore "Malformed URL on system identifier: maven:"
 					getCatalogResolverInstance().getCatalog().parseCatalog(catalogURI.toURL());
 				}
 				catch (IOException ioex)
 				{
 					throw new MojoExecutionException(
-						MessageFormat.format("Error parsing catalog [{0}].", catalogURI.toString()), ioex);
+						format("Error parsing catalog [%s].", catalogURI.toString()), ioex);
 				}
 			}
 		}

@@ -16,14 +16,10 @@
 		<root.basedir>${basedir}/..</root.basedir>
 	</properties>
 	<dependencies>
+		<!-- HiSrc HigherJAXB Maven dependencies -->
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-higherjaxb-maven-plugin-core</artifactId>
-		</dependency>
-		<!-- SLF4J dependencies -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
 		<!-- JAXB API dependencies -->
 		<dependency>
@@ -55,28 +51,36 @@
 			<artifactId>jaxb-xjc</artifactId>
 			<version>${jaxb-imp40.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
+		<!-- Maven JSR-330 Dependency Injection -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+		</dependency>
 		<!-- Maven dependencies -->
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
-			<exclusions>
-				<!-- In favor of jakarta.annotation:jakarta.annotation-api -->
-				<exclusion>
-					<groupId>javax.annotation</groupId>
-					<artifactId>javax.annotation-api</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-compat</artifactId>
-			<exclusions>
-				<!-- In favor of jakarta.inject:jakarta.inject-api -->
-				<exclusion>
-					<groupId>javax.inject</groupId>
-					<artifactId>javax.inject</artifactId>
-				</exclusion>
-			</exclusions>
+			<artifactId>maven-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.resolver</groupId>
+			<artifactId>maven-resolver-connector-basic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.resolver</groupId>
+			<artifactId>maven-resolver-transport-file</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.resolver</groupId>
+			<artifactId>maven-resolver-transport-http</artifactId>
+		</dependency>
+		<!-- SLF4J dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

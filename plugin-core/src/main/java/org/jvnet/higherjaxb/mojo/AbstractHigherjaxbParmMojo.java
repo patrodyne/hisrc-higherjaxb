@@ -1,9 +1,6 @@
 package org.jvnet.higherjaxb.mojo;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
-import static org.apache.maven.artifact.Artifact.SCOPE_RUNTIME;
-import static org.apache.maven.project.artifact.MavenMetadataSource.createArtifacts;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.mergeDependencyWithDefaults;
 
 import java.io.File;
@@ -13,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,13 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
@@ -34,9 +25,13 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectBuilder;
-import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.apache.maven.settings.Settings;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResult;
 import org.jvnet.higherjaxb.mojo.util.IOUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
 import org.sonatype.plexus.build.incremental.DefaultBuildContext;
@@ -50,11 +45,15 @@ import org.sonatype.plexus.build.incremental.DefaultBuildContext;
  * @see <a href="https://cwiki.apache.org/confluence/display/MAVEN/Maven+Ecosystem+Cleanup">Cleanup</a>
  * @see <a href="https://cwiki.apache.org/confluence/display/MAVEN/Notes+For+Maven+3.9.x+Plugin+Developers">Notes</a>
  */
-@SuppressWarnings("deprecation")
 public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	implements DependencyResourceResolver
 {
 	public static final String HIGHERJAXB_MOJO_PREFIX = "org.jvnet.higherjaxb.mojo.xjc";
+	
+	public static final File DEFAULT_USER_LOCAL_REPO = org.apache.maven.repository.RepositorySystem.defaultUserLocalRepository;
+	public static final String DEFAULT_REMOTE_REPO_ID = org.apache.maven.repository.RepositorySystem.DEFAULT_REMOTE_REPO_ID;
+	public static final String DEFAULT_REMOTE_REPO_URL = org.apache.maven.repository.RepositorySystem.DEFAULT_REMOTE_REPO_URL;
+	public static final String DEFAULT_REMOTE_REPO_TYPE = "default";
 
 	/**
 	 * Creates and initializes an instance of XJC options.
@@ -62,7 +61,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 */
 	protected abstract CoreOptionsFactory<O> getOptionsFactory();
 
-	@Parameter( defaultValue = "${project}", readonly = true )
+    @Parameter( defaultValue = "${project}", readonly = true )
 	private MavenProject project;
 	public MavenProject getProject()
 	{
@@ -70,8 +69,36 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 			setProject((MavenProject) getPluginContext().get("project"));
 		return project;
 	}
-	public void setProject(MavenProject project) { this.project = project; }
+    public void setProject(MavenProject project) { this.project = project; }
+	
+	/**
+     * The entry point to Maven Artifact Resolver, i.e. the component doing all the work.
+     */
+    @Component
+    private RepositorySystem repoSystem;
+    public RepositorySystem getRepoSystem() { return repoSystem; }
+	public void setRepoSystem(RepositorySystem repoSystem) { this.repoSystem = repoSystem; }
 
+	/**
+     * The current repository/network configuration of Maven.
+     */
+    @Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
+    private RepositorySystemSession repoSession;
+	public RepositorySystemSession getRepoSession() { return repoSession; }
+	public void setRepoSession(RepositorySystemSession repoSession) { this.repoSession = repoSession; }
+	
+    /**
+     * The project's remote repositories to use for the resolution.
+     */
+    @Parameter(defaultValue = "${project.remoteProjectRepositories}", readonly = true)
+    private List<RemoteRepository> remoteRepos;
+	public List<RemoteRepository> getRemoteRepos()
+	{
+		if ( remoteRepos == null )
+			remoteRepos = new ArrayList<RemoteRepository>();
+		return remoteRepos;
+	}
+	
 	@Parameter(defaultValue = "${settings}", readonly = true)
 	private Settings settings;
 	public Settings getSettings() { return settings; }
@@ -713,52 +740,32 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		getLog().info("XJC otherDependExcludes = " + getOtherDependsExcludes());
 		getLog().info("XJC episodeFile = " + getEpisodeFile());
 		getLog().info("XJC episode = " + getEpisode());
-		getLog().info("XJC plugins = " + Arrays.toString(getPlugins()));
 		getLog().info("XJC episodes = " + Arrays.toString(getEpisodes()));
+		getLog().info("XJC plugins = " + Arrays.toString(getPlugins()));
 		getLog().info("XJC useDependenciesAsEpisodes = " + getUseDependenciesAsEpisodes());
 		getLog().info("XJC scanDependenciesForBindings = " + getScanDependenciesForBindings());
 		getLog().info("XJC xjcPlugins = " + Arrays.toString(getPlugins()));
-		getLog().info("XJC episodes = " + Arrays.toString(getEpisodes()));
 	}
 
 	private static final String XML_SCHEMA_CLASS_NAME = "XmlSchema";
-	private static final String XML_SCHEMA_CLASS_QNAME = "jakarta.xml.bind.annotation." + XML_SCHEMA_CLASS_NAME;
+	private static final String XML_SCHEMA_CLASS_QNAME_JAKARTA = "jakarta.xml.bind.annotation." + XML_SCHEMA_CLASS_NAME;
+	private static final String XML_SCHEMA_CLASS_QNAME_JAVAX = "javax.xml.bind.annotation." + XML_SCHEMA_CLASS_NAME;
 	private static final String XML_SCHEMA_RESOURCE_NAME = XML_SCHEMA_CLASS_NAME + ".class";
-	private static final String XML_SCHEMA_RESOURCE_QNAME = "/jakarta/xml/bind/annotation/" + XML_SCHEMA_RESOURCE_NAME;
+	private static final String XML_SCHEMA_RESOURCE_QNAME_JAKARTA = "/jakarta/xml/bind/annotation/" + XML_SCHEMA_RESOURCE_NAME;
+	private static final String XML_SCHEMA_RESOURCE_QNAME_JAVAX = "/javax/xml/bind/annotation/" + XML_SCHEMA_RESOURCE_NAME;
 	private static final String XML_ELEMENT_REF_CLASS_NAME = "XmlElementRef";
-	private static final String XML_ELEMENT_REF_CLASS_QNAME = "jakarta.xml.bind.annotation." + XML_ELEMENT_REF_CLASS_NAME;
-
-	@Component
-	private ArtifactResolver artifactResolver;
-	public ArtifactResolver getArtifactResolver() { return artifactResolver; }
-	public void setArtifactResolver(ArtifactResolver artifactResolver) { this.artifactResolver = artifactResolver; }
-
-	@Component
-	private ArtifactMetadataSource artifactMetadataSource;
-	public ArtifactMetadataSource getArtifactMetadataSource() { return artifactMetadataSource; }
-	public void setArtifactMetadataSource(ArtifactMetadataSource artifactMetadataSource) { this.artifactMetadataSource = artifactMetadataSource; }
-
-	@Component
-	private ArtifactFactory artifactFactory;
-	public ArtifactFactory getArtifactFactory() { return artifactFactory; }
-	public void setArtifactFactory(ArtifactFactory artifactFactory) { this.artifactFactory = artifactFactory; }
-
-	/**
-	 * Artifact factory, needed to download source jars.
-	 */
-	@Component(role = org.apache.maven.project.MavenProjectBuilder.class)
-	private MavenProjectBuilder mavenProjectBuilder;
-	public MavenProjectBuilder getMavenProjectBuilder() { return mavenProjectBuilder; }
-	public void setMavenProjectBuilder(MavenProjectBuilder mavenProjectBuilder) { this.mavenProjectBuilder = mavenProjectBuilder; }
+	private static final String XML_ELEMENT_REF_CLASS_QNAME_JAVAX = "javax.xml.bind.annotation." + XML_ELEMENT_REF_CLASS_NAME;
+	private static final String JAXB_CONTEXT_FACTORY_CLASS_NAME = "JAXBContextFactory";
+	private static final String JAXB_CONTEXT_FACTORY_CLASS_QNAME_JAVAX = "javax.xml.bind." + JAXB_CONTEXT_FACTORY_CLASS_NAME;
 
 	/**
 	 * Location of the local repository.
 	 */
-	@Parameter(defaultValue = "${localRepository}", required = true)
-	private ArtifactRepository localRepository;
-	public ArtifactRepository getLocalRepository() { return localRepository; }
-	public void setLocalRepository(ArtifactRepository localRepository) { this.localRepository = localRepository; }
-
+//	@Parameter(defaultValue = "${localRepository}", required = true)
+//	private LocalRepository localRepository;
+//	public LocalRepository getLocalRepository() { return localRepository; }
+//	public void setLocalRepository(LocalRepository localRepository) { this.localRepository = localRepository; }
+	
 	@Component
 	private BuildContext buildContext = new DefaultBuildContext();
 	public BuildContext getBuildContext() { return buildContext; }
@@ -768,13 +775,37 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	{
 		try
 		{
-			final Class<?> xmlSchemaClass = Class.forName(XML_SCHEMA_CLASS_QNAME);
+			final Class<?> xmlSchemaClass = Class.forName(XML_SCHEMA_CLASS_QNAME_JAKARTA);
 			final URL resource = xmlSchemaClass.getResource(XML_SCHEMA_RESOURCE_NAME);
 			final String draftLocation = resource.toExternalForm();
-
+			
 			final String location;
-			if (draftLocation.endsWith(XML_SCHEMA_RESOURCE_QNAME))
-				location = draftLocation.substring(0, draftLocation.length() - XML_SCHEMA_RESOURCE_QNAME.length());
+			if (draftLocation.endsWith(XML_SCHEMA_RESOURCE_QNAME_JAKARTA))
+				location = draftLocation.substring(0, draftLocation.length() - XML_SCHEMA_RESOURCE_QNAME_JAKARTA.length());
+			else
+				location = draftLocation;
+			
+			getLog().info("JAXB API is loaded from the [" + location + "].");
+			getLog().info("Detected JAXB API version 3+ (jakarta).");
+		}
+		catch (ClassNotFoundException cnfex)
+		{
+			getLog().warn("Could not find JAXB 3+ API classes. Checking for JAXB 2.x API ...");
+			logApiConfigurationLegacy();
+		}
+	}
+	
+	protected void logApiConfigurationLegacy()
+	{
+		try
+		{
+			final Class<?> xmlSchemaClass = Class.forName(XML_SCHEMA_CLASS_QNAME_JAVAX);
+			final URL resource = xmlSchemaClass.getResource(XML_SCHEMA_RESOURCE_NAME);
+			final String draftLocation = resource.toExternalForm();
+			
+			final String location;
+			if (draftLocation.endsWith(XML_SCHEMA_RESOURCE_QNAME_JAVAX))
+				location = draftLocation.substring(0, draftLocation.length() - XML_SCHEMA_RESOURCE_QNAME_JAVAX.length());
 			else
 				location = draftLocation;
 			
@@ -782,36 +813,45 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 
 			try
 			{
-				// Since JAXB 2.1, The location method returns a value could be:
-				//   1) Any absolute URI, like {@code http://example.org/some.xsd};
-				//   2) The empty string, to indicate the location is the responsibility of the reader of the generate schema to locate it;
-				//   3) The {@code "##generate"} default indicates that the schema generator generates components for this namespace.
-				// For JAXB 2.0 and below "NoSuchMethodException" is thrown.
-				xmlSchemaClass.getMethod("location");
-
+				// Since JAXB 2.3, factory that creates new JAXBContext instances.
+				Class.forName(JAXB_CONTEXT_FACTORY_CLASS_QNAME_JAVAX);
+				getLog().info("Detected JAXB API version [2.3] or greater.");
+			}
+			catch (ClassNotFoundException cnfex)
+			{
 				try
 				{
-					// Since JAXB 2.0, maps a JavaBean property to a XML element derived from property's type.
-					final Class<?> xmlElementRefClass = Class.forName(XML_ELEMENT_REF_CLASS_QNAME);
-					xmlElementRefClass.getMethod("required");
-					getLog().info("Detected JAXB API version [2.2] or greater.");
+					// Since JAXB 2.1, The location method returns a value could be:
+					//   1) Any absolute URI, like {@code http://example.org/some.xsd};
+					//   2) The empty string, to indicate the location is the responsibility of the reader of the generate schema to locate it;
+					//   3) The {@code "##generate"} default indicates that the schema generator generates components for this namespace.
+					// For JAXB 2.0 and below "NoSuchMethodException" is thrown.
+					xmlSchemaClass.getMethod("location");
+
+					try
+					{
+						// Since JAXB 2.0, maps a JavaBean property to a XML element derived from property's type.
+						final Class<?> xmlElementRefClass = Class.forName(XML_ELEMENT_REF_CLASS_QNAME_JAVAX);
+						xmlElementRefClass.getMethod("required");
+						getLog().info("Detected JAXB API version [2.2].");
+					}
+					catch (NoSuchMethodException nsmex2)
+					{
+						getLog().info("Detected JAXB API version [2.1].");
+					}
 				}
-				catch (NoSuchMethodException nsmex2)
+				catch (NoSuchMethodException nsmex1)
 				{
-					getLog().info("Detected JAXB API version [2.1].");
+					getLog().info("Detected JAXB API version [2.0].");
 				}
-			}
-			catch (NoSuchMethodException nsmex1)
-			{
-				getLog().info("Detected JAXB API version [2.0].");
 			}
 		}
 		catch (ClassNotFoundException cnfex)
 		{
-			getLog().error("Could not find JAXB 2.x API classes. Make sure JAXB 2.x API is on the classpath.");
+			getLog().error("Could not find JAXB 2.x/3+ API classes. Make sure JAXB 2.x or 3+ API is on the classpath.");
 		}
 	}
-	
+
 	protected void cleanPackageDirectory(final File packageDirectory)
 	{
 		// Accept files to delete.
@@ -831,7 +871,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 				file.delete();
 		}
 	}
-
+	
 	protected List<URI> createCatalogURIs() throws MojoExecutionException
 	{
 		final File catalog = getCatalog();
@@ -849,7 +889,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		}
 		return catalogURIs;
 	}
-
+	
 	protected List<URI> createResourceEntryURIs(ResourceEntry resourceEntry,
 		String defaultDirectory, String[] defaultIncludes,
 		String[] defaultExcludes) throws MojoExecutionException
@@ -889,7 +929,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 			return uris;
 		}
 	}
-
+	
 	private URI createURI(String uriString) throws MojoExecutionException
 	{
 		try
@@ -946,20 +986,23 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		catch (IOException ioex)
 		{
 			throw new MojoExecutionException(format(
-				"Could not scan directory [%s] for files with inclusion [%s]	and exclusion [%s].",
+				"Could not scan directory [%s] for files with inclusion [%s] and exclusion [%s].",
 				directory, includes, excludes));
 		}
 	}
-
+	
 	/** {@link org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver} */
 	@Override
 	public URL resolveDependencyResource(DependencyResource dependencyResource)
 		throws MojoExecutionException
 	{
+		//
+		// Guard Dependency getManagementKey(): groupId:artifactId:type[:classifier]
+		//
 		if (dependencyResource.getGroupId() == null)
 		{
 			throw new MojoExecutionException(format(
-				"Dependency resource [%s] does define the groupId.",
+				"Dependency resource [%s] does not define the groupId.",
 				dependencyResource));
 		}
 
@@ -977,6 +1020,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 				dependencyResource));
 		}
 
+		//
+		// Merge dependencyResource with matching known dependencies.
+		//
+		
 		if (getProject().getDependencyManagement() != null)
 		{
 			final List<Dependency> dependencies =
@@ -985,91 +1032,123 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		}
 
 		List<Dependency> dependencies = getProjectDependencies();
-		if (dependencies != null)
+		if (!dependencies.isEmpty())
 			merge(dependencyResource, dependencies);
+		
+		if ( getEpisodes() != null )
+			merge(dependencyResource, getEpisodes());
+		
+		if ( getPlugins() != null )
+			merge(dependencyResource, getPlugins());
+		
+		List<Dependency> schemaDependencyResources = new ArrayList<>();
+		for ( ResourceEntry re : getSchemas() )
+		{
+			if ( re.getDependencyResource() != null )
+				schemaDependencyResources.add(re.getDependencyResource());
+		}
+		if ( !schemaDependencyResources.isEmpty() )
+			merge(dependencyResource, schemaDependencyResources);
+		
+		//
+		// Resolve dependencyResource using path or repository.
+		//
 
-		if (dependencyResource.getVersion() == null)
+		if (dependencyResource.getResource() == null)
 		{
 			throw new MojoExecutionException(format(
-				"Dependency resource [%s] does not define the version.",
+				"Dependency resource [%s] does not define the resource.",
 				dependencyResource));
 		}
-
-		try
+		
+		if ( dependencyResource.getSystemPath() != null )
 		{
-			final Set<Artifact> resourceArtifacts = createArtifacts(
-				getArtifactFactory(),
-				asList(dependencyResource),
-				SCOPE_RUNTIME, null, getProject());
-
-			if (resourceArtifacts.size() != 1)
+			try
 			{
-				getLog().error(format(
-					"Resolved dependency resource [%s] to artifacts [%s].",
-					dependencyResource, resourceArtifacts));
+				URL artifactURL = null;
+				if ( dependencyResource.getSystemPath().toLowerCase().startsWith("file:") )
+					artifactURL = new URL(dependencyResource.getSystemPath());
+				else
+					artifactURL = Path.of(dependencyResource.getSystemPath()).toUri().toURL();
+				
+				File artifactFile = new File(artifactURL.getFile());
+				return createArtifactResourceURL(artifactFile, dependencyResource.getResource());
+			}
+			catch (MalformedURLException muex)
+			{
 				throw new MojoExecutionException(format(
-					"Could not create artifact for dependency [%s].",
+					"Dependency resource [%s] has a malformed systemPath.",
+					dependencyResource), muex);
+			}
+		}
+		else
+		{
+			if (dependencyResource.getVersion() == null)
+			{
+				throw new MojoExecutionException(format(
+					"Dependency resource [%s] does not define the version.",
 					dependencyResource));
 			}
+			
+			try
+			{
+	            DefaultArtifact resourceArtifact = new DefaultArtifact
+	            (
+	            	dependencyResource.getGroupId(),
+	            	dependencyResource.getArtifactId(),
+	            	dependencyResource.getClassifier(),
+	            	dependencyResource.getType(),
+	            	dependencyResource.getVersion()
+	            );
+				
+	            ArtifactRequest artifactRequest = new ArtifactRequest();
+	            artifactRequest.setArtifact(resourceArtifact);
+	            artifactRequest.setRepositories(getRemoteRepos());
+	            
+				// Resolves the path for a resource artifact.
+				// The artifact will be downloaded to the local repository, if necessary.
+				// An artifact that is already resolved will be skipped and is not re-resolved.
+	            ArtifactResult artifactResult =
+	            	getRepoSystem().resolveArtifact(getRepoSession(), artifactRequest);
 
-			final Artifact resourceArtifact = resourceArtifacts.iterator().next();
-			final List<ArtifactRepository> remoteRepositories = getProject().getRemoteArtifactRepositories();
-
-			// Resolves the path for a resource artifact.
-			// The artifact will be downloaded to the local repository, if necessary.
-			// An artifact that is already resolved will be skipped and is not re-resolved.
-			getArtifactResolver().resolve
-			(
-				resourceArtifact,
-				remoteRepositories,
-				getLocalRepository()
-			);
-
-			final String resource = dependencyResource.getResource();
-			if (resource == null)
+				if ( !artifactResult.isResolved() )
+				{
+					for ( Exception ex : artifactResult.getExceptions() )
+						getLog().error(ex.getClass().getSimpleName() + ": " + ex.getMessage());
+					
+					throw new MojoExecutionException(format(
+						"Dependency resource [%s] is not resolved.", dependencyResource));
+				}
+				
+				// Create a URL for a "file:" or "jar" reference.
+				final URL resourceURL =
+					createArtifactResourceURL(artifactResult, dependencyResource.getResource());
+				
+				getLog().debug(format(
+					"Resolved dependency resource [%s] to resource URL [%s].",
+					dependencyResource, resourceURL));
+				
+				return resourceURL;
+			}
+			catch (org.eclipse.aether.resolution.ArtifactResolutionException arex)
 			{
 				throw new MojoExecutionException(format(
-					"Dependency resource [%s] does not define the resource.",
+					"Could not resolve artifact for dependency [%s].",
 					dependencyResource));
 			}
-			final URL resourceURL = createArtifactResourceURL(resourceArtifact,	resource);
-			
-			getLog().debug(format(
-				"Resolved dependency resource [%s] to resource URL [%s].",
-				dependencyResource, resourceURL));
-			
-			return resourceURL;
-		}
-		catch (ArtifactNotFoundException anfex)
-		{
-			throw new MojoExecutionException(format(
-				"Could not find artifact for dependency [%s].",
-				dependencyResource));
-		}
-		catch (InvalidDependencyVersionException idvex)
-		{
-			throw new MojoExecutionException(format(
-				"Invalid version of dependency [%s].",
-				dependencyResource));
-		}
-		catch (ArtifactResolutionException arex)
-		{
-			throw new MojoExecutionException(format(
-				"Could not resolve artifact for dependency [%s].",
-				dependencyResource));
 		}
 	}
 
 	protected List<Dependency> getProjectDependencies()
 	{
-		final Set<Artifact> artifacts = getProject().getArtifacts();
-		
+		final Set<org.apache.maven.artifact.Artifact> artifacts = getProject().getArtifacts();
+
 		if (artifacts == null)
 			return Collections.emptyList();
 		else
 		{
 			final List<Dependency> dependencies = new ArrayList<Dependency>(artifacts.size());
-			for (Artifact artifact : artifacts)
+			for (org.apache.maven.artifact.Artifact artifact : artifacts)
 			{
 				final Dependency dependency = new Dependency();
 				dependency.setGroupId(artifact.getGroupId());
@@ -1083,13 +1162,38 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 			return dependencies;
 		}
 	}
-
-	private URL createArtifactResourceURL(final Artifact artifact, String resource)
+	
+	private URL createArtifactResourceURL(ArtifactResult artifactResult, String resource)
 		throws MojoExecutionException
 	{
-		final File artifactFile = artifact.getFile();
-
-		if (artifactFile.isDirectory())
+		File artifactFile = null;
+		
+		if ( artifactResult.isResolved() )
+		{
+			if ( artifactResult.getLocalArtifactResult() != null )
+			{
+				if ( artifactResult.getLocalArtifactResult().isAvailable() )
+					artifactFile = artifactResult.getLocalArtifactResult().getFile();
+			}
+			
+			if ( artifactFile == null )
+				artifactFile = artifactResult.getArtifact().getFile();
+		}
+		
+		if ( artifactFile != null )
+			return createArtifactResourceURL(artifactFile, resource);
+		else
+		{
+			throw new MojoExecutionException(format(
+				"Could not create an URL for artifact result [%s] and resource [%s].",
+				artifactResult, resource));
+		}
+	}
+	
+	private URL createArtifactResourceURL(File artifactFile, String resource)
+		throws MojoExecutionException
+	{
+		if ( artifactFile.isDirectory() )
 		{
 			final File resourceFile = new File(artifactFile, resource);
 			try
@@ -1118,6 +1222,15 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		}
 	}
 
+	private void merge(Dependency dependency, final Dependency[] managedDependencies)
+	{
+		for (Dependency managedDependency : managedDependencies)
+		{
+			if (dependency.getManagementKey().equals(managedDependency.getManagementKey()))
+				mergeDependencyWithDefaults(dependency, managedDependency);
+		}
+	}
+	
 	private void merge(Dependency dependency, final List<Dependency> managedDependencies)
 	{
 		for (Dependency managedDependency : managedDependencies)

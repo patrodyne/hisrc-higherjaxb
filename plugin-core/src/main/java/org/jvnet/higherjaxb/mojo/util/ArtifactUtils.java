@@ -1,7 +1,8 @@
 package org.jvnet.higherjaxb.mojo.util;
 
-import static java.util.Arrays.asList;
-import static org.apache.maven.project.artifact.MavenMetadataSource.createArtifacts;
+import static org.apache.maven.RepositoryUtils.toArtifact;
+import static org.apache.maven.RepositoryUtils.toDependency;
+import static org.eclipse.aether.util.filter.DependencyFilterUtils.classpathFilter;
 
 import java.io.File;
 import java.util.Collection;
@@ -10,19 +11,19 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.model.Dependency;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.artifact.InvalidDependencyVersionException;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.collection.CollectRequest;
+import org.eclipse.aether.graph.DependencyFilter;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResult;
+import org.eclipse.aether.resolution.DependencyRequest;
+import org.eclipse.aether.resolution.DependencyResolutionException;
 import org.jvnet.higherjaxb.mojo.util.CollectionUtils.Function;
 
-@SuppressWarnings("deprecation")
 public class ArtifactUtils
 {
 	// Seal this utility class
@@ -32,88 +33,111 @@ public class ArtifactUtils
 
 	public static Collection<Artifact> resolve
 	(
-		final ArtifactFactory artifactFactory,
-		final ArtifactResolver artifactResolver,
-		final ArtifactRepository localRepository,
-		final ArtifactMetadataSource artifactMetadataSource,
 		final Dependency[] dependencies,
-		final MavenProject project
+		final RepositorySystem repoSystem,
+		final RepositorySystemSession repoSession,
+		final List<RemoteRepository> remoteRepos
 	)
-		throws InvalidDependencyVersionException, ArtifactResolutionException, ArtifactNotFoundException
+		throws MojoExecutionException
 	{
-		Set<Artifact> resolvedArtifacts = new HashSet<>();
+		final Set<Artifact> resolvedArtifacts = new HashSet<>();
 		
-		if (dependencies != null)
+		if ( dependencies != null )
 		{
-			if (artifactFactory != null)
+			for ( Dependency dependency : dependencies )
 			{
-				resolvedArtifacts = createArtifacts
-				(
-					artifactFactory,
-					asList(dependencies),
-					"runtime",
-					null,
-					project
-				);
+				org.eclipse.aether.graph.Dependency aetherDependency =
+					toDependency(dependency, repoSession.getArtifactTypeRegistry());
 				
-				for (Artifact artifact : resolvedArtifacts)
+		        ArtifactRequest request = new ArtifactRequest();
+		        request.setArtifact(aetherDependency.getArtifact());
+		        request.setRepositories(remoteRepos);
+		        
+	            try
 				{
-					artifactResolver.resolve
-					(
-						artifact,
-						project.getRemoteArtifactRepositories(),
-						localRepository
-					);
+	                ArtifactResult artifactResult =
+	                	repoSystem.resolveArtifact(repoSession, request);
+	                
+	                if ( artifactResult.isResolved() )
+	                {
+		    			Artifact mavenArtifact = toArtifact(artifactResult.getArtifact());
+		                resolvedArtifacts.add(mavenArtifact);
+	                }
+	                else
+	                {
+		                throw new MojoExecutionException("Artifact result is not resolved for " + artifactResult);
+	                }
 				}
-				return resolvedArtifacts;
-			}
-			else
-			{
-				throw new IllegalArgumentException("Missing ArtifactFactory instance!");
+				catch (org.eclipse.aether.resolution.ArtifactResolutionException ex)
+				{
+	                throw new MojoExecutionException(ex.getMessage(), ex);
+				}
 			}
 		}
-
+		
 		return resolvedArtifacts;
 	}
 
 	public static Collection<Artifact> resolveTransitively
 	(
-		final ArtifactFactory artifactFactory,
-		final ArtifactResolver artifactResolver,
-		final ArtifactRepository localRepository,
-		final ArtifactMetadataSource artifactMetadataSource,
 		final Dependency[] dependencies,
-		final MavenProject project
+		final RepositorySystem repoSystem,
+		final RepositorySystemSession repoSession,
+		final List<RemoteRepository> remoteRepos
 	)
-		throws InvalidDependencyVersionException, ArtifactResolutionException, ArtifactNotFoundException
+		throws MojoExecutionException
 	{
-		Set<Artifact> resolvedArtifacts = new HashSet<>();
-
-		if (dependencies != null)
+		final Set<Artifact> resolvedArtifacts = new HashSet<>();
+		
+		if ( dependencies != null )
 		{
-			final Set<Artifact> artifacts =
-				createArtifacts
-				(
-					artifactFactory,
-					asList(dependencies),
-					"runtime",
-					null,
-					project
-				);
-			
-			final ArtifactResolutionResult artifactResolutionResult = artifactResolver
-				.resolveTransitively
-				(
-					artifacts,
-					project.getArtifact(),
-					project.getRemoteArtifactRepositories(),
-					localRepository,
-					artifactMetadataSource
-				);
-			
-			resolvedArtifacts = artifactResolutionResult.getArtifacts();
-		}
+	        // Select dependencies with "runtime" scope .
+	        String scope = Artifact.SCOPE_RUNTIME;
+	        DependencyFilter classpathFlter = classpathFilter(scope);
 
+			for ( Dependency dependency : dependencies )
+			{
+				org.eclipse.aether.graph.Dependency aetherDependency =
+					toDependency(dependency, repoSession.getArtifactTypeRegistry());
+				
+	            CollectRequest collectRequest = new CollectRequest();
+	            collectRequest.setRoot(aetherDependency);
+	            collectRequest.setRepositories(remoteRepos);
+	            
+	            DependencyRequest dependencyRequest =
+	            	new DependencyRequest(collectRequest, classpathFlter);
+	            
+	    		try
+	    		{
+	                List<ArtifactResult> artifactResults = repoSystem
+	    				.resolveDependencies
+	    				(
+	    					repoSession,
+	    					dependencyRequest
+	    				)
+	    				.getArtifactResults();
+	        		
+	        		for ( ArtifactResult artifactResult : artifactResults )
+	        		{
+	        			if ( artifactResult.isResolved() )
+	        			{
+
+		        			Artifact mavenArtifact = toArtifact(artifactResult.getArtifact());
+		        			resolvedArtifacts.add(mavenArtifact);
+	        			}
+		                else
+		                {
+			                throw new MojoExecutionException("Artifact result is not resolved for " + artifactResult);
+		                }
+	        		}
+	    		}
+	    		catch (DependencyResolutionException ex)
+	    		{
+	                throw new MojoExecutionException(ex.getMessage(), ex);
+	    		}
+			}
+		}
+						
 		return resolvedArtifacts;
 	}
 
@@ -133,6 +157,12 @@ public class ArtifactUtils
 
 	public static void mergeDependencyWithDefaults(Dependency dep, Dependency def)
 	{
+		if (dep.getSystemPath() == null && def.getSystemPath() != null)
+		{
+			dep.setScope(Artifact.SCOPE_SYSTEM);
+			dep.setSystemPath(def.getSystemPath());
+		}
+		
 		if (dep.getScope() == null && def.getScope() != null)
 		{
 			dep.setScope(def.getScope());
@@ -141,13 +171,13 @@ public class ArtifactUtils
 		
 		if (dep.getVersion() == null && def.getVersion() != null)
 			dep.setVersion(def.getVersion());
-
+		
 		if (dep.getClassifier() == null && def.getClassifier() != null)
 			dep.setClassifier(def.getClassifier());
-
+		
 		if (dep.getType() == null && def.getType() != null)
 			dep.setType(def.getType());
-
+		
 		@SuppressWarnings("rawtypes")
 		List exclusions = dep.getExclusions();
 		if (exclusions == null || exclusions.isEmpty())

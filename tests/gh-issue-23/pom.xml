@@ -18,6 +18,14 @@
 		<module>one-non-strict</module>
 		<module>two-non-strict</module>
 	</modules>
+	<dependencies>
+		<!-- SLF4J Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<build>
 		<defaultGoal>test</defaultGoal>
 	</build>

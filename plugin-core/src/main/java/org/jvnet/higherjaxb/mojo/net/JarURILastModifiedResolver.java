@@ -1,12 +1,12 @@
 package org.jvnet.higherjaxb.mojo.net;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.MessageFormat;
 
 import org.apache.maven.plugin.logging.Log;
 
@@ -31,20 +31,13 @@ public class JarURILastModifiedResolver extends
 	protected Long getLastModifiedForScheme(URI uri) {
 		try {
 			final URI mainURI = getMainURI(uri);
-			getLogger()
-					.debug(MessageFormat
-							.format("Retrieving the last modification timestamp of the URI [{0}] via the main URI [{1}].",
-									uri, mainURI));
+			getLogger().debug(format("Retrieving the last modification timestamp of the URI [%s] via the main URI [%s].",
+				uri, mainURI));
 			return getParent().getLastModified(mainURI);
 		} catch (Exception ex) {
 			getLogger()
-					.error(MessageFormat.format(
-							"Could not retrieve the main URI from the Jar URI [{0}].",
-							uri), ex);
-			getLogger().warn(
-					MessageFormat.format(
-							"Last modification of the URI [{0}] is not known.",
-							uri));
+					.error(format("Could not retrieve the main URI from the Jar URI [%s].", uri), ex);
+			getLogger().warn(format("Last modification of the URI [{0}] is not known.", uri));
 			return null;
 		}
 	}
@@ -61,8 +54,7 @@ public class JarURILastModifiedResolver extends
 		final String spec = url.getFile();
 		final int separatorPosition = spec.indexOf(SEPARATOR);
 		if (separatorPosition == -1) {
-			throw new MalformedURLException(MessageFormat.format(
-					"No [!/] found in url spec [{0}].", spec));
+			throw new MalformedURLException(format("No [!/] found in url spec [%s].", spec));
 		}
 		final String mainURIString = separatorPosition < 0 ? spec : spec
 				.substring(0, separatorPosition);

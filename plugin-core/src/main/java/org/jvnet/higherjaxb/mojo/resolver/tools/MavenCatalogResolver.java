@@ -6,11 +6,14 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.maven.plugin.logging.Log;
 import org.jvnet.higherjaxb.mojo.DependencyResource;
 import org.jvnet.higherjaxb.mojo.DependencyResourceResolver;
 import org.jvnet.higherjaxb.mojo.plugin.logging.NullLog;
+import org.jvnet.higherjaxb.mojo.resolver.EntityKey;
 
 import com.sun.org.apache.xml.internal.resolver.CatalogManager;
 
@@ -33,6 +36,16 @@ public class MavenCatalogResolver extends com.sun.org.apache.xml.internal.resolv
 	private Log log;
 	public Log getLog() { return log; }
 	public void setLog(Log log) { this.log = log; }
+	
+	private Map<EntityKey, String> resolvedEntities;
+	public Map<EntityKey, String> getResolvedEntities()
+	{
+		return resolvedEntities;
+	}
+	public void setResolvedEntities(Map<EntityKey, String> resolvedEntities)
+	{
+		this.resolvedEntities = resolvedEntities;
+	}
 	
 	/**
 	 * Construct with a CatalogManager, DependencyResourceResolver and NullLog.
@@ -58,6 +71,7 @@ public class MavenCatalogResolver extends com.sun.org.apache.xml.internal.resolv
 			throw new IllegalArgumentException("Dependency resource resolver must not be null.");
 		this.dependencyResourceResolver = dependencyResourceResolver;
 		this.log = log != null ? log : NullLog.INSTANCE;
+		setResolvedEntities(new HashMap<>());
 	}
 
 	protected CatalogManager getCatalogManager()
@@ -90,6 +104,23 @@ public class MavenCatalogResolver extends com.sun.org.apache.xml.internal.resolv
 	@Override
 	public String getResolvedEntity(String publicId, String systemId)
 	{
+		EntityKey entityKey = new EntityKey(publicId, systemId);
+		if ( getResolvedEntities().containsKey(entityKey) )
+			return getResolvedEntities().get(entityKey);
+		else
+		{
+			String resolvedEntity = resolveEntity(entityKey);
+			if ( resolvedEntity != null )
+				getResolvedEntities().put(entityKey, resolvedEntity);
+			return resolvedEntity;
+		}
+	}
+	
+	private String resolveEntity(EntityKey entityKey)
+	{
+		String publicId = entityKey.getPublicId();
+		String systemId = entityKey.getSystemId();
+		
 		getLog().debug(format("Resolving publicId [%s], systemId [%s].", publicId, systemId));
 		final String superResolvedEntity = super.getResolvedEntity(publicId, systemId);
 		getLog().debug(format("Parent resolver has resolved publicId [%s], systemId [%s] to [%s].",
@@ -124,12 +155,12 @@ public class MavenCatalogResolver extends com.sun.org.apache.xml.internal.resolv
 					}
 					catch (Exception ex)
 					{
-						getLog().error(format("Error resolving dependency resource [%s].", dependencyResource));
+						getLog().error(format("Error resolving dependency resource [%s].", dependencyResource), ex);
 					}
 				}
 				catch (IllegalArgumentException iaex)
 				{
-					getLog().error(format("Error parsing dependency descriptor [%s].", schemeSpecificPart));
+					getLog().error(format("Error parsing dependency descriptor [%s].", schemeSpecificPart), iaex);
 				}
 				getLog().error(format(
 					"Failed to resolve systemId [%s] as dependency resource. Returning parent resolver result [%s].",
@@ -148,7 +179,7 @@ public class MavenCatalogResolver extends com.sun.org.apache.xml.internal.resolv
 		{
 			getLog().debug(format(
 				"Could not parse the systemId [%s] as URI. Returning parent resolver result [%s].",
-				systemId, superResolvedEntity));
+				systemId, superResolvedEntity), urisex);
 			return superResolvedEntity;
 		}
 	}

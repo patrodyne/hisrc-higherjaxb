@@ -7,9 +7,12 @@
     targetNamespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/b"
 >
 
-	<!-- See JAXB-942 -->
+	<!-- See JAXB-942, https://github.com/eclipse-ee4j/jaxb-ri/issues/942 -->
+	<!--
 	<xsd:import namespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a"/>
-	<!-- xsd:import namespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a" schemaLocation="a.xsd"/-->
+	<xsd:import namespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a" schemaLocation="../../../../a/src/main/resources/a.xsd"/>
+	-->
+	<xsd:import namespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a" schemaLocation="../../../../a/src/main/resources/a.xsd"/>
 
 	<xsd:element name="b" type="b:BType"/>
 

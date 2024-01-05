@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" attributeFormDefault="unqualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+	jaxb:version="3.0" 
+>
+	<!--
+	java -jar xjc-basic.jar -d ../java/org/jvnet/higherjaxb/mojo/resolver/tools -no-header -XsimpleHashCode -XsimpleEquals -XsimpleToString EntityKey.xsd
+	-->
+
+	<xs:annotation>
+		<xs:appinfo>
+			<jaxb:schemaBindings>
+				<jaxb:package name="org.jvnet.higherjaxb.mojo.resolver.tools"/>
+			</jaxb:schemaBindings>
+		</xs:appinfo>
+	</xs:annotation>
+
+	<xs:complexType name="EntityKey">
+		<xs:attribute name="publicId" type="xs:string" />
+		<xs:attribute name="systemId" type="xs:string" />
+	</xs:complexType>
+
+</xs:schema>

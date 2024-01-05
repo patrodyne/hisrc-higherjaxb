@@ -1,12 +1,18 @@
 package org.jvnet.higherjaxb.mojo;
 
-import java.text.MessageFormat;
+import static java.lang.String.format;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver;
 import org.jvnet.higherjaxb.mojo.util.StringUtils;
 
+/**
+ * Represents a Maven dependency with a system-id.
+ * 
+ * <p>The {@code <dependency>} element contains information about
+ * a dependency in a Maven project.</p>
+ */
 public class DependencyResource extends Dependency
 {
 	private static final long serialVersionUID = -7680130645800522100L;
@@ -21,6 +27,32 @@ public class DependencyResource extends Dependency
 	public DependencyResource()
 	{
 		setScope(Artifact.SCOPE_RUNTIME);
+	}
+	
+	/**
+	 * Construct with a Maven model {@link Dependency}.
+	 * 
+	 * @param dep A Maven model {@link Dependency}.
+	 */
+	public DependencyResource(Dependency dep)
+	{
+		setGroupId(dep.getGroupId());
+		setArtifactId(dep.getArtifactId());
+		setVersion(dep.getVersion());
+		setSystemPath(dep.getSystemPath());
+		setScope(dep.getScope());
+	}
+
+	/**
+	 * Construct with a Maven model {@link Dependency} and a resource.
+	 * 
+	 * @param dep A Maven model {@link Dependency}.
+	 * @param resource The resource path.
+	 */
+	public DependencyResource(Dependency dep, String resource)
+	{
+		this(dep);
+		setResource(resource);
 	}
 
 	@Override
@@ -78,15 +110,15 @@ public class DependencyResource extends Dependency
 		
 		if (dependencyParts.length < 2)
 		{
-			throw new IllegalArgumentException(MessageFormat.format(
-				"Error parsing dependency descriptor [{0}], both groupId and artifactId must be specified.",
+			throw new IllegalArgumentException(format(
+				"Error parsing dependency descriptor [%s], both groupId and artifactId must be specified.",
 				dependencyPart));
 		}
 		
 		if (dependencyParts.length > 5)
 		{
-			throw new IllegalArgumentException(MessageFormat
-				.format("Error parsing dependency descriptor [{0}], it contains too many parts.", dependencyPart));
+			throw new IllegalArgumentException(format("Error parsing dependency descriptor [%s], it contains too many parts.",
+				dependencyPart));
 		}
 		
 		final String groupId = dependencyParts[0];

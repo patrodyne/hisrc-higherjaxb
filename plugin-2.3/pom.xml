@@ -16,14 +16,10 @@
 		<root.basedir>${basedir}/..</root.basedir>
 	</properties>
 	<dependencies>
+		<!-- HiSrc HigherJAXB Maven dependencies -->
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-higherjaxb-maven-plugin-core</artifactId>
-		</dependency>
-		<!-- SLF4J dependencies -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
 		<!-- JAXB API dependencies -->
 		<dependency>
@@ -57,6 +53,11 @@
 			<artifactId>jaxb-xjc</artifactId>
 			<version>${jaxb-imp23.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
+		<!-- Maven JSR-330 Dependency Injection -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+		</dependency>
 		<!-- Maven dependencies -->
 		<dependency>
 			<groupId>org.apache.maven</groupId>
@@ -64,7 +65,24 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-compat</artifactId>
+			<artifactId>maven-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.resolver</groupId>
+			<artifactId>maven-resolver-connector-basic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.resolver</groupId>
+			<artifactId>maven-resolver-transport-file</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.resolver</groupId>
+			<artifactId>maven-resolver-transport-http</artifactId>
+		</dependency>
+		<!-- SLF4J dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

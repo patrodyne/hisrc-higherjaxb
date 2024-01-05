@@ -13,6 +13,7 @@
 	<name>HiSrc HigherJAXB Plugin Tests [JavaNet Issue #53:b]</name>
 	<properties>
 		<root.basedir>${basedir}/../../..</root.basedir>
+		<generate-directory>${project.build.directory}/generated-sources/xjc</generate-directory>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -36,6 +37,7 @@
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
 				<configuration>
 					<extension>true</extension>
+					<generateDirectory>${generate-directory}</generateDirectory>
 					<episodes>
 						<episode>
 							<groupId>org.patrodyne.jvnet</groupId>
@@ -45,6 +47,39 @@
 					<catalog>src/main/resources/catalog.cat</catalog>
 					<strict>false</strict>
 				</configuration>
+			</plugin>
+			<!--
+				Episode dependencies are getting re-generated and incomplete jaxb classes.
+				See https://github.com/highsource/jaxb-tools/issues/60
+
+				This is a problem in XJC. The problem is that if you use episodes, XJC sometimes
+				decides to generate things anew. I've had this behaviour with enums (like you report)
+				and also sometimes with ObjectFactory. Enums normally work since the latest version,
+				if you're getting an enum generated then you probably use a different typesafe enum base.
+				The workaround is simple. Delete unnecessary packages in a post-process script.
+
+				- Alexey
+			-->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<?m2e ignore?>
+						<id>delete-jaxb-regenerated-code</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<delete includeEmptyDirs="true">
+									<fileset dir="${generate-directory}" includes="**/jvnet_issue_53/a/**"/>
+								</delete>
+								<echo level="info">Deleted ${generate-directory}/**/jvnet_issue_53/a</echo>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,9 +1,9 @@
 package org.jvnet.higherjaxb.mojo.net;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.net.URI;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,23 +51,18 @@ public class CompositeURILastModifiedResolver implements
 		final String scheme = uri.getScheme();
 		if (scheme == null) {
 			getLogger()
-					.error(MessageFormat.format(
-							"URI [{0}] does not provide the scheme part.", uri));
+				.error(format("URI [%s] does not provide the scheme part.", uri));
 		}
 		final URILastModifiedResolver resolver = getResolver(scheme);
 		if (resolver == null) {
 
 			getLogger()
-					.error(MessageFormat
-							.format("Could not resolve the last modification of the URI [{0}] with the scheme [{1}].",
-									uri, scheme));
+				.error(format("Could not resolve the last modification of the URI [%s] with the scheme [%s].",
+					uri, scheme));
 		} else {
 			return resolver.getLastModified(uri);
 		}
-		getLogger()
-				.warn(MessageFormat
-						.format("Last modification of the URI [{0}] is not known.",
-								uri));
+		getLogger().warn(format("Last modification of the URI [%s] is not known.",	uri));
 		return null;
 	}
 }
