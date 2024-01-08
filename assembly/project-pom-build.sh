@@ -60,7 +60,7 @@ menu_actions()
 			"e)")	${BUILDER} dependency:tree ;;
 			"f)")	${BUILDER} dependency:resolve-plugins ;;
 			"g)")	${BUILDER} dependency:analyze ;;
-			"h)")	${BUILDER} dependency:sources dependency:resolve -Dclassifier=javadoc ;;
+			"h)")	${BUILDER} dependency:sources; mvn dependency:resolve -Dclassifier=javadoc ;;
 			"i)")	${BUILDER} -DskipTests=false -Pall,test clean test ;;
 			"j)")	${BUILDER} -DskipTests=true  -Pall clean package ;;
 			"k)")	${BUILDER} -DskipTests=true  clean install ;;
