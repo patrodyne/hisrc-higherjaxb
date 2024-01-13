@@ -94,29 +94,29 @@
 		<activation-api.version>2.1.2</activation-api.version>
 		<activation-imp.version>2.0.1</activation-imp.version>
 		<annotation.version>2.1.1</annotation.version>
-		<dtd-parser.version>1.5.0</dtd-parser.version>
+		<dtd-parser.version>1.5.1</dtd-parser.version>
 		<hisrc-basicjaxb.version>2.1.2-SNAPSHOT</hisrc-basicjaxb.version>
 		<guice.version>5.1.0</guice.version>
 		<jaxb-api23.version>2.3.1</jaxb-api23.version>
 		<jaxb-api30.version>3.0.1</jaxb-api30.version>
-		<jaxb-api40.version>4.0.0</jaxb-api40.version>
+		<jaxb-api40.version>4.0.1</jaxb-api40.version>
 		<jaxb-api.version>${jaxb-api40.version}</jaxb-api.version>
 		<jaxb-imp23.version>2.3.1</jaxb-imp23.version>
 		<jaxb-core-imp23.version>2.3.0.1</jaxb-core-imp23.version>
 		<jaxb-imp30.version>3.0.2</jaxb-imp30.version>
-		<jaxb-imp40.version>4.0.3</jaxb-imp40.version>
+		<jaxb-imp40.version>4.0.4</jaxb-imp40.version>
 		<jaxb-imp.version>${jaxb-imp40.version}</jaxb-imp.version>
-		<junit-jupiter.version>5.10.0</junit-jupiter.version>
-		<junit-platform.version>1.10.0</junit-platform.version>
+		<junit-jupiter.version>5.10.1</junit-jupiter.version>
+		<junit-platform.version>1.10.1</junit-platform.version>
 		<maven.compiler.release>11</maven.compiler.release>
-		<maven-plugin-plugin.version>3.9.0</maven-plugin-plugin.version>
+		<maven-plugin-plugin.version>3.11.0</maven-plugin-plugin.version>
 		<maven-plugin-testing.version>3.3.0</maven-plugin-testing.version>
 		<maven-min.version>3.8.4</maven-min.version>
-		<maven-api.version>3.9.4</maven-api.version>
-		<maven-resolver.version>1.9.13</maven-resolver.version>
+		<maven-api.version>3.9.6</maven-api.version>
+		<maven-resolver.version>1.9.18</maven-resolver.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<slf4j.version>2.0.7</slf4j.version>
+		<slf4j.version>2.0.9</slf4j.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -348,17 +348,17 @@
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-testing</artifactId>
-				<version>1.0.0</version>
+				<version>1.3.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-xml</artifactId>
-				<version>4.0.1</version>
+				<version>4.0.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-interpolation</artifactId>
-				<version>1.26</version>
+				<version>1.27</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -374,7 +374,7 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.13.0</version>
+				<version>3.14.0</version>
 			</dependency>
 
 			<!-- SLF4J -->
@@ -424,12 +424,12 @@
 						<dependency>
 							<groupId>org.apache.ant</groupId>
 							<artifactId>ant-junitlauncher</artifactId>
-							<version>1.10.13</version>
+							<version>1.10.14</version>
 						</dependency>
 						<dependency>
 							<groupId>org.apache.ant</groupId>
 							<artifactId>ant-apache-xalan2</artifactId>
-							<version>1.10.13</version>
+							<version>1.10.14</version>
 						</dependency>
 						<dependency>
 							<groupId>ant</groupId>
