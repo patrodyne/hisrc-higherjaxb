@@ -15,6 +15,12 @@
 		<root.basedir>${basedir}/../../..</root.basedir>
 	</properties>
 	<dependencies>
+		<!-- Dependency required for Maven multi-threaded build. -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>hisrc-higherjaxb-maven-plugin-tests-gh-issue-22-a</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-higherjaxb-maven-plugin-testing</artifactId>
