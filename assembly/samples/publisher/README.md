@@ -7,7 +7,7 @@ This is a Maven project to demonstrate the unmarshalling of XML files using an X
 This is a stand-alone Maven project. You can run the test using:
 
 ~~~
-mvn clean test
+mvn -Ptest clean test
 ~~~
 
 The [output][2] shows the test results.

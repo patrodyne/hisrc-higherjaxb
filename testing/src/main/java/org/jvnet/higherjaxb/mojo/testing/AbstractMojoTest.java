@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
 @PlexusTest
 abstract public class AbstractMojoTest
 {
-	public static final String DEFAULT_PROJECT_VERSION = "2.1.2-SNAPSHOT";
-	public static final String DEFAULT_BASICJAXB_VERSION = "2.1.1";
+	public static final String DEFAULT_PROJECT_VERSION = "2.2.0-SNAPSHOT";
+	public static final String DEFAULT_BASICJAXB_VERSION = "2.2.0-SNAPSHOT";
 	public static final String BUILD_PROPERTIES_PATH = "target/build.properties";
 	public static final Properties BUILD_PROPERTIES = new Properties();
 	public static final LocalRepository LOCAL_REPOSITORY = new LocalRepository(DEFAULT_USER_LOCAL_REPO);

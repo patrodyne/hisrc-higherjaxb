@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.patrodyne.jvnet</groupId>
 		<artifactId>hisrc-higherjaxb-maven-plugin-tests</artifactId>
-		<version>2.1.2-SNAPSHOT</version>
+		<version>2.2.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>hisrc-higherjaxb-maven-plugin-tests-two</artifactId>
 	<packaging>jar</packaging>

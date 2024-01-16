@@ -9,7 +9,7 @@ import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jvnet.basicjaxb.test.AbstractSamplesTest;
+import org.jvnet.basicjaxb.testing.AbstractSamplesTest;
 import org.w3c.dom.Element;
 
 import jakarta.xml.bind.JAXBContext;

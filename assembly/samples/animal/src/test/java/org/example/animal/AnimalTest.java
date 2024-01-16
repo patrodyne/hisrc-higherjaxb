@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.File;
 import java.io.StringWriter;
 
-import org.jvnet.basicjaxb.test.AbstractSamplesTest;
+import org.jvnet.basicjaxb.testing.AbstractSamplesTest;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;

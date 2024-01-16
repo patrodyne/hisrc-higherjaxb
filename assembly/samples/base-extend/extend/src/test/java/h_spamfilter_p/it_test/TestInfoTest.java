@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.jvnet.basicjaxb.test.AbstractSamplesTest;
+import org.jvnet.basicjaxb.testing.AbstractSamplesTest;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;

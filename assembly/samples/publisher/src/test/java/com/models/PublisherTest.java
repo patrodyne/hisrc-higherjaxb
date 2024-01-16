@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.jvnet.basicjaxb.test.AbstractSamplesTest;
+import org.jvnet.basicjaxb.testing.AbstractSamplesTest;
 
 import com.models.request.Request;
 import com.models.response.BCResponse;

@@ -10,7 +10,7 @@ import java.io.StringWriter;
 
 import org.example.model.Version;
 import org.junit.jupiter.api.Test;
-import org.jvnet.basicjaxb.test.AbstractSamplesTest;
+import org.jvnet.basicjaxb.testing.AbstractSamplesTest;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;

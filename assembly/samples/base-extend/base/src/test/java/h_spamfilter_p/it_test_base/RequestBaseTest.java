@@ -12,7 +12,7 @@ import java.io.StringWriter;
 import javax.xml.transform.stream.StreamSource;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.jvnet.basicjaxb.test.AbstractSamplesTest;
+import org.jvnet.basicjaxb.testing.AbstractSamplesTest;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;

@@ -6,9 +6,9 @@ import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
 import static jakarta.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT;
 import static org.patrodyne.jvnet.higherjaxb.ex001.model.Action.BUY;
 import static org.patrodyne.jvnet.higherjaxb.ex001.model.Bind.newXMLGregorianCalendar;
-import static org.jvnet.basicjaxb.test.Bogus.alpha;
-import static org.jvnet.basicjaxb.test.Bogus.digit;
-import static org.jvnet.basicjaxb.test.Bogus.randomEnum;
+import static org.jvnet.basicjaxb.testing.Bogus.alpha;
+import static org.jvnet.basicjaxb.testing.Bogus.digit;
+import static org.jvnet.basicjaxb.testing.Bogus.randomEnum;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -50,7 +50,7 @@ import org.patrodyne.jvnet.higherjaxb.ex001.model.StopPrice;
 import org.patrodyne.jvnet.higherjaxb.ex001.model.Trade;
 import org.patrodyne.jvnet.higherjaxb.ex001.model.TransactionBatch;
 import org.patrodyne.jvnet.higherjaxb.ex001.model.Transfer;
-import org.jvnet.basicjaxb.test.Bogus;
+import org.jvnet.basicjaxb.testing.Bogus;
 import org.xml.sax.SAXException;
 
 /**

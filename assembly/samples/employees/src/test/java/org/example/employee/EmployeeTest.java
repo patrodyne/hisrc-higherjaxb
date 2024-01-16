@@ -19,7 +19,7 @@ import java.util.Base64.Encoder;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.jvnet.basicjaxb.test.AbstractSamplesTest;
+import org.jvnet.basicjaxb.testing.AbstractSamplesTest;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
