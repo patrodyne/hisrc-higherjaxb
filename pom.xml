@@ -464,6 +464,11 @@
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${maven-compiler-plugin.version}</version>
+					<configuration>
+						<compilerArgs>
+							<arg>-proc:full</arg>
+						</compilerArgs>
+					</configuration>
 				</plugin>
 				<plugin>
 					<artifactId>maven-dependency-plugin</artifactId>
