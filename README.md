@@ -61,7 +61,7 @@ original `maven-jaxb2-plugin` name.
 
 New goals for the next release are:
 
-* Replace `org.apache.maven:maven-compat` with Maven 3 dependencies.
+* Review in progress.
 
 ### Status
 
@@ -71,11 +71,13 @@ New goals for the next release are:
 
 * Review in progress.
 
-#### Future
-
-* Replace `org.apache.maven:maven-compat` with Maven 3 dependencies.
-
 ### Fork History
+
+#### Version 2.2.0
+
+* Replaced old 'maven-compat' layer with Maven Resolver/Aether.
+* Update Maven plugin and dependency versions.
+* Build with JDK 21 and Java 11 compatibility.
 
 #### Version 2.1.1
 
