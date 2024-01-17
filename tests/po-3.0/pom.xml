@@ -19,6 +19,13 @@
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
 			<version>${jaxb-api30.version}</version><!--$NO-MVN-MAN-VER$-->
+			<exclusions>
+				<!-- In favor of jakarta.activation:jakarta.activation-api -->
+				<exclusion>
+					<groupId>com.sun.activation</groupId>
+					<artifactId>jakarta.activation</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
