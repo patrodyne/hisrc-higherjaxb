@@ -12,20 +12,6 @@
 			<jaxb:package name="org.jvnet.higherjaxb.mojo.tests.po"/>
 		</jaxb:schemaBindings-->		
 
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xs:element[@name='comment']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xs:element[@name='purchaseOrder']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
 	</jaxb:bindings>
 
 </jaxb:bindings>

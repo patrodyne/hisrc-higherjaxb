@@ -29,69 +29,6 @@
 			</inh:annotates>
 		</inh:objectFactory>
 
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xsd:element[@name='ignoredRoot']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xsd:element[@name='anotherIgnoredRoot']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xsd:element[@name='extendedSequence']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xsd:element[@name='facet']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xsd:element[@name='heteroChoice']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xsd:element[@name='heteroSequence']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xsd:element[@name='mixed']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xsd:element[@name='root']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
-		<!-- See https://github.com/eclipse-ee4j/jaxb-ri/pull/1751 -->
-		<jaxb:bindings node="xsd:element[@name='simpleTypes']">
-			<inh:annotates annotation="java.lang.SuppressWarnings">
-				<inh:elements name="value" type="java.lang.String">rawtypes unchecked serial</inh:elements>
-			</inh:annotates>
-		</jaxb:bindings>
-
 	</jaxb:bindings>
 
 </jaxb:bindings>
