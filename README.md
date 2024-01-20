@@ -35,6 +35,7 @@ original `maven-jaxb2-plugin` name.
 
 #### GitHub Releases, Demonstrations
 
+* [HiSrc HigherJAXB v2.2.0, Explorations][35]
 * [HiSrc HigherJAXB v2.1.1, Explorations][34]
 * [HiSrc HigherJAXB v2.1.0, Explorations][33]
 * [HiSrc HigherJAXB v2.0.0, Explorations][32]
@@ -175,6 +176,7 @@ New goals for the next release are:
   [32]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.0.0
   [33]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.1.0
   [34]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.1.1
+  [35]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.2.0
   [40]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb23-maven-plugin/latest/index.html
   [41]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb30-maven-plugin/latest/index.html
   [42]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb40-maven-plugin/latest/index.html
