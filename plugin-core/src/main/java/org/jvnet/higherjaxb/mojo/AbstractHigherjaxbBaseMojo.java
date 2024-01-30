@@ -448,8 +448,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 	protected ClassLoader createClassLoader(ClassLoader parent)
 	{
-		final Collection<URL> xjcPluginURLs = getXjcPluginURLs();
-		return new ParentFirstClassLoader(xjcPluginURLs.toArray(new URL[xjcPluginURLs.size()]), parent);
+		final Collection<URL> xpu = getXjcPluginURLs();
+		return new ParentFirstClassLoader(xpu.toArray(new URL[xpu.size()]), parent);
 	}
 
 	protected void doExecute() throws MojoExecutionException
