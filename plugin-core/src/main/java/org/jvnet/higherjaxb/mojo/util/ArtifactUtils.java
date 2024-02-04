@@ -2,7 +2,6 @@ package org.jvnet.higherjaxb.mojo.util;
 
 import static org.apache.maven.RepositoryUtils.toArtifact;
 import static org.apache.maven.RepositoryUtils.toDependency;
-import static org.eclipse.aether.util.filter.DependencyFilterUtils.classpathFilter;
 
 import java.io.File;
 import java.util.Collection;
@@ -81,6 +80,7 @@ public class ArtifactUtils
 	public static Collection<Artifact> resolveTransitively
 	(
 		final Dependency[] dependencies,
+		final DependencyFilter classpathFilter,
 		final RepositorySystem repoSystem,
 		final RepositorySystemSession repoSession,
 		final List<RemoteRepository> remoteRepos
@@ -91,10 +91,6 @@ public class ArtifactUtils
 		
 		if ( dependencies != null )
 		{
-	        // Select dependencies with "runtime" scope .
-	        String scope = Artifact.SCOPE_RUNTIME;
-	        DependencyFilter classpathFlter = classpathFilter(scope);
-
 			for ( Dependency dependency : dependencies )
 			{
 				org.eclipse.aether.graph.Dependency aetherDependency =
@@ -105,7 +101,7 @@ public class ArtifactUtils
 	            collectRequest.setRepositories(remoteRepos);
 	            
 	            DependencyRequest dependencyRequest =
-	            	new DependencyRequest(collectRequest, classpathFlter);
+	            	new DependencyRequest(collectRequest, classpathFilter);
 	            
 	    		try
 	    		{

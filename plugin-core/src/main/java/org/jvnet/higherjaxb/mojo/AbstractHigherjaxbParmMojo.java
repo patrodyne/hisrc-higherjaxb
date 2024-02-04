@@ -60,8 +60,13 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * @return An OptionsFactory to create XJC options per specification.
 	 */
 	protected abstract CoreOptionsFactory<O> getOptionsFactory();
+	
+	// Represents com.sun.tools.xjc.outline.Outline
+	private Object outline;
+	public Object getOutline() { return outline; }
+	public void setOutline(Object outline) { this.outline = outline; }
 
-    @Parameter( defaultValue = "${project}", readonly = true )
+	@Parameter( defaultValue = "${project}", readonly = true )
 	private MavenProject project;
 	public MavenProject getProject()
 	{
@@ -744,7 +749,6 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		getLog().info("XJC plugins = " + Arrays.toString(getPlugins()));
 		getLog().info("XJC useDependenciesAsEpisodes = " + getUseDependenciesAsEpisodes());
 		getLog().info("XJC scanDependenciesForBindings = " + getScanDependenciesForBindings());
-		getLog().info("XJC xjcPlugins = " + Arrays.toString(getPlugins()));
 	}
 
 	private static final String XML_SCHEMA_CLASS_NAME = "XmlSchema";

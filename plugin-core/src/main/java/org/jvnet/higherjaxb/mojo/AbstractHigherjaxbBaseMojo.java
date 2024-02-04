@@ -3,6 +3,7 @@ package org.jvnet.higherjaxb.mojo;
 import static java.lang.String.format;
 import static org.apache.maven.artifact.Artifact.SCOPE_COMPILE;
 import static org.codehaus.plexus.util.FileUtils.deleteDirectory;
+import static org.eclipse.aether.util.filter.DependencyFilterUtils.classpathFilter;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.getFiles;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.mergeDependencyWithDefaults;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.resolve;
@@ -57,6 +58,7 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
+import org.eclipse.aether.graph.DependencyFilter;
 import org.jvnet.higherjaxb.mojo.net.CompositeURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.FileURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.URILastModifiedResolver;
@@ -397,17 +399,30 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	protected void resolveXJCPluginArtifacts()
 		throws MojoExecutionException
 	{
+        // Select dependencies with "runtime" scope .
+        String scope = Artifact.SCOPE_RUNTIME;
+        DependencyFilter classpathFilter = classpathFilter(scope);
+
 		setXjcPluginArtifacts
 		(
 			resolveTransitively
 			(
 				getPlugins(),
+				classpathFilter,
 				getRepoSystem(),
 				getRepoSession(),
 				getRemoteRepos()
 			)
 		);
 		setXjcPluginFiles(getFiles(getXjcPluginArtifacts()));
+		if ( getPlugins() != null )
+		{
+			for ( Dependency plugin : getPlugins() )
+			{
+				if ( Artifact.SCOPE_SYSTEM.equals(plugin.getScope()) )
+					getXjcPluginFiles().add(new File(plugin.getSystemPath()));
+			}
+		}
 		setXjcPluginURLs(apply(getXjcPluginFiles(), GET_URL));
 	}
 
@@ -428,11 +443,15 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			getEpisodeArtifacts().addAll(episodeArtifacts);
 		}
 		
-		// Filter episodes
+		// Use Dependencies As Episodes
 		{
 			if (getUseDependenciesAsEpisodes())
 			{
 				final Collection<Artifact> projectArtifacts = getProject().getArtifacts();
+				// Filter to only retain objects in the given artifact scope or better.
+				// For the COMPILE scope, all dependencies with runtime scope will be pulled
+				// in with the runtime scope in the project, and all dependencies with the
+				// compile scope will be pulled in with the compile scope in the project.
 				final AndArtifactFilter filter = new AndArtifactFilter();
 				filter.add(new ScopeArtifactFilter(SCOPE_COMPILE));
 				for (Artifact artifact : projectArtifacts)

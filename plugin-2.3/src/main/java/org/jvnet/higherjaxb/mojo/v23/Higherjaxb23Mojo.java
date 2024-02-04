@@ -64,6 +64,7 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 	{
 		final Model model = loadModel(options);
 		final Outline outline = generateCode(model);
+		setOutline(outline);
 		writeCode(outline);
 	}
 
