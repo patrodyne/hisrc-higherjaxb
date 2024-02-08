@@ -1,0 +1,109 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------< org.patrodyne.jvnet:hisrc-higherjaxb-sample-workday >---------
+[INFO] Building HiSrc HigherJAXB Assembly Sample [workday] 2.2.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ hisrc-higherjaxb-sample-workday ---
+[INFO] Deleting hisrc-higherjaxb-sample-workday-2.2.0/target
+[INFO] 
+[INFO] --- hisrc-higherjaxb:2.2.0:generate (default) @ hisrc-higherjaxb-sample-workday ---
+[INFO] Sources are not up-to-date, XJC will be executed.
+[INFO] XJC> Xannotate: : Start
+Parameters
+  DefaultFieldTarget.: getter
+  AnnotationParser...: org.jvnet.basicjaxb_annox.parser.XAnnotationParser@4fba8eec
+  Annotator..........: org.jvnet.hyperjaxb_annox.plugin.annotate.Annotator@52bd9a27
+  Verbose............: true
+  Debug..............: true
+[INFO] XJC> Xannotate: : Finish
+Results
+  HadError.: false
+[INFO] XJC> XhashCode: : Start
+Parameters
+  HashCodeStrategyClass.: org.jvnet.basicjaxb.lang.JAXBHashCodeStrategy
+  Verbose...............: true
+  Debug.................: true
+[INFO] XJC> XhashCode: : Finish
+Results
+  HadError.: false
+[INFO] XJC> Xequals: : Start
+Parameters
+  EqualsStrategyClass.: org.jvnet.basicjaxb.lang.JAXBEqualsStrategy
+  Verbose.............: true
+  Debug...............: true
+[INFO] XJC> Xequals: : Finish
+Results
+  HadError.: false
+[INFO] XJC> XtoString: : Start
+Parameters
+  ToStringStrategyClass.: org.jvnet.basicjaxb.lang.JAXBToStringStrategy
+  Verbose...............: true
+  Debug.................: true
+[INFO] XJC> XtoString: : Finish
+Results
+  HadError.: false
+[INFO] Episode file [hisrc-higherjaxb-sample-workday-2.2.0/target/generated-sources/xjc/META-INF/sun-jaxb.episode] was augmented with if-exists="true" attributes.
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ hisrc-higherjaxb-sample-workday ---
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO] Copying 1 resource from target/generated-sources/xjc to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ hisrc-higherjaxb-sample-workday ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 12 source files with javac [debug release 11] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ hisrc-higherjaxb-sample-workday ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ hisrc-higherjaxb-sample-workday ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 1 source file with javac [debug release 11] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ hisrc-higherjaxb-sample-workday ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.workday.bsvo.WorkdayTest
+16:26:55:734 DEBUG Testing samples, start
+16:26:55:740 DEBUG Sample directory [hisrc-higherjaxb-sample-workday-2.2.0/src/test/samples].
+16:26:55:755 DEBUG Testing sample, start [workday-01.xml].
+16:26:55:923 DEBUG Workday Root:
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root xmlns:wd="urn:com.workday/bsvo">
+    <wd:Put_Absence_Input_Request wd:version="v39.2">
+        <wd:Absence_Input_Data>
+            <wd:Batch_ID>Import 15022023</wd:Batch_ID>
+            <wd:Worker_Reference>
+                <wd:ID wd:type="Employee_ID">1741538</wd:ID>
+            </wd:Worker_Reference>
+            <wd:Absence_Component_Reference>
+                <wd:ID wd:type="Accrual_Code">FRA_Shadow_Accrual_for_Time_Offs_Impacting_Accrual_of_Paid_Annual_Leave_CP</wd:ID>
+            </wd:Absence_Component_Reference>
+            <wd:Start_Date>2023-01-01</wd:Start_Date>
+            <wd:End_Date>2023-01-31</wd:End_Date>
+            <wd:Reference_Date>2023-01-15</wd:Reference_Date>
+            <wd:Hours>2.08</wd:Hours>
+            <wd:Adjustment>false</wd:Adjustment>
+        </wd:Absence_Input_Data>
+    </wd:Put_Absence_Input_Request>
+</root>
+
+16:26:55:924 INFO Testing sample, SUCCESS [workday-01.xml].
+16:26:55:924 DEBUG Testing samples, finish
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.284 s -- in com.workday.bsvo.WorkdayTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.681 s
+[INFO] Finished at: 2024-02-08T16:26:55-05:00
+[INFO] ------------------------------------------------------------------------

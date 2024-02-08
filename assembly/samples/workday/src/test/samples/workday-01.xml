@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../main/resources/root.xsd"
+>
+	<wd:Put_Absence_Input_Request xmlns:wd="urn:com.workday/bsvo" wd:version="v39.2">
+		<wd:Absence_Input_Data> 
+			<wd:Batch_ID>Import 15022023</wd:Batch_ID> 
+			<wd:Worker_Reference> 
+				<wd:ID wd:type="Employee_ID">1741538</wd:ID> 
+			</wd:Worker_Reference>
+			<wd:Absence_Component_Reference> 
+				<wd:ID wd:type="Accrual_Code">FRA_Shadow_Accrual_for_Time_Offs_Impacting_Accrual_of_Paid_Annual_Leave_CP</wd:ID> 
+			</wd:Absence_Component_Reference> 
+			<wd:Start_Date>2023-01-01</wd:Start_Date> 
+			<wd:End_Date>2023-01-31</wd:End_Date> 
+			<wd:Reference_Date>2023-01-15</wd:Reference_Date> 
+			<wd:Hours>2.08</wd:Hours> 
+			<wd:Adjustment>false</wd:Adjustment> 
+		</wd:Absence_Input_Data> 
+	</wd:Put_Absence_Input_Request> 
+</root> 

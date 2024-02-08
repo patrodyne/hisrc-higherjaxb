@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	targetNamespace="urn:com.workday/bsvo"
+	xmlns:wd="urn:com.workday/bsvo"
+	xmlns:rt="urn:com.workday"
+>
+	<xs:element name="Put_Absence_Input_Request">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="wd:Absence_Input_Data"/>
+			</xs:sequence>
+			<xs:attribute name="version" use="required" form="qualified" type="xs:NCName"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Absence_Input_Data">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="wd:Batch_ID"/>
+				<xs:element ref="wd:Worker_Reference"/>
+				<xs:element ref="wd:Absence_Component_Reference"/>
+				<xs:element ref="wd:Start_Date"/>
+				<xs:element ref="wd:End_Date"/>
+				<xs:element ref="wd:Reference_Date"/>
+				<xs:element ref="wd:Hours"/>
+				<xs:element ref="wd:Adjustment"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Worker_Reference">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="wd:ID"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Absence_Component_Reference">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="wd:ID"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ID" type="wd:ID"/>
+	<xs:element name="Batch_ID" type="xs:string"/>
+	<xs:element name="Start_Date" type="xs:date"/>
+	<xs:element name="End_Date" type="xs:date"/>
+	<xs:element name="Reference_Date" type="xs:date"/>
+	<xs:element name="Hours" type="xs:decimal"/>
+	<xs:element name="Adjustment" type="xs:boolean"/>
+
+	<xs:complexType name="ID">
+		<xs:simpleContent>
+			<xs:extension base="xs:NMTOKEN">
+				<xs:attribute name="type" use="required" form="qualified" type="xs:NCName"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+</xs:schema>
