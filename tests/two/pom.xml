@@ -58,6 +58,8 @@
 							</bindingIncludes-->
 							<episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/sun-jaxb.episode</episodeFile>
 							<args>
+								<arg>-no-header</arg>
+								<arg>-XfixedValue</arg>
 								<arg>-XtoString</arg>
 								<arg>-Xequals</arg>
 								<arg>-XhashCode</arg>

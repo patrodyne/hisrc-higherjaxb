@@ -4,7 +4,8 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
 	
-	<jaxb:bindings schemaLocation="../resources/purchaseorder.xsd">
+	<jaxb:bindings schemaLocation="../resources/purchaseorder.xsd"
+		fixedAttributeAsConstantProperty="false">
 		<jaxb:schemaBindings>
 			<jaxb:package name="po"/>
 		</jaxb:schemaBindings>

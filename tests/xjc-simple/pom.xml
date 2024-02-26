@@ -51,6 +51,15 @@
 							-->
 							<extension>true</extension>
 							<noFileHeader>true</noFileHeader>
+							<args>
+								<arg>-XfixedValue</arg>
+							</args>
+							<plugins>
+								<plugin>
+									<groupId>org.patrodyne.jvnet</groupId>
+									<artifactId>hisrc-basicjaxb-plugins</artifactId>
+								</plugin>
+							</plugins>
 						</configuration>
 					</execution>
 				</executions>

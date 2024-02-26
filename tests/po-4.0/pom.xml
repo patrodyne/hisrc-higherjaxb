@@ -40,6 +40,8 @@
 					<extension>true</extension>
 					<debug>false</debug>
 					<args>
+						<arg>-no-header</arg>
+						<arg>-XfixedValue</arg>
 						<arg>-XtoString</arg>
 						<arg>-Xequals</arg>
 						<arg>-XhashCode</arg>

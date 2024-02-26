@@ -15,7 +15,8 @@
 				Java value class or a content interface, depending on the value of the
 				global binding customization generateValueClass (default is "true").
 	-->
-	<jaxb:globalBindings generateValueClass="true" localScoping="toplevel">
+	<jaxb:globalBindings generateValueClass="true" localScoping="toplevel"
+		fixedAttributeAsConstantProperty="false">
 		<jaxb:serializable uid="20221201" />
 		<!--
 			When "xjc:simple" is enabled, XJC produces Java source code that are more concise and easier to use. Improvements include:
