@@ -112,6 +112,93 @@ Also, the [root.xjb][11] binding file customizes the workday level `package-info
 
 Also, the [HiSrc BasicJAXB XJC Plugin][6] is used to generate value specific methods for `hashCode`, `equals` and `toString`. The generation of these methods is optional but it provides a human-readable `toString` output for the sample [Main.java][10] application.
 
+### Enhanced Solution for SO [#76541552](https://stackoverflow.com/questions/76541552/)
+
+This [download (zip)][3] contains a stand-alone Maven project to unmarshal the given XML [workday-01.xml][24] file into JAXB objects and then marshal the objects back into XML.
+
+> This demo has been enhanced to demonstrate how to configure a *custom prefix* for an XML namespace.
+
+After unzipping it to your local folder, you can run the test using:
+
+~~~
+mvn -Ptest clean test
+~~~
+
+The output shows two alternative custom XML namespace prefixes, `"wd:"` and `"workday:"`.
+
+**DEBUG Workday Root 1 (wd):**
+~~~
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root xmlns:wd="urn:com.workday/bsvo">
+    <wd:Put_Absence_Input_Request wd:version="v39.2">
+        <wd:Absence_Input_Data>
+            <wd:Batch_ID>Import 15022023</wd:Batch_ID>
+            <wd:Worker_Reference>
+                <wd:ID wd:type="Employee_ID">1741538</wd:ID>
+            </wd:Worker_Reference>
+            <wd:Absence_Component_Reference>
+                <wd:ID wd:type="Accrual_Code">FRA_Shadow_Accrual_for_Time_Offs_Impacting_Accrual_of_Paid_Annual_Leave_CP</wd:ID>
+            </wd:Absence_Component_Reference>
+            <wd:Start_Date>2023-01-01</wd:Start_Date>
+            <wd:End_Date>2023-01-31</wd:End_Date>
+            <wd:Reference_Date>2023-01-15</wd:Reference_Date>
+            <wd:Hours>2.08</wd:Hours>
+            <wd:Adjustment>false</wd:Adjustment>
+        </wd:Absence_Input_Data>
+    </wd:Put_Absence_Input_Request>
+</root>
+~~~
+
+The first output marshals the XML with a `"wd:"` prefix. This prefix is configured in the [root.xjb][11] binding file to customize the JAXB generated classes. The result is a custom `package-info` class with a declared `"wd:` prefix. This approach declares the prefix at *build* time.
+
+**`package-info.java`**
+~~~
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "urn:com.workday/bsvo", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED, xmlns = {
+    @jakarta.xml.bind.annotation.XmlNs(prefix = "wd", namespaceURI = "urn:com.workday/bsvo")
+})
+package com.workday.bsvo;
+~~~
+
+**DEBUG Workday Root 2 (workday):**
+~~~
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root xmlns:workday="urn:com.workday/bsvo">
+    <workday:Put_Absence_Input_Request workday:version="v39.2">
+        <workday:Absence_Input_Data>
+            <workday:Batch_ID>Import 15022023</workday:Batch_ID>
+            <workday:Worker_Reference>
+                <workday:ID workday:type="Employee_ID">1741538</workday:ID>
+            </workday:Worker_Reference>
+            <workday:Absence_Component_Reference>
+                <workday:ID workday:type="Accrual_Code">FRA_Shadow_Accrual_for_Time_Offs_Impacting_Accrual_of_Paid_Annual_Leave_CP</workday:ID>
+            </workday:Absence_Component_Reference>
+            <workday:Start_Date>2023-01-01</workday:Start_Date>
+            <workday:End_Date>2023-01-31</workday:End_Date>
+            <workday:Reference_Date>2023-01-15</workday:Reference_Date>
+            <workday:Hours>2.08</workday:Hours>
+            <workday:Adjustment>false</workday:Adjustment>
+        </workday:Absence_Input_Data>
+    </workday:Put_Absence_Input_Request>
+</root>
+~~~
+
+The second output marshals the XML with a `"workday:"` prefix. This prefix is configured in the [WorkdayTest][20] class using a custom JAXB marshaller. This approach declares the prefix at *run* time and overrides the `package-info` configuration.
+
+**`WorkdayTest.java`**
+~~~
+...
+marshaller.setProperty("org.glassfish.jaxb.namespacePrefixMapper", NAMESPACE_PREFIX_MAPPER);
+...
+public static final NamespacePrefixMapper NAMESPACE_PREFIX_MAPPER = new NamespacePrefixMapper()
+{
+    @Override
+    public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix)
+    {
+        return "workday";
+    }
+};
+~~~
+
 <!-- References -->
 
 [1]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/workday/OUTPUT.txt
