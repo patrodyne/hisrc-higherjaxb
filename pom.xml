@@ -41,6 +41,7 @@
 		<module>plugin-4.0</module>
 		<module>plugin</module>
 		<module>testing</module>
+		<module>w3c</module>
 	</modules>
 	<scm>
 		<connection>scm:git:git@github.com:patrodyne/hisrc-higherjaxb.git</connection>

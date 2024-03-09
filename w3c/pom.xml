@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.patrodyne.jvnet</groupId>
+		<artifactId>hisrc-higherjaxb-maven-plugin-project</artifactId>
+		<version>2.2.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>hisrc-higherjaxb-w3c</artifactId>
+	<packaging>pom</packaging>
+	<name>HiSrc HigherJAXB W3C</name>
+	<properties>
+		<root.basedir>${basedir}/..</root.basedir>
+	</properties>
+	<modules>
+		<module>schemas</module>
+		<module>xmlschema-v1_0</module>
+	</modules>
+	<build>
+		<defaultGoal>install</defaultGoal>
+	</build>
+</project>
+<!-- vi:set tabstop=4 hardtabs=4 shiftwidth=4: -->

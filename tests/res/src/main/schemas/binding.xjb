@@ -2,9 +2,8 @@
 <jaxb:bindings jaxb:version="3.0"
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 	xmlns:inh="http://jvnet.org/basicjaxb/xjc/inheritance"
-	jaxb:extensionBindingPrefixes="xjc inh"
+	jaxb:extensionBindingPrefixes="inh"
 >
 	<!--  Global Bindings
 		* JPA section 2.1, entities must be top-level classes.
@@ -16,6 +15,10 @@
 	<jaxb:globalBindings choiceContentProperty="true" generateIsSetMethod="true" generateElementProperty="true" generateElementClass="true" localScoping="toplevel">
 		<jaxb:serializable uid="20221201" />
 		<!--
+			These customizations were valid in XJC 1.0, but in 2.0 we
+			don't use them. OTOH, we don't want to issue an error for
+			them, so we just define a mapping and ignore the value.
+
 			<xjc:noValidator />
 			<xjc:noValidatingUnmarshaller />
 		-->
