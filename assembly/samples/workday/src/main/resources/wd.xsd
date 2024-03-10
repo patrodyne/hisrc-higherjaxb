@@ -4,7 +4,6 @@
 	elementFormDefault="qualified"
 	targetNamespace="urn:com.workday/bsvo"
 	xmlns:wd="urn:com.workday/bsvo"
-	xmlns:rt="urn:com.workday"
 >
 	<xs:element name="Put_Absence_Input_Request">
 		<xs:complexType>
