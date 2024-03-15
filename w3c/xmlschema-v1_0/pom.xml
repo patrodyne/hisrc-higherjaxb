@@ -31,6 +31,72 @@
 			<artifactId>hisrc-higherjaxb-w3c-schemas</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!-- HiSrc HigherJAXB Testing -->
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-higherjaxb-maven-plugin-testing</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- HiSrc BasicJAXB Testing -->
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-plugins</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-runtime</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-testing</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- SLF4J Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Need HigherjaxbMojo for RunXXXPluginTest -->
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Maven JSR-330 Dependency Injection for RunXXXPluginTest -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Maven dependencies for RunXXXPluginTest -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.resolver</groupId>
+			<artifactId>maven-resolver-connector-basic</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.resolver</groupId>
+			<artifactId>maven-resolver-transport-file</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.resolver</groupId>
+			<artifactId>maven-resolver-transport-http</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>install</defaultGoal>
@@ -48,6 +114,8 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
+							<debug>false</debug>
+							<verbose>false</verbose>
 							<catalog>src/main/resources/catalog.xml</catalog>
 							<strict>false</strict>
 							<schemas>
@@ -55,32 +123,70 @@
 									<url>http://www.w3.org/2001/XMLSchema.xsd</url>
 								</schema>
 							</schemas>
-							<extension>true</extension>
-							<verbose>false</verbose>
-							<debug>false</debug>
-							<noFileHeader>true</noFileHeader>
 							<args>
 								<arg>-Xsimplify</arg>
 								<arg>-XvalueConstructor</arg>
 								<arg>-XfluentAPI</arg>
-								<arg>-XsimpleEquals</arg>
 								<arg>-XsimpleHashCode</arg>
+								<arg>-XsimpleEquals</arg>
 								<arg>-XsimpleToString</arg>
 								<arg>-XsimpleToString-showFieldNames=true</arg>
 								<arg>-XsimpleToString-showChildItems=false</arg>
 								<arg>-XsimpleToString-fullClassName=false</arg>
 							</args>
-							<plugins>
-								<plugin>
-									<groupId>org.patrodyne.jvnet</groupId>
-									<artifactId>hisrc-basicjaxb-plugins</artifactId>
-									<version>${project.version}</version>
-								</plugin>
-							</plugins>
+						</configuration>
+					</execution>
+					<execution>
+						<id>test</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<debug>false</debug>
+							<verbose>false</verbose>
+							<schemaDirectory>${basedir}/src/test/resources</schemaDirectory>
+							<schemaIncludes>*.xsd</schemaIncludes>
+							<generateDirectory>${project.build.directory}/generated-test-sources/xjc</generateDirectory>
+							<args>
+								<arg>-XfixedValue</arg>
+								<arg>-XfluentAPI</arg>
+								<arg>-XsimpleHashCode</arg>
+								<arg>-XsimpleEquals</arg>
+								<arg>-XsimpleToString</arg>
+								<arg>-XsimpleToString-showFieldNames=true</arg>
+								<arg>-XsimpleToString-showChildItems=false</arg>
+								<arg>-XsimpleToString-fullClassName=false</arg>
+							</args>
 						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<noFileHeader>true</noFileHeader>
+					<extension>true</extension>
+					<plugins>
+						<plugin>
+							<groupId>org.patrodyne.jvnet</groupId>
+							<artifactId>hisrc-basicjaxb-plugins</artifactId>
+							<version>${project.version}</version>
+						</plugin>
+					</plugins>
+				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+					<excludes>
+						<!-- Normally, these tests are run from the IDE. -->
+						<exclude>**/Run*Test.java</exclude>
+					</excludes>
+					<forkCount>1</forkCount>
+					<reuseForks>true</reuseForks>
+				</configuration>
+			</plugin> 
 		</plugins>
 	</build>
 </project>
