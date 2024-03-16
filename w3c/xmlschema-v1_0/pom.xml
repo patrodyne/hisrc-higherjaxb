@@ -147,6 +147,8 @@
 							<schemaDirectory>${basedir}/src/test/resources</schemaDirectory>
 							<schemaIncludes>*.xsd</schemaIncludes>
 							<generateDirectory>${project.build.directory}/generated-test-sources/xjc</generateDirectory>
+							<addCompileSourceRoot>false</addCompileSourceRoot>
+							<addTestCompileSourceRoot>true</addTestCompileSourceRoot>
 							<args>
 								<arg>-XfixedValue</arg>
 								<arg>-XfluentAPI</arg>
