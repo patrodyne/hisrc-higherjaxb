@@ -57,7 +57,7 @@ menu_actions()
 			"b)")	comparepom ;;
 			"c)")	${BUILDER} versions:display-plugin-updates ;;
 			"d)")	${BUILDER} versions:display-dependency-updates ;;
-			"e)")	${BUILDER} dependency:tree ;;
+			"e)")	${BUILDER} dependency:tree -Pall,test ;;
 			"f)")	${BUILDER} dependency:resolve-plugins ;;
 			"g)")	${BUILDER} dependency:analyze ;;
 			"h)")	${BUILDER} dependency:sources; mvn dependency:resolve -Dclassifier=javadoc ;;

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings jaxb:version="3.0"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+>
+	<!--  Global Bindings -->
+	<jaxb:globalBindings localScoping="toplevel">
+		<jaxb:serializable uid="20240301" />
+	</jaxb:globalBindings>
+
+	<!--  Schema Bindings -->
+	<jaxb:bindings schemaLocation="MyTypeWrapper.xsd">
+
+		<jaxb:schemaBindings>
+			<jaxb:package name="my.company.v2"/>
+		</jaxb:schemaBindings>
+
+	</jaxb:bindings>
+
+</jaxb:bindings>

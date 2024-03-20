@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyTypeWrapper
+	xmlns="urn:my.company:v2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:my.company:v2 ../../main/resources/MyTypeWrapper.xsd"
+>
+    <mt>SomeValidValue</mt>
+</MyTypeWrapper>
+

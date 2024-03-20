@@ -18,6 +18,7 @@
 	</properties>
 	<modules>
 		<module>animal</module>
+		<module>any-attribute</module>
 		<module>any-content</module>
 		<module>base-extend</module>
 		<module>catalog</module>

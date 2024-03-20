@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	targetNamespace="urn:my.company:v2"
+	xmlns="urn:my.company:v2"
+	xmlns:abc="http://www.mycompany.no/xsd"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+>
+
+	<!--
+		Extend 'simpleType' from 'xsd:' using an 'any' attribute
+		from another namespace 'abc:'.
+	-->
+	<xsd:simpleType name="MyType"
+		abc:reference="https://example.com/valid_values.xml"
+	>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+
+	<xsd:complexType name="MyTypeWrapper">
+		<xsd:sequence>
+			<xsd:element name="mt" type="MyType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="MyTypeWrapper" type="MyTypeWrapper" />
+	
+</xsd:schema>
