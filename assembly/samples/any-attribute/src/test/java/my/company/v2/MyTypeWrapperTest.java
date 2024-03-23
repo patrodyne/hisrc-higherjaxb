@@ -1,6 +1,7 @@
 package my.company.v2;
 
 import static my.company.MtJaxbContext.MY_TYPE_WRAPPER_XSD;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -62,6 +63,8 @@ public class MyTypeWrapperTest extends AbstractSamplesTest
 		XsJaxbContext xsJaxbContext = new XsJaxbContext();
 		Schema xsSchema = xsJaxbContext.execute(MY_TYPE_WRAPPER_XSD);
 		assertNotNull(xsSchema, "MyTypeWrapper XSD Schema Instance");
+		assertFalse(xsSchema.getSimpleType().isEmpty(), "Expect MyType simple type");
+		getLogger().info(xsSchema.getSimpleType().get(0).toString());
 		
 		String myCompanyReference =
 			mtJaxbContext.findMyCompanyReference(xsSchema);

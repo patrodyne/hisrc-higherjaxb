@@ -115,7 +115,7 @@
 						</goals>
 						<configuration>
 							<debug>false</debug>
-							<verbose>false</verbose>
+							<verbose>true</verbose>
 							<catalog>src/main/resources/catalog.xml</catalog>
 							<strict>false</strict>
 							<schemas>
@@ -143,7 +143,7 @@
 						</goals>
 						<configuration>
 							<debug>false</debug>
-							<verbose>false</verbose>
+							<verbose>true</verbose>
 							<schemaDirectory>${basedir}/src/test/resources</schemaDirectory>
 							<schemaIncludes>*.xsd</schemaIncludes>
 							<generateDirectory>${project.build.directory}/generated-test-sources/xjc</generateDirectory>
