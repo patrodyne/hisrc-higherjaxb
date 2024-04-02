@@ -29,6 +29,12 @@
 			<replacevalue><![CDATA[Copyright &copy; 2022-2024, Rick O'Sullivan;]]></replacevalue>
 		</replace>
 
+		<replace dir="${basedir}" summary="true">
+			<include name="assembly/pom.xml"/>
+			<replacetoken><![CDATA[version>2.2.0</]]></replacetoken>
+			<replacevalue><![CDATA[version>2.2.0</]]></replacevalue>
+		</replace>
+
 	</target>
 
 </project>

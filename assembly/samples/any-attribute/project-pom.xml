@@ -17,7 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<hisrc-basicjaxb.version>${hisrc-basicjaxb.version}</hisrc-basicjaxb.version>
-		<hisrc-higherjaxb.version>2.2.1-SNAPSHOT</hisrc-higherjaxb.version>
+		<hisrc-higherjaxb.version>${hisrc-higherjaxb.version}</hisrc-higherjaxb.version>
 		<hisrc-higherjaxb-maven-plugin.version>${hisrc-higherjaxb-maven-plugin.version}</hisrc-higherjaxb-maven-plugin.version>
 		<jaxb-api.version>${jaxb-api.version}</jaxb-api.version>
 		<jaxb-imp.version>${jaxb-imp.version}</jaxb-imp.version>

@@ -29,7 +29,6 @@
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-higherjaxb-w3c-schemas</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<!-- HiSrc HigherJAXB Testing -->
 		<dependency>
