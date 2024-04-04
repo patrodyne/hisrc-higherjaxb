@@ -7,20 +7,20 @@
 
 		<replace dir="${basedir}" summary="true">
 			<include name="**/*pom.xml"/>
-			<replacetoken><![CDATA[version>2.2.0-SNAPSHOT</]]></replacetoken>
-			<replacevalue><![CDATA[version>2.2.1-SNAPSHOT</]]></replacevalue>
+			<replacetoken><![CDATA[version>2.2.1-SNAPSHOT</]]></replacetoken>
+			<replacevalue><![CDATA[version>2.2.2-SNAPSHOT</]]></replacevalue>
 		</replace>
 
 		<replace dir="${basedir}" summary="true">
 			<include name="testing/src/main/java/org/jvnet/higherjaxb/mojo/testing/AbstractMojoTest.java"/>
-			<replacetoken><![CDATA[DEFAULT_PROJECT_VERSION = "2.2.0-SNAPSHOT"]]></replacetoken>
-			<replacevalue><![CDATA[DEFAULT_PROJECT_VERSION = "2.2.1-SNAPSHOT"]]></replacevalue>
+			<replacetoken><![CDATA[DEFAULT_PROJECT_VERSION = "2.2.1-SNAPSHOT"]]></replacetoken>
+			<replacevalue><![CDATA[DEFAULT_PROJECT_VERSION = "2.2.2-SNAPSHOT"]]></replacevalue>
 		</replace>
 
 		<replace dir="${basedir}" summary="true">
 			<include name="testing/src/main/java/org/jvnet/higherjaxb/mojo/testing/AbstractMojoTest.java"/>
-			<replacetoken><![CDATA[DEFAULT_BASICJAXB_VERSION = "2.2.0-SNAPSHOT"]]></replacetoken>
-			<replacevalue><![CDATA[DEFAULT_BASICJAXB_VERSION = "2.2.1-SNAPSHOT"]]></replacevalue>
+			<replacetoken><![CDATA[DEFAULT_BASICJAXB_VERSION = "2.2.1-SNAPSHOT"]]></replacetoken>
+			<replacevalue><![CDATA[DEFAULT_BASICJAXB_VERSION = "2.2.2-SNAPSHOT"]]></replacevalue>
 		</replace>
 
 		<replace dir="${basedir}" summary="true">
@@ -32,7 +32,7 @@
 		<replace dir="${basedir}" summary="true">
 			<include name="assembly/pom.xml"/>
 			<replacetoken><![CDATA[version>2.2.0</]]></replacetoken>
-			<replacevalue><![CDATA[version>2.2.0</]]></replacevalue>
+			<replacevalue><![CDATA[version>2.2.1</]]></replacevalue>
 		</replace>
 
 	</target>
