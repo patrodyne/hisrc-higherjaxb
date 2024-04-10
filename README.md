@@ -35,6 +35,7 @@ original `maven-jaxb2-plugin` name.
 
 #### GitHub Releases, Demonstrations
 
+* [HiSrc HigherJAXB v2.2.1, Explorations][36]
 * [HiSrc HigherJAXB v2.2.0, Explorations][35]
 * [HiSrc HigherJAXB v2.1.1, Explorations][34]
 * [HiSrc HigherJAXB v2.1.0, Explorations][33]
@@ -75,6 +76,13 @@ New goals for the next release are:
 * Review in progress.
 
 ### Fork History
+
+#### Version 2.2.1
+
+* Added W3C schema artifact projects: [hisrc-higherjaxb/w3c][26].
+* Added sample project: [any-attribute](https://github.com/patrodyne/hisrc-higherjaxb/tree/master/assembly/samples/any-attribute/README.md).
+* Update Maven plugin and dependency versions.
+* Build with JDK 21 and Java 11 compatibility.
 
 #### Version 2.2.0
 
@@ -174,11 +182,13 @@ New goals for the next release are:
   [23]: https://github.com/highsource/maven-jaxb2-plugin/tree/0.14.0#readme
   [24]: https://github.com/highsource/jaxb2-annotate-plugin/tree/1.1.0#readme
   [25]: https://github.com/highsource/hyperjaxb3/tree/0.6.2#readme
+  [26]: https://github.com/patrodyne/hisrc-higherjaxb/tree/master/w3c
   [31]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/0.14.2
   [32]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.0.0
   [33]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.1.0
   [34]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.1.1
   [35]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.2.0
+  [36]: https://github.com/patrodyne/hisrc-higherjaxb/releases/tag/2.2.1
   [40]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb23-maven-plugin/latest/index.html
   [41]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb30-maven-plugin/latest/index.html
   [42]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb40-maven-plugin/latest/index.html
