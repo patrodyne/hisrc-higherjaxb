@@ -37,6 +37,8 @@ Or execute the sample application using:
 mvn -Pexec clean compile exec:java
 ~~~
 
+This [output][9] shows the execution results.
+
 #### Explanation
 
 Given this XSD below with a `simpleType`, named **`MyType`**, that declares an *other* attribute (`abc:reference`) from a non-schema namespace, we can use the pre-compiled JAXB classes from [`org.patrodyne.jvnet:hisrc-higherjaxb-w3c-xmlschema-v1_0:jar`][8] to unmarshal the XSD as an *XML Schema Instance* (i.e. an XML document), at runtime. Like any other unmarshaled object, the attribute becomes a field/property named `reference` that can be [accessed programmatically][15].
@@ -138,6 +140,7 @@ The important thing to note, in this definition, is that `abc:reference` is an e
 [6]: https://github.com/patrodyne/hisrc-basicjaxb#readme
 [7]: https://www.w3schools.com/xml/schema_complex_anyattribute.asp
 [8]: https://central.sonatype.com/artifact/org.patrodyne.jvnet/hisrc-higherjaxb-w3c-xmlschema-v1_0
+[9]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/any-attribute/OUTPUT.txt
 [10]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/any-attribute/README.md
 [11]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/any-attribute/project-pom.xml
 [12]: https://github.com/patrodyne/hisrc-higherjaxb/blob/master/assembly/samples/any-attribute/src/main/resources/MyTypeWrapper.xsd

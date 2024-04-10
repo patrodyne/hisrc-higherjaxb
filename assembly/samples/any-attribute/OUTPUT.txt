@@ -1,0 +1,57 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----< org.patrodyne.jvnet:hisrc-higherjaxb-sample-any-attribute >------
+[INFO] Building HiSrc HigherJAXB Assembly Sample [any-attribute] 2.2.1
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ hisrc-higherjaxb-sample-any-attribute ---
+[INFO] Deleting hisrc-higherjaxb-sample-any-attribute-2.2.1/target
+[INFO] 
+[INFO] --- hisrc-higherjaxb:2.2.1:generate (generate) @ hisrc-higherjaxb-sample-any-attribute ---
+[INFO] Sources are not up-to-date, XJC will be executed.
+[INFO] XJC> XhashCode: : Start
+Parameters
+  HashCodeStrategyClass.: org.jvnet.basicjaxb.lang.JAXBHashCodeStrategy
+  Verbose...............: true
+  Debug.................: true
+[INFO] XJC> XhashCode: : Finish
+Results
+  HadError.: false
+[INFO] XJC> Xequals: : Start
+Parameters
+  EqualsStrategyClass.: org.jvnet.basicjaxb.lang.JAXBEqualsStrategy
+  Verbose.............: true
+  Debug...............: true
+[INFO] XJC> Xequals: : Finish
+Results
+  HadError.: false
+[INFO] XJC> XtoString: : Start
+Parameters
+  ToStringStrategyClass.: org.jvnet.basicjaxb.lang.JAXBToStringStrategy
+  Verbose...............: true
+  Debug.................: true
+[INFO] XJC> XtoString: : Finish
+Results
+  HadError.: false
+[INFO] Episode file [hisrc-higherjaxb-sample-any-attribute-2.2.1/target/generated-sources/xjc/META-INF/sun-jaxb.episode] was augmented with if-exists="true" attributes.
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ hisrc-higherjaxb-sample-any-attribute ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 3 resources from src/test/resources to target/classes
+[INFO] Copying 1 resource from target/generated-sources/xjc to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ hisrc-higherjaxb-sample-any-attribute ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 7 source files with javac [debug release 11] to target/classes
+[INFO] 
+[INFO] --- exec:3.1.0:java (default-cli) @ hisrc-higherjaxb-sample-any-attribute ---
+16:06:42:221 INFO Main - MyTypeWrapper: MyTypeWrapper@6b617eac[SomeValidValue]
+16:06:42:222 INFO Main - {http://www.mycompany.no/xsd}reference = https://example.com/valid_values.xml
+16:06:42:222 INFO Main - VALID: SomeValidValue
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.263 s
+[INFO] Finished at: 2024-04-10T16:06:42-04:00
+[INFO] ------------------------------------------------------------------------
