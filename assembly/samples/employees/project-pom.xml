@@ -25,6 +25,11 @@
 		<!-- HiSrc BasicJAXB -->
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-runtime</artifactId>
+			<version>\${hisrc-basicjaxb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-basicjaxb-testing</artifactId>
 			<version>\${hisrc-basicjaxb.version}</version>
 		</dependency>
