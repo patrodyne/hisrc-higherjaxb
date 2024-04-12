@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+	jaxb:version="3.0"
+>
+	<!--  Global Bindings -->
+	<jaxb:globalBindings localScoping="toplevel">
+		<jaxb:serializable uid="20240411" />
+	</jaxb:globalBindings>
+
+	<!--  Schema Bindings -->
+	<jaxb:bindings schemaLocation="employee-map.xsd">
+
+		<jaxb:schemaBindings>
+			<jaxb:package name="org.example.employee_map"/>
+		</jaxb:schemaBindings>
+
+		<jaxb:bindings node="//xs:complexType[@name='employee']">
+			<jaxb:bindings node="//xs:element[@name='dataMap']">
+				<jaxb:property>
+					<jaxb:baseType name="java.util.Map&lt;String,Object&gt;" />
+				</jaxb:property>
+			</jaxb:bindings>
+		</jaxb:bindings>
+
+	</jaxb:bindings>
+
+</jaxb:bindings>

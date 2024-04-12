@@ -25,6 +25,8 @@
 		<module>custom-name</module>
 		<module>dtd</module>
 		<module>element</module>
+		<module>employee-map</module>
+		<module>employees</module>
 		<module>episode</module>
 		<module>invoices</module>
 		<module>jaxbplugins</module>

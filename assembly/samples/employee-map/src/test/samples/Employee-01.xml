@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<employee
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="../../main/resources/employee-map.xsd"
+>
+	<dataMap>
+		<entry>
+			<key>Key1</key>
+			<value>Value1</value>
+		</entry>
+		<entry>
+			<key>Key2</key>
+			<value>Value2</value>
+		</entry>
+		<entry>
+			<key>Key3</key>
+			<value>Value3</value>
+		</entry>
+	</dataMap>
+	<value>VALUE</value>
+</employee>
