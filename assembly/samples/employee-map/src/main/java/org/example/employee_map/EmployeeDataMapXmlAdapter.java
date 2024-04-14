@@ -1,6 +1,5 @@
 package org.example.employee_map;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -30,12 +29,15 @@ public class EmployeeDataMapXmlAdapter extends XmlAdapter<DataMap, Map<String,Ob
 	{
 		getLogger().trace("marshal: {}", map);
 		DataMap dataMap = new DataMap();
-		for ( java.util.Map.Entry<String, Object> entry : map.entrySet() )
+		if ( map != null )
 		{
-			Entry data = new Entry();
-			data.setKey(entry.getKey());
-			data.setValue(entry.getValue());
-			dataMap.getEntry().add(data);
+			for ( java.util.Map.Entry<String, Object> entry : map.entrySet() )
+			{
+				Entry data = new Entry();
+				data.setKey(entry.getKey());
+				data.setValue(entry.getValue());
+				dataMap.getEntry().add(data);
+			}
 		}
 		return dataMap;
 	}
