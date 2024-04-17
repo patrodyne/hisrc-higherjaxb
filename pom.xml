@@ -115,6 +115,9 @@
 		<maven-api.version>3.9.6</maven-api.version>
 		<maven-min.version>3.9.0</maven-min.version>
 		<maven-resolver.version>1.9.18</maven-resolver.version>
+		<plexus-build-api.version>0.0.7</plexus-build-api.version>
+		<plexus-testing.version>1.3.0</plexus-testing.version>
+		<plexus-utils.version>4.0.0</plexus-utils.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<slf4j.version>2.0.12</slf4j.version>
@@ -340,12 +343,12 @@
 			<dependency>
 				<groupId>org.sonatype.plexus</groupId>
 				<artifactId>plexus-build-api</artifactId>
-				<version>0.0.7</version>
+				<version>${plexus-build-api.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-testing</artifactId>
-				<version>1.3.0</version>
+				<version>${plexus-testing.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
@@ -361,7 +364,7 @@
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-utils</artifactId>
-				<version>4.0.0</version>
+				<version>${plexus-utils.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
@@ -658,8 +661,43 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
+							<additionalOptions>
+								<additionalOption>--link-modularity-mismatch=info</additionalOption>
+							</additionalOptions>
+							<detectLinks>true</detectLinks>
 							<doclint>all,-missing</doclint>
 							<failOnError>false</failOnError>
+							<links>
+								<link>https://javadoc.io/doc/com.google.code.javaparser/javaparser/${javaparser.version}/</link>
+								<link>https://javadoc.io/doc/com.google.inject/guice/${guice.version}/</link>
+								<link>https://javadoc.io/doc/com.vividsolutions/jts/${jts.version}/</link>
+								<link>https://javadoc.io/doc/jakarta.activation/jakarta.activation-api/${activation-api.version}/</link>
+								<link>https://javadoc.io/doc/jakarta.xml.bind/jakarta.xml.bind-api/${jaxb-api.version}/</link>
+								<link>https://javadoc.io/doc/org.apache.ant/ant/${ant.version}/</link>
+								<link>https://javadoc.io/doc/org.codehaus.plexus/plexus-testing/${plexus-testing.version}/</link>
+								<link>https://javadoc.io/doc/org.codehaus.plexus/plexus-utils/${plexus-utils.version}/</link>
+								<link>https://javadoc.io/doc/org.glassfish.jaxb/codemodel/${jaxb-imp.version}/</link>
+								<link>https://javadoc.io/doc/org.glassfish.jaxb/jaxb-core/${jaxb-imp.version}/</link>
+								<link>https://javadoc.io/doc/org.glassfish.jaxb/jaxb-runtime/${jaxb-imp.version}/</link>
+								<link>https://javadoc.io/doc/org.glassfish.jaxb/jaxb-xjc/${jaxb-imp.version}/</link>
+								<link>https://javadoc.io/doc/org.junit.jupiter/junit-jupiter-api/${junit-jupiter.version}/</link>
+								<link>https://javadoc.io/doc/org.sonatype.plexus/plexus-build-api/${plexus-build-api.version}/</link>
+								<link>https://javadoc.io/doc/xmlunit/xmlunit/${xmlunit.version}/</link>
+								<!-- HiSrc BasicJAXB links -->
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-basicjaxb-ant/latest</link>
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-basicjaxb-tools/latest</link>
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-basicjaxb-plugins/latest</link>
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-basicjaxb-runtime/latest</link>
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-basicjaxb-testing/latest</link>
+								<!-- HiSrc HigherJAXB links -->
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb40-maven-plugin/latest</link>
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-maven-plugin-core/latest</link>
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-maven-plugin/latest</link>
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-maven-plugin-testing/latest</link>
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-w3c-schemas/latest</link>
+								<link>https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-w3c-xmlschema-v1_0/latest</link>
+							</links>
+							<quiet>false</quiet>
 						</configuration>
 					</execution>
 				</executions>
