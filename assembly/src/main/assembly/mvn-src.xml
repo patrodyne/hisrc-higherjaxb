@@ -36,19 +36,19 @@
 	</fileSets>
 	<files>
 		<file>
-			<source>${basedir}/../../project-pom-build-cfg.sh</source>
+			<source>${root.basedir}/assembly/project-pom-build-cfg.sh</source>
 			<destName>build-cfg.sh</destName>
 			<filtered>false</filtered>
 			<fileMode>0774</fileMode>
 		</file>
 		<file>
-			<source>${basedir}/../../project-pom-build-inc.sh</source>
+			<source>${root.basedir}/assembly/project-pom-build-inc.sh</source>
 			<destName>build-inc.sh</destName>
 			<filtered>false</filtered>
 			<fileMode>0774</fileMode>
 		</file>
 		<file>
-			<source>${basedir}/../../project-pom-build.sh</source>
+			<source>${root.basedir}/assembly/project-pom-build.sh</source>
 			<destName>build.sh</destName>
 			<filtered>false</filtered>
 			<fileMode>0774</fileMode>
