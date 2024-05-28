@@ -46,7 +46,7 @@
 						</goals>
 						<configuration>
 							<!-- forceRegenerate>true</forceRegenerate-->
-							<catalog>src/main/resources/ab/catalog.cat</catalog>
+							<catalog>src/main/resources/ab/catalog.xml</catalog>
 							<strict>false</strict>
 							<schemaIncludes>
 								<include>**/a.xsd</include>

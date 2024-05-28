@@ -4,5 +4,11 @@
     If the <catalog/> parameter isn't working, this link to schema A is
     not recognized and the test will fail because of a missing schema.
 --
-REWRITE_SYSTEM "https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/tests/episodes/a/src/main/resources/a.xsd" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-episodes-a:jar::!/a.xsd"
 
+-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver --
+
+--
+SYSTEM "file:/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/tests/episodes/b/src/main/resources/a.xsd" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-episodes-a:jar::!/a.xsd"
+REWRITE_SYSTEM "file:/home/rick/dev/work/repos/jvnet/hisrc-higherjaxb/tests/episodes/b/src/main/resources/" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-episodes-a:jar::!/"
+--
+SYSTEM_SUFFIX "a.xsd" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-episodes-a:jar::!/a.xsd"

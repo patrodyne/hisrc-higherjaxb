@@ -3,8 +3,20 @@
     PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
            "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"
 >
+<!-- Requires org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver -->
+<!-- Requires maven-resources-plugin to initialize the build's output classpath -->
 <!-- See https://www.oasis-open.org/committees/entity/spec.html -->
 <!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
-	<rewriteSystem systemIdStartString="http://example.org/schemas" rewritePrefix="."/>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
+	<!-- publicId [http://example.org/A], systemId [http://example.org/schemas/schema_a.xsd] -->
+	<!--
+	<rewriteSystem systemIdStartString="http://example.org/schemas" rewritePrefix="classpath:"/>
+	-->
+
+	<!-- publicId [http://example.org/A], systemId [http://example.org/schemas/schema_a.xsd] -->
+	<!--
+	-->
+    <public publicId="http://example.org/A" uri="classpath:schema_a.xsd" />
+
 </catalog>

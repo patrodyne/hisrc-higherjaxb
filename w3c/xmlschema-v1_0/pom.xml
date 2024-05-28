@@ -112,6 +112,7 @@
 						<configuration>
 							<debug>false</debug>
 							<verbose>true</verbose>
+							<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
 							<catalog>src/main/resources/catalog.xml</catalog>
 							<strict>false</strict>
 							<schemas>

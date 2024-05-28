@@ -10,7 +10,10 @@ import java.util.List;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
-public class OptionsConfiguration
+/**
+ * Mojo options configuration used to create the XJC options.
+ */
+public class OptionsConfiguration extends SystemOptionsConfiguration
 {
 	private final String encoding;
 	public String getEncoding() { return encoding; }
@@ -48,15 +51,6 @@ public class OptionsConfiguration
 	private final boolean disableXmlSecurity;
 	public boolean isDisableXmlSecurity() { return disableXmlSecurity; }
 
-	private final String accessExternalSchema;
-	public String getAccessExternalSchema() { return accessExternalSchema; }
-
-	private final String accessExternalDTD;
-	public String getAccessExternalDTD() { return accessExternalDTD; }
-	
-	private final boolean enableExternalEntityProcessing;
-	public boolean isEnableExternalEntityProcessing() { return enableExternalEntityProcessing; }
-
 	private final boolean contentForWildcard;
 	public boolean isContentForWildcard() { return contentForWildcard; }
 
@@ -83,6 +77,9 @@ public class OptionsConfiguration
 
 	public OptionsConfiguration
 	(
+		String accessExternalSchema,
+		String accessExternalDTD,
+		boolean enableExternalEntityProcessing,
 		String encoding,
 		String schemaLanguage,
 		List<InputSource> grammars,
@@ -95,9 +92,6 @@ public class OptionsConfiguration
 		boolean noFileHeader,
 		boolean enableIntrospection,
 		boolean disableXmlSecurity,
-		String accessExternalSchema,
-		String accessExternalDTD,
-		boolean enableExternalEntityProcessing,
 		boolean contentForWildcard,
 		boolean extension,
 		boolean strict,
@@ -108,7 +102,12 @@ public class OptionsConfiguration
 		String specVersion
 	)
 	{
-		super();
+		super
+		(
+			accessExternalSchema,
+			accessExternalDTD,
+			enableExternalEntityProcessing
+		);
 		this.encoding = encoding;
 		this.schemaLanguage = schemaLanguage;
 		this.grammars = grammars;
@@ -121,9 +120,6 @@ public class OptionsConfiguration
 		this.noFileHeader = noFileHeader;
 		this.enableIntrospection = enableIntrospection;
 		this.disableXmlSecurity = disableXmlSecurity;
-		this.accessExternalSchema = accessExternalSchema;
-		this.accessExternalDTD = accessExternalDTD;
-		this.enableExternalEntityProcessing = enableExternalEntityProcessing;
 		this.contentForWildcard = contentForWildcard;
 		this.extension = extension;
 		this.strict = strict;
@@ -140,6 +136,7 @@ public class OptionsConfiguration
 		return format
 		(
 			"OptionsConfiguration [" +
+				super.toString() + "\n" +
 				"specVersion=%s\n " +
 				"generateDirectory=%s\n " +
 				"generatePackage=%s\n " +
@@ -152,8 +149,6 @@ public class OptionsConfiguration
 				"noFileHeader=%s\n " +
 				"enableIntrospection=%s\n " +
 				"disableXmlSecurity=%s\n " +
-				"accessExternalSchema=%s\n " +
-				"accessExternalDTD=%s\n " +
 				"contentForWildcard=%s\n " +
 				"extension=%s\n " +
 				"strict=%s\n " +
@@ -173,8 +168,6 @@ public class OptionsConfiguration
 			noFileHeader,
 			enableIntrospection,
 			disableXmlSecurity,
-			accessExternalSchema,
-			accessExternalDTD,
 			contentForWildcard,
 			extension,
 			strict,

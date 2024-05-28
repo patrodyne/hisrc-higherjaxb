@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	JAXB XML/Java binding-schema DTD
+	URI: http://java.sun.com/dtd/jaxb/1.0-ea/xjs.dtd
+	@(#)xjs.dtd 1.11 01/05/31
+	Copyright 2000-2001 by Sun Microsystems, Inc.,
+	901 San Antonio Road, Palo Alto, California, 94303, U.S.A.
+	All rights reserved.
+	This software is the confidential and proprietary information
+	of Sun Microsystems, Inc. ("Confidential Information"). You
+	shall not disclose such Confidential Information and shall use
+	it only in accordance with the terms of the license agreement
+	you entered into with Sun.
+!-->
+
+<!-- Definitions !-->
+
+<!ENTITY % top-level-decl "element | interface | enumeration | conversion" >
+<!ENTITY % boolean "( true | false )" >
+<!ENTITY % collection "( array | list )" >
+<!ENTITY % internal-decl "constructor | enumeration | conversion" >
+<!ENTITY % attribute-or-internal-decl "attribute | %internal-decl;" >
+
+<!-- Declarations !-->
+
+<!ELEMENT xml-java-binding-schema ( options?, ( %top-level-decl; )* ) >
+<!ATTLIST xml-java-binding-schema
+	version CDATA #FIXED "1.0ea" >
+
+<!ELEMENT options EMPTY >
+<!ATTLIST options
+		  package NMTOKEN #IMPLIED
+		  default-reference-collection-type %collection; "list"
+		  property-get-set-prefixes %boolean; "true"
+		  marshallable %boolean; "true"
+		  unmarshallable %boolean; "true" >
+
+<!ELEMENT element ( ( %attribute-or-internal-decl; )*, content?, ( %attribute-or-internal-decl; )* ) >
+<!ATTLIST element
+		  name ID #REQUIRED
+		  type ( value | class ) #REQUIRED
+		  class NMTOKEN #IMPLIED
+		  root %boolean; #IMPLIED
+		  convert NMTOKEN #IMPLIED >
+
+<!--
+	Further constraints: @convert requires @type="value"
+	@class, @root require @type="class"
+	./* requires @type="class"
+	<element name={elt} type="value" [convert={cnv}]
+	<element name={elt} type="class" [class={class}] [root={root}]>
+!-->
+
+<!ELEMENT attribute EMPTY >
+<!ATTLIST attribute
+	name NMTOKEN #REQUIRED
+	convert NMTOKEN #IMPLIED
+	property NMTOKEN #IMPLIED
+	collection %collection; #IMPLIED >
+
+<!--
+	<attribute name={attr} [convert={cnv}]
+	[property={prop}] [collection={coll}]
+!-->
+
+<!ELEMENT content ( ( element-ref | choice | sequence )*, rest? ) >
+<!ATTLIST content
+	property NMTOKEN #IMPLIED
+	collection %collection; #IMPLIED
+	supertype NMTOKEN #IMPLIED >
+
+<!--
+	Further constraints: @property, @collection, @supertype forbid content
+	<content property={prop} [collection={coll}] [supertype={tau}]/>
+	<content>
+	<element-ref name={elt} [property={prop}] [collection={coll}]/>
+	<choice property={prop} [collection={coll}] [supertype={tau}]/>
+	<sequence property={prop} [collection={coll}] [supertype={tau}]/>
+	<rest property={prop} [collection={coll}] [supertype={tau}]/>
+!-->
+
+<!ELEMENT element-ref EMPTY >
+<!ATTLIST element-ref
+	name NMTOKEN #REQUIRED
+	property NMTOKEN #IMPLIED
+	collection %collection; #IMPLIED >
+
+<!ELEMENT choice EMPTY >
+<!ATTLIST choice
+	property NMTOKEN #REQUIRED
+	collection %collection; #IMPLIED
+	supertype NMTOKEN #IMPLIED >
+
+<!ELEMENT sequence EMPTY >
+<!ATTLIST sequence
+	property NMTOKEN #IMPLIED
+	collection %collection; #IMPLIED
+	supertype NMTOKEN #IMPLIED >
+
+<!ELEMENT rest EMPTY >
+<!ATTLIST rest
+	property NMTOKEN #REQUIRED
+	collection %collection; #IMPLIED
+	supertype NMTOKEN #IMPLIED >
+
+<!ELEMENT constructor EMPTY >
+<!ATTLIST constructor
+	properties NMTOKENS #REQUIRED >
+
+<!ELEMENT interface EMPTY >
+<!ATTLIST interface
+	name NMTOKEN #REQUIRED
+	members NMTOKENS #REQUIRED
+	properties NMTOKENS #IMPLIED >
+
+<!ELEMENT enumeration EMPTY >
+<!ATTLIST enumeration
+	name CDATA #REQUIRED
+	members NMTOKENS #REQUIRED >
+
+<!ELEMENT conversion EMPTY>
+<!ATTLIST conversion
+	name NMTOKEN #REQUIRED
+	type NMTOKEN #IMPLIED
+	parse NMTOKEN #IMPLIED
+	print NMTOKEN #IMPLIED >
+
+<!--
+	@parse = "new", to invoke a constructor that takes a string, or
+	"ClassName.staticParseMethod"
+	@print = "ClassName.staticPrintMethod" or "instancePrintMethod"
+	In both cases, ClassName may have a package prefix
+!-->

@@ -50,19 +50,13 @@
 								<arg>-Xinheritance</arg>
 								<arg>-XvalueConstructor</arg>
 							</args>
-							<!--
-							<catalogDirectory>src/main/catalog</catalogDirectory>
-							<catalogIncludes>
-								<catalogInclude>catalog.xml</catalogInclude>
-							</catalogIncludes>
-							-->
+							<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
 							<catalog>src/main/catalog/catalog.xml</catalog>
-							<!--
-							<schemaDirectory>src/main/resources</schemaDirectory>
+							<strict>false</strict>
 							<schemaIncludes>
+								<schemaInclude>common.xsd</schemaInclude>
 								<schemaInclude>onvif.xsd</schemaInclude>
 							</schemaIncludes>
-							-->
 							<plugins>
 								<plugin>
 									<groupId>org.patrodyne.jvnet</groupId>

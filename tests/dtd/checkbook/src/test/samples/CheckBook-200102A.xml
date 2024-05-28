@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkbook>
+
+	<transactions>
+
+		<deposit>
+			<date value="02-09-2001"/>
+			<name>Me</name>
+			<amount value="1500.00"/>
+		</deposit>
+
+		<check number="90" category="other">
+			<date value="02-12-2001"/>
+			<name>Faberge</name>
+			<amount value="34.95"/>
+			<pending/>
+			<memo>Faberge Eggs</memo>
+		</check>
+
+		<withdrawal>
+			<date value="02-27-2001"/>
+			<amount value="20.00"/>
+		</withdrawal>
+
+		<check number="91" category="rent">
+			<date value="02-29-2001"/>
+			<name>Landlord</name>
+			<amount value="1500.00"/>
+			<void/>
+			<memo>February</memo>
+		</check>
+
+	</transactions>
+
+	<balance value="50000.00"/>
+
+</checkbook>

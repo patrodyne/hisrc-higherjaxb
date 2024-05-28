@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+<!DOCTYPE transactions SYSTEM "../../main/resources/CheckBook.dtd">
+ -->
+<transactions>
+
+	<check number="2" category="groceries">
+		<date value="03-15-2001"/>
+		<name>Conglomerate Foods</name>
+		<amount value="34.95"/>
+		<pending/>
+		<memo>food</memo>
+	</check>
+
+	<withdrawal>
+		<date value="03-16-2001"/>
+		<amount value="0.34"/>
+	</withdrawal>
+
+</transactions>

@@ -6,7 +6,30 @@
 <!-- See https://www.oasis-open.org/committees/entity/spec.html -->
 <!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
 <catalog  xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">  
-	<group>  
-		<rewriteSystem systemIdStartString="http://www.ab.org" rewritePrefix="../.."/>
+
+	<group xml:base="tests/gh-issue-23/xcatalog">
+
+		<systemSuffix
+			systemIdSuffix="a.xsd"
+			uri="two-non-strict/src/main/resources/one/a.xsd"
+		/>
+
+		<systemSuffix
+			systemIdSuffix="b.xsd"
+			uri="two-non-strict/src/main/resources/one/b.xsd"
+		/>
+
+		<systemSuffix
+			systemIdSuffix="b1.xsd"
+			uri="two-non-strict/src/main/resources/one/b1.xsd"
+		/>
+
+		<systemSuffix
+			systemIdSuffix="p.xsd"
+			uri="two-non-strict/src/main/resources/two/p.xsd"
+		/>
+
+
 	</group>
+
 </catalog>

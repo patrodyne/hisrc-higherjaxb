@@ -1,2 +1,5 @@
+--
+    OASIS TR 9401 (https://www.oasis-open.org/specs/a401.htm)
+--
+-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver --
 REWRITE_SYSTEM "http://localhost/hisrc-higherjaxb/tests/gh-issue-19/a/src/main/resources/a" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-gh-issue-19-a:jar::!/a"
-

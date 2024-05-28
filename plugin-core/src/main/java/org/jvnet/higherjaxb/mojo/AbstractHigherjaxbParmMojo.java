@@ -326,10 +326,17 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	public void setCatalogs(ResourceEntry[] catalogs) { this.catalogs = catalogs; }
 
 	/**
-	 * Provides the class name of the catalog resolver.
+	 * Provides the class name of a catalog resolver:
+	 * 
+	 * <ul>
+	 * <li>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</li>
+	 * <li>org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver</li>
+	 * </ul>
+	 * 
+	 * defaultValue = "org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver"
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogResolver")
-	protected String catalogResolver = null;
+	private String catalogResolver = null;
 	public String getCatalogResolver() { return catalogResolver; }
 	public void setCatalogResolver(String catalogResolver) { this.catalogResolver = catalogResolver; }
 
@@ -439,7 +446,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * of protocols separated by comma. A protocol is the scheme portion of a
 	 * {@link java.net.URI}, or in the case of the JAR protocol, "jar" plus the
 	 * scheme portion separated by colon. The keyword "all" grants permission to
-	 * all protocols.
+	 * all protocols. Other protocols are "file", "http", "all".
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".accessExternalSchema", defaultValue = "all")
 	private String accessExternalSchema = "all";
@@ -451,7 +458,8 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * protocols specified. Value: a list of protocols separated by comma. A
 	 * protocol is the scheme portion of a {@link java.net.URI}, or in the case
 	 * of the JAR protocol, "jar" plus the scheme portion separated by colon.
-	 * The keyword "all" grants permission to all protocols.
+	 * The keyword "all" grants permission to all protocols. Other protocols are
+	 * "file", "http", "all".
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".accessExternalDTD", defaultValue = "all")
 	private String accessExternalDTD = "all";
@@ -459,7 +467,11 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	public void setAccessExternalDTD(String accessExternalDTD) { this.accessExternalDTD = accessExternalDTD; }
 	
 	/**
-	 * Enables external entity processing.
+	 * Enables external entity processing. Allows an OSGI generated <code>com.sun.xml.dtdparser.InputEntity</code> to
+	 * use <code>XmlReader</code> to create a <code>Reader</code> for a <code>URL</code> referencing a 
+	 * <code>systemId</code>. The dependency is <code>com.sun.xml.dtd-parser:dtd-parser.jar</code>. When
+	 * disabled, an attempt to read from an external URL will throw a <code>SAXParseException</code> with
+	 * code <code>"P-082"</code>.
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".enableExternalEntityProcessing", defaultValue = "true")
 	private boolean enableExternalEntityProcessing;
@@ -651,7 +663,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * by using &lt;args/&gt; and enable plugin activation option.
 	 */
 	@Parameter
-	protected Dependency[] plugins;
+	private Dependency[] plugins;
 	public Dependency[] getPlugins() { return plugins; }
 	public void setPlugins(Dependency[] plugins) { this.plugins = plugins; }
 

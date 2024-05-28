@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions>
+
+	<deposit>
+		<date value="04-14-2001"/>
+		<name>Me</name>
+		<amount value="101.01"/>
+	</deposit>
+
+</transactions>

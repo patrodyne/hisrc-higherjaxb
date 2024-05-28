@@ -5,8 +5,10 @@
 	xmlns:d="d"
 	elementFormDefault="qualified">
 
+	<!--
+	<xsd:import namespace="a" schemaLocation="a.xsd"/>
+	-->
 	<xsd:import namespace="a"/>
-	<!--xsd:import namespace="a" schemaLocation="a.xsd"/-->
 
 	<xsd:element name="d" type="d:DType"/>
 

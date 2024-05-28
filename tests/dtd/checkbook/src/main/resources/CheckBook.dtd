@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT name (#PCDATA) >
+<!ELEMENT memo (#PCDATA) >
+
+<!ELEMENT cleared EMPTY >
+<!ELEMENT pending EMPTY >
+<!ELEMENT void EMPTY >
+
+<!ELEMENT amount EMPTY >
+<!ATTLIST amount
+          value CDATA #REQUIRED >
+
+<!ELEMENT balance EMPTY >
+<!ATTLIST balance
+          value CDATA #REQUIRED >
+
+<!ELEMENT date EMPTY >
+<!ATTLIST date
+          value CDATA #REQUIRED >
+
+<!ELEMENT checkbook ( transactions, balance ) >
+
+<!ELEMENT deposit ( date, name, amount )>
+<!ATTLIST deposit category ( salary | interest-income | other ) #IMPLIED >
+
+<!ELEMENT check ( date, name, amount, ( pending | void | cleared ), memo? ) >
+<!ATTLIST check number CDATA #REQUIRED category ( rent | groceries | other ) #IMPLIED >
+
+<!ELEMENT withdrawal ( date, amount ) >
+
+<!ELEMENT transactions ( deposit | check | withdrawal )* >
+
+<!ELEMENT something ( date ) >

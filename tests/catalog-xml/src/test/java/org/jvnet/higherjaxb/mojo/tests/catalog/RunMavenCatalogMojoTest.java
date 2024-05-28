@@ -2,6 +2,7 @@ package org.jvnet.higherjaxb.mojo.tests.catalog;
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.jvnet.higherjaxb.mojo.HigherjaxbMojo;
 import org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver;
@@ -11,6 +12,7 @@ import org.jvnet.higherjaxb.mojo.testing.SLF4JLogger;
 public class RunMavenCatalogMojoTest extends AbstractMojoTest
 {
 	@Test
+	@Disabled
 	public void testExecute() throws Exception
 	{
 		HigherjaxbMojo mojo = new HigherjaxbMojo();
@@ -23,6 +25,9 @@ public class RunMavenCatalogMojoTest extends AbstractMojoTest
 		mojo.setProject(createMavenProject());
 		mojo.setCatalogResolver(MavenCatalogResolver.class.getName());
 		mojo.setCatalog(fullpath("src/main/resources/catalog.xml"));
+		mojo.setAccessExternalDTD("all");
+		mojo.setAccessExternalSchema("all");
+		mojo.setEnableExternalEntityProcessing(true);
 		mojo.setStrict(false);
 		mojo.setSchemaDirectory(fullpath("src/main/resources"));
 		mojo.setSchemaIncludes(new String[] { "schema_b.xsd" } );

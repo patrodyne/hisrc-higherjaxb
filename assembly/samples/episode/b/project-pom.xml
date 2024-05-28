@@ -39,6 +39,7 @@
 						</episode>
 					</episodes>
 					<strict>false</strict>
+					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
 					<catalog>src/main/resources/catalog.cat</catalog>
 				</configuration>
 			</plugin>

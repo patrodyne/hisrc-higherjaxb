@@ -113,7 +113,15 @@ abstract public class AbstractMojoTest
 	protected MavenProject createMavenProject()
 	{
 		MavenProject mp = new MavenProject();
+		
 		mp.getModel().setDependencyManagement(new DependencyManagement());
+		mp.setModelVersion("4.0");
+		
+		mp.getBuild().setSourceDirectory("src/main/java");
+		mp.getBuild().setTestSourceDirectory("src/test/java");
+		mp.getBuild().setOutputDirectory("target/classes");
+		mp.getBuild().setTestOutputDirectory("target/test-classes");
+		
 		return mp;
 	}
 

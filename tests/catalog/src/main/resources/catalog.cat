@@ -4,5 +4,10 @@
     If the <catalog/> parameter isn't working, this link to schema A is
     not recognized and the test will fail because of a missing schema.
 --
-REWRITE_SYSTEM "http://example.org/schemas" "."
 
+BASE "src/main/resources"
+
+-- Requires org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver --
+-- Requires maven-resources-plugin to initialize the build's output classpath --
+-- publicId [http://example.org/A], systemId [http://example.org/schemas/schema_a.xsd] --
+REWRITE_SYSTEM "http://example.org/schemas/" "classpath:"

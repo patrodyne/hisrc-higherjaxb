@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml-java-binding-schema SYSTEM "../../../../doc/xjs.dtd">
+<!-- Xml Java-binding Schema (XJS) Document Type Definition (DTD) -->
+<!-- See http://xml.coverpages.org/jaxb0530spec.pdf -->
+<xml-java-binding-schema version="1.0ea2" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+
+	<options package="org.example.trade" />
+
+	<enumeration name="Action" members="buy buy-to-cover sell sell-short"/>
+	<enumeration name="Duration" members="immediate day good-til-canceled"/>
+
+	<conversion name="price" type="java.math.BigDecimal"/>
+	<conversion name="timestamp" type="javax.xml.datatype.XMLGregorianCalendar"
+		parse="Bind.parseXGC" print="Bind.print" />
+
+	<element name="quantity" type="class" convert="int">
+		<constructor properties="value"/>
+	</element>
+	
+	<element name="limitPrice" type="class" convert="price">
+		<constructor properties="value"/>
+	</element>
+	
+	<element name="stopPrice" type="class" convert="price">
+		<constructor properties="value"/>
+	</element>
+	
+	<element name="completed" type="class" convert="timestamp">
+		<constructor properties="value"/>
+	</element>
+
+	<element name="trade" type="class" root="true">
+
+		<constructor properties="account action symbol quantity"/>
+
+		<attribute name="account"  property="Account"  convert="int"/>
+		<attribute name="action"   property="Action"   convert="Action"/>
+		<attribute name="duration" property="Duration" convert="Duration"/>
+		<attribute name="created"  property="Created"  convert="timestamp"/>
+
+	</element>
+
+	<element name="transfer" type="class" root="true">
+
+		<constructor properties="account toAccount symbol quantity"/>
+
+		<attribute name="account"     property="Account"    convert="int"/>
+		<attribute name="to-account"  property="ToAccount"  convert="int"/>
+		<attribute name="created"     property="Created"    convert="timestamp"/>
+
+	</element>
+
+	<xjc:serializable uid="20220501" />
+	<!--
+	<xjc:superClass name="Stageable" />
+	-->
+
+</xml-java-binding-schema>

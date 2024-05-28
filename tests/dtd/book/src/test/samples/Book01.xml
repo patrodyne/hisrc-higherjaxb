@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book SYSTEM "../../main/resources/Book.dtd">
+<book type="biography">
+  <titlepage>
+    <title>Duke: My Life and Times</title>
+    <author>Duke</author>
+  </titlepage>
+  <prologue>I dedicate this book to ...</prologue>
+  <toc>
+    <chaptitle>The Early Years</chaptitle>
+    <chaptitle>The Later Years</chaptitle>
+  </toc>
+  <chapter>
+    <chaptitle>The Early Years</chaptitle>
+    <body>Blah blah blah</body>
+  </chapter>
+  <chapter>
+    <chaptitle>The Later Years</chaptitle>
+    <body>Blah blah</body>
+  </chapter>
+</book>

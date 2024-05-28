@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE catalog
+    PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+           "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"
+>
+<!-- See https://www.oasis-open.org/committees/entity/spec.html -->
+<!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
+<catalog  xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">  
+
+	<group xml:base="tests/jvnet-issue-79/xcatalog" >
+
+		<systemSuffix
+			systemIdSuffix="a.xsd"
+			uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-79-a:jar::!/a.xsd"
+		/>
+
+	</group>
+
+</catalog>

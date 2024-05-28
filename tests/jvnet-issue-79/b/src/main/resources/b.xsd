@@ -5,7 +5,7 @@
 	xmlns:b="b"
 	elementFormDefault="qualified">
 
-	<xsd:import namespace="a" schemaLocation="https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/tests/jvnet-issue-79/a/src/main/resources/a.xsd"/>
+	<xsd:import namespace="a" schemaLocation="a.xsd"/>
 
 	<xsd:element name="b" type="b:BType"/>
 

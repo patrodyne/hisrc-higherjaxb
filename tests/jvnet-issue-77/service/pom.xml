@@ -35,11 +35,8 @@
 					<schemaDirectory>src/main/resources/META-INF/project/schemas</schemaDirectory>
 					<generatePackage>com.company.project.service.types</generatePackage>
 					<strict>false</strict>
-					<catalog>src/main/jaxb/catalog.xml</catalog>
-					<!--
-					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver</catalogResolver>
 					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
-					-->
+					<catalog>src/main/jaxb/catalog.xml</catalog>
 					<extension>true</extension>
 					<useDependenciesAsEpisodes>false</useDependenciesAsEpisodes>
 					<episodes>

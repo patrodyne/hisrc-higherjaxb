@@ -37,12 +37,15 @@
 							<artifactId>hisrc-higherjaxb-maven-plugin-tests-episodes-a</artifactId>
 						</episode>
 					</episodes>
-					<!--plugins>
+					<!--
+					<plugins>
 						<plugin>
 							<groupId>org.patrodyne.jvnet</groupId>
 							<artifactId>hisrc-higherjaxb-maven-plugin-tests-episodes-a</artifactId>
 						</plugin>
-					</plugins-->
+					</plugins>
+					-->
+					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
 					<catalog>src/main/resources/catalog.cat</catalog>
 					<strict>false</strict>
 				</configuration>

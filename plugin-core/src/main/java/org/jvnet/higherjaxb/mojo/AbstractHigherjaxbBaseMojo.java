@@ -1,6 +1,10 @@
 package org.jvnet.higherjaxb.mojo;
 
 import static java.lang.String.format;
+import static java.lang.System.getProperty;
+import static java.lang.Thread.currentThread;
+import static java.net.URLConnection.guessContentTypeFromName;
+import static java.nio.file.Files.probeContentType;
 import static org.apache.maven.artifact.Artifact.SCOPE_COMPILE;
 import static org.codehaus.plexus.util.FileUtils.deleteDirectory;
 import static org.eclipse.aether.util.filter.DependencyFilterUtils.classpathFilter;
@@ -24,6 +28,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,6 +68,7 @@ import org.eclipse.aether.graph.DependencyFilter;
 import org.jvnet.higherjaxb.mojo.net.CompositeURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.FileURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.URILastModifiedResolver;
+import org.jvnet.higherjaxb.mojo.resolver.tools.BuildClasspathClassLoader;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ReResolvingEntityResolverWrapper;
@@ -71,6 +78,8 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.sun.org.apache.xml.internal.resolver.Catalog;
+import com.sun.org.apache.xml.internal.resolver.CatalogException;
 import com.sun.org.apache.xml.internal.resolver.CatalogManager;
 import com.sun.org.apache.xml.internal.resolver.tools.CatalogResolver;
 
@@ -463,6 +472,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 		
 		setEpisodeFiles(getFiles(getEpisodeArtifacts()));
+		
+		if ( getLog().isDebugEnabled() )
+		{
+			getLog().debug("resolveEpisodeArtifacts: " + getEpisodeFiles().size());
+			for ( File episodeFile : getEpisodeFiles() )
+				getLog().debug("  Episode File: " + episodeFile);
+		}
 	}
 
 	protected ClassLoader createClassLoader(ClassLoader parent)
@@ -474,8 +490,15 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	protected void doExecute() throws MojoExecutionException
 	{
 		setupLogging();
+		
 		if (getVerbose())
 			getLog().info("Started execution.");
+		
+		// Set System Options before other setup!
+		final SystemOptionsConfiguration systemOptionsConfiguration =
+			createSystemOptionsConfiguration();
+		getOptionsFactory().setSystemOptions(systemOptionsConfiguration);
+		
 		setupBindInfoPackage();
 		setupEpisodePackage();
 		setupMavenPaths();
@@ -488,17 +511,17 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		setupDependsURIs();
 		setupProducesURIs();
 		setupURILastModifiedResolver();
-		if (getVerbose()) {
+		if (getVerbose())
 			logConfiguration();
-		}
 
-		final OptionsConfiguration optionsConfiguration = createOptionsConfiguration();
-
+		final OptionsConfiguration optionsConfiguration =
+			createOptionsConfiguration();
+		
 		if (getVerbose())
 			getLog().info("MOJO optionsConfiguration:" + optionsConfiguration);
-
+		
 		checkCatalogsInStrictMode();
-
+		
 		if (getGrammars().isEmpty())
 			getLog().warn("No schemas to compile. Skipping XJC execution. ");
 		else
@@ -668,8 +691,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		if (getStrict() && !getCatalogURIs().isEmpty())
 		{
 			getLog().warn("The plugin is configured to use catalogs and strict mode at the same time.\n"
-				+ "Using catalogs to resolve schema URIs in strict mode is known to be problematic and may fail.\n"
-				+ "Please refer to the following link for more information:\n"
+				+ "Using catalogs to resolve schema URIs in strict mode is known to be problematic\n"
+				+ " and may fail. Please refer to the following link for more information:\n"
 				+ "https://github.com/highsource/maven-jaxb2-plugin/wiki/Catalogs-in-Strict-Mode\n"
 				+ "Consider setting <strict>false</strict> in your plugin configuration.\n");
 		}
@@ -722,6 +745,17 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				if (getAddTestCompileSourceRoot())
 					getProject().addTestResource(resource);
 			}
+		}
+		
+		if ( getLog().isDebugEnabled() )
+		{
+			getLog().debug("setupMavenPaths: Main Compile Source Roots");
+			for ( String csr : getProject().getCompileSourceRoots() )
+				getLog().debug("  Main: " + csr);
+			
+			getLog().debug("setupMavenPaths: Test Compile Source Roots");
+			for ( String csr : getProject().getTestCompileSourceRoots() )
+				getLog().debug(  "Test: " + csr);
 		}
 	}
 
@@ -779,6 +813,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			throw new MojoExecutionException("Could not set up schema files.", ioex);
 		}
+		
+		if ( getLog().isDebugEnabled() )
+		{
+			getLog().debug("setupSchemaFiles: " + getSchemaFiles().size());
+			for ( File schemaFile : getSchemaFiles() )
+				getLog().debug("  Schema File: " + schemaFile);
+		}
 	}
 
 	protected void setupBindingFiles() throws MojoExecutionException
@@ -803,6 +844,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		catch (IOException ioex)
 		{
 			throw new MojoExecutionException("Could not set up binding files.", ioex);
+		}
+		
+		if ( getLog().isDebugEnabled() )
+		{
+			getLog().debug("setupBindingFiles: " + getBindingFiles().size());
+			for ( File bindingFile : getBindingFiles() )
+				getLog().debug("  Binding File: " + bindingFile);
 		}
 	}
 
@@ -962,6 +1010,18 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	}
 	protected void setResolvedCatalogURIs(List<URI> resolvedCatalogURIs) { this.resolvedCatalogURIs = resolvedCatalogURIs; }
 
+	private CatalogManager catalogManager = null;
+	public CatalogManager getCatalogManager()
+	{
+		if ( catalogManager == null )
+			setCatalogManager(new CatalogManager());
+		return catalogManager;
+	}
+	public void setCatalogManager(CatalogManager catalogManager)
+	{
+		this.catalogManager = catalogManager;
+	}
+	
 	private CatalogResolver catalogResolverInstance;
 	protected CatalogResolver getCatalogResolverInstance() {
 		if (catalogResolverInstance == null)
@@ -970,12 +1030,133 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	}
 	protected void setCatalogResolverInstance(CatalogResolver catalogResolverInstance) { this.catalogResolverInstance = catalogResolverInstance; }
 
-	private void setupCatalogResolver() throws MojoExecutionException
+	protected void setupCatalogResolver() throws MojoExecutionException
 	{
 		setCatalogResolverInstance(createCatalogResolver());
 		setCatalogURIs(createCatalogURIs());
 		setResolvedCatalogURIs(resolveURIs(getCatalogURIs()));
 		parseResolvedCatalogURIs();
+	}
+
+	/**
+	 * Create a {@link ClassLoader} to find resources in the build's
+	 * output directory.
+	 * 
+	 * @return An enhanced thread context {@link ClassLoader}.
+	 */
+	public ClassLoader createBuildClasspathClassLoader()
+	{
+		ClassLoader parentLoader = currentThread().getContextClassLoader();
+		File buildClasspath = new File(getProject().getBuild().getOutputDirectory());
+		return new BuildClasspathClassLoader(parentLoader, buildClasspath, getLog());
+	}
+
+	/**
+	 * Creates an instance of catalog resolver for <code>setupCatalogResolver()</code>. 
+	 * 
+	 * @return Instance of the catalog resolver.
+	 * 
+	 * @throws MojoExecutionException If catalog resolver cannot be instantiated.
+	 */
+	protected CatalogResolver createCatalogResolver() throws MojoExecutionException
+	{
+		String ignoreMissing = getProperty("xml.catalog.ignoreMissing");
+		if ( ignoreMissing != null )
+			getCatalogManager().setIgnoreMissingProperties(Boolean.parseBoolean(ignoreMissing));
+		else
+			getCatalogManager().setIgnoreMissingProperties(true);
+		
+		getCatalogManager().setUseStaticCatalog(false);
+		
+		// Enable verbose logging
+		if (getLog().isDebugEnabled())
+		{
+			// CatalogManager lazily reads its properties...
+			int cmVerbosity = getCatalogManager().getVerbosity();
+			getCatalogManager().setVerbosity(cmVerbosity);
+			
+			getLog().debug("CatalogManager (system, file)");
+			getLog().debug("  xml.catalog.ignoreMissing, NONE.................: " + getCatalogManager().getIgnoreMissingProperties());
+			getLog().debug("  xml.catalog.files, catalogs.....................: " + getCatalogManager().getCatalogFiles());
+			getLog().debug("  NONE, relative-catalogs.........................: " + getCatalogManager().getRelativeCatalogs());
+			getLog().debug("  xml.catalog.verbosity, verbosity................: " + getCatalogManager().getVerbosity());
+			getLog().debug("  xml.catalog.prefer, prefer......................: " + getCatalogManager().getPreferPublic());
+			getLog().debug("  xml.catalog.staticCatalog, static-catalog.......: " + getCatalogManager().getUseStaticCatalog());
+			getLog().debug("  xml.catalog.allowPI, allow-oasis-xml-catalog-pi.: " + getCatalogManager().getAllowOasisXMLCatalogPI());
+			getLog().debug("  xml.catalog.className, catalog-class-name.......: " + getCatalogManager().getCatalogClassName());
+			getLog().debug("  org.jvnet.higherjaxb.mojo.xjc.catalogResolver...: " + getCatalogResolver());
+		}
+		
+		// See #setupCatalogResolver()
+		CatalogResolver catalogResolver = null;
+		
+		if ( getCatalogResolver() == null )
+			catalogResolver = new MavenCatalogResolver(getCatalogManager(), this, getLog());
+		else if ( getCatalogResolver().equals(MavenCatalogResolver.class.getName()) )
+			catalogResolver = new MavenCatalogResolver(getCatalogManager(), this, getLog());
+		else if ( getCatalogResolver().equals(ClasspathCatalogResolver.class.getName()) )
+		{
+			ClassLoader classLoader = createBuildClasspathClassLoader();
+			catalogResolver = new ClasspathCatalogResolver(getCatalogManager(), classLoader, getLog());
+		}
+		else
+		{
+			final String catalogResolverClassName = getCatalogResolver().trim();
+			catalogResolver =  createCatalogResolverByClassName(catalogResolverClassName);
+			if ( catalogResolver instanceof MavenCatalogResolver )
+			{
+				MavenCatalogResolver mavenCatalogResolver =
+					((MavenCatalogResolver) catalogResolver);
+				mavenCatalogResolver.setCatalogManager(getCatalogManager());
+				mavenCatalogResolver.setDependencyResourceResolver(this);
+				mavenCatalogResolver.setLog(getLog());
+			}
+			else if ( catalogResolver instanceof ClasspathCatalogResolver )
+			{
+				ClasspathCatalogResolver classpathCatalogResolver =
+					((ClasspathCatalogResolver) catalogResolver);
+				classpathCatalogResolver.setCatalogManager(getCatalogManager());
+				classpathCatalogResolver.setClassloader(createBuildClasspathClassLoader());
+				classpathCatalogResolver.setLog(getLog());
+			}
+		}
+		
+		getLog().debug("  org.jvnet.higherjaxb.mojo.xjc.catalogResolver...: " + catalogResolver.getClass().getName());
+		
+		return catalogResolver;
+	}
+
+	protected CatalogResolver createCatalogResolverByClassName(final String catalogResolverClassName)
+		throws MojoExecutionException
+	{
+		try
+		{
+			final Class<?> draftCatalogResolverClass = Thread.currentThread().getContextClassLoader()
+				.loadClass(catalogResolverClassName);
+
+			if (!CatalogResolver.class.isAssignableFrom(draftCatalogResolverClass))
+			{
+				throw new MojoExecutionException(format(
+					"Specified catalog resolver class [%s] could not be casted to [%s].",
+					draftCatalogResolverClass, CatalogResolver.class));
+			}
+			else
+			{
+				@SuppressWarnings("unchecked")
+				final Class<? extends CatalogResolver> catalogResolverClass = (Class<? extends CatalogResolver>) draftCatalogResolverClass;
+				return catalogResolverClass.getDeclaredConstructor().newInstance();
+			}
+		}
+		catch (ClassNotFoundException cnfex)
+		{
+			throw new MojoExecutionException(
+				format("Could not find specified catalog resolver class [%s].", catalogResolverClassName), cnfex);
+		}
+		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex )
+		{
+			throw new MojoExecutionException(
+				format("Could not instantiate catalog resolver class [%s].", catalogResolverClassName), ex);
+		}
 	}
 
 	private EntityResolver entityResolver;
@@ -997,93 +1178,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		final EntityResolver entityResolver =
 			new ReResolvingEntityResolverWrapper(catalogResolver, getLog());
 		return entityResolver;
-	}
-
-	/**
-	 * Creates an instance of catalog resolver.
-	 * 
-	 * @return Instance of the catalog resolver.
-	 * @throws MojoExecutionException
-	 *			   If catalog resolver cannot be instantiated.
-	 */
-	protected CatalogResolver createCatalogResolver() throws MojoExecutionException
-	{
-		CatalogResolver catalogResolver = null;
-		
-		final CatalogManager catalogManager = new CatalogManager();
-		
-		catalogManager.setIgnoreMissingProperties(true);
-		catalogManager.setUseStaticCatalog(false);
-		
-		// Enable verbose logging
-		if (getLog().isDebugEnabled())
-		{
-			// CatalogManager lazily reads its properties...
-			int cmVerbosity = catalogManager.getVerbosity();
-			catalogManager.setVerbosity(cmVerbosity);
-			
-			getLog().debug("CatalogManager (system, file)");
-			getLog().debug("  xml.catalog.ignoreMissing, NONE.................: " + catalogManager.getIgnoreMissingProperties());
-			getLog().debug("  xml.catalog.files, catalogs.....................: " + catalogManager.getCatalogFiles());
-			getLog().debug("  NONE, relative-catalogs.........................: " + catalogManager.getRelativeCatalogs());
-			getLog().debug("  xml.catalog.verbosity, verbosity................: " + catalogManager.getVerbosity());
-			getLog().debug("  xml.catalog.prefer, prefer......................: " + catalogManager.getPreferPublic());
-			getLog().debug("  xml.catalog.staticCatalog, static-catalog.......: " + catalogManager.getUseStaticCatalog());
-			getLog().debug("  xml.catalog.allowPI, allow-oasis-xml-catalog-pi.: " + catalogManager.getAllowOasisXMLCatalogPI());
-			getLog().debug("  xml.catalog.className, catalog-class-name.......: " + catalogManager.getCatalogClassName());
-		}
-		
-		if ( getCatalogResolver() == null )
-			catalogResolver =  new MavenCatalogResolver(catalogManager, this, getLog());
-		else if ( getCatalogResolver().equals(MavenCatalogResolver.class.getName()) )
-			catalogResolver =  new MavenCatalogResolver(catalogManager, this, getLog());
-		else if ( getCatalogResolver().equals(ClasspathCatalogResolver.class.getName()) )
-			catalogResolver =  new ClasspathCatalogResolver(getLog());
-		else
-		{
-			final String catalogResolverClassName = getCatalogResolver().trim();
-			catalogResolver =  createCatalogResolverByClassName(catalogResolverClassName);
-			if ( catalogResolver instanceof MavenCatalogResolver )
-				((MavenCatalogResolver) catalogResolver).setLog(getLog());
-			else if ( catalogResolver instanceof ClasspathCatalogResolver )
-				((ClasspathCatalogResolver) catalogResolver).setLog(getLog());
-		}
-		
-		return catalogResolver;
-	}
-
-	private CatalogResolver createCatalogResolverByClassName(final String catalogResolverClassName)
-		throws MojoExecutionException
-	{
-		try
-		{
-			final Class<?> draftCatalogResolverClass = Thread.currentThread().getContextClassLoader()
-				.loadClass(catalogResolverClassName);
-
-			if (!CatalogResolver.class.isAssignableFrom(draftCatalogResolverClass))
-			{
-				throw new MojoExecutionException(format(
-					"Specified catalog resolver class [%s] could not be casted to [%s].",
-					catalogResolver, CatalogResolver.class));
-			}
-			else
-			{
-				@SuppressWarnings("unchecked")
-				final Class<? extends CatalogResolver> catalogResolverClass = (Class<? extends CatalogResolver>) draftCatalogResolverClass;
-				final CatalogResolver catalogResolverInstance = catalogResolverClass.getDeclaredConstructor().newInstance();
-				return catalogResolverInstance;
-			}
-		}
-		catch (ClassNotFoundException cnfex)
-		{
-			throw new MojoExecutionException(
-				format("Could not find specified catalog resolver class [%s].", catalogResolver), cnfex);
-		}
-		catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex )
-		{
-			throw new MojoExecutionException(
-				format("Could not instantiate catalog resolver class [%s].", catalogResolver), ex);
-		}
 	}
 
 	/**
@@ -1339,10 +1433,24 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return httpproxy;
 	}
 
+	public SystemOptionsConfiguration createSystemOptionsConfiguration()
+	{
+		final SystemOptionsConfiguration systemOptionsConfiguration = new SystemOptionsConfiguration
+		(
+			getAccessExternalSchema(),
+			getAccessExternalDTD(),
+			isEnableExternalEntityProcessing()
+		);
+		return systemOptionsConfiguration;
+	}
+	
 	public OptionsConfiguration createOptionsConfiguration() throws MojoExecutionException
 	{
 		final OptionsConfiguration optionsConfiguration = new OptionsConfiguration
 		(
+			getAccessExternalSchema(),
+			getAccessExternalDTD(),
+			isEnableExternalEntityProcessing(), 
 			getEncoding(),
 			getSchemaLanguage(),
 			getGrammars(),
@@ -1355,9 +1463,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			getNoFileHeader(),
 			getEnableIntrospection(),
 			getDisableXmlSecurity(),
-			getAccessExternalSchema(),
-			getAccessExternalDTD(),
-			isEnableExternalEntityProcessing(), 
 			getContentForWildcard(),
 			getExtension(),
 			getStrict(),
@@ -1400,18 +1505,69 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			{
 				try
 				{
+
 					// Ignore "Malformed URL on system identifier: maven:"
-					getCatalogResolverInstance().getCatalog().parseCatalog(catalogURI.toURL());
+					Catalog catalog = getCatalogResolverInstance().getCatalog();
+					URL catalogURL = catalogURI.toURL();
+					InputStream inputStream = null;
+					try
+					{
+						URLConnection connection = catalogURL.openConnection();
+						String scheme = catalogURI.getScheme();
+					    String mimeType = connection.getContentType();
+						getLog().debug("parseResolvedCatalogURIs: scheme=" + scheme + "; MIME=" + mimeType);
+					    if ( unknownMimeType(mimeType) )
+					    {
+					    	if ( "file".equals(scheme) || "jar".equals(scheme) )
+					    	{
+					    		String fqfn = catalogURI.getPath();
+					    		if (fqfn == null)
+					    			fqfn = catalogURI.getSchemeSpecificPart();
+					    		if (fqfn != null)
+					    		{
+									// xcatalog...: "application/xml"
+									// catalog.xml: "application/xml"
+									// catalog.cat: "text/plain"
+					    			if ( fqfn.endsWith(".xml") || fqfn.endsWith("xcatalog") )
+					    				mimeType = "application/xml";
+					    			else if ( fqfn.endsWith(".cat") || fqfn.endsWith(".txt") )
+					    				mimeType = "text/plain";
+					    			if ( unknownMimeType(mimeType) )
+					    			{
+								    	mimeType = guessContentTypeFromName(fqfn);
+								    	if ( unknownMimeType(mimeType) && "file".equals(scheme) )
+						    				mimeType = probeContentType(Path.of(catalogURI));
+					    			}
+					    		}
+						    	else
+									getLog().warn(format("Error parsing catalog [%s].",	catalogURI));
+					    	}
+					    }
+						getLog().debug("parseResolvedCatalogURIs: URI=" + catalogURI + "; MIME=" + mimeType);
+						inputStream = connection.getInputStream();
+						catalog.parseCatalog(mimeType, inputStream);
+						getLog().debug("Catalog XML: xml:base, Catalog TR9401: BASE: " + catalog.getCurrentBase());
+					}
+					finally
+					{
+						if (inputStream != null)
+							inputStream.close();
+					}
 				}
-				catch (IOException ioex)
+				catch (IOException | CatalogException ex)
 				{
 					throw new MojoExecutionException(
-						format("Error parsing catalog [%s].", catalogURI.toString()), ioex);
+						format("Error parsing catalog [%s].", catalogURI), ex);
 				}
 			}
 		}
 	}
 
+	protected boolean unknownMimeType(String mimeType)
+	{
+		return (mimeType == null) || "content/unknown".equals(mimeType);
+	}
+	
 	private List<InputSource> createInputSources(final List<URI> uris) throws IOException, SAXException
 	{
 		final List<InputSource> inputSources = new ArrayList<InputSource>(uris.size());

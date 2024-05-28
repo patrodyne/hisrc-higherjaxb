@@ -5,56 +5,56 @@
 >
 <!-- See https://www.oasis-open.org/committees/entity/spec.html -->
 <!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" xml:base="tests/onvif/xcatalog">
 
 	<system
 		systemId="http://docs.oasis-open.org/wsn/b-2.xsd"
-		uri="b-2.xsd"
+		uri="src/main/catalog/b-2.xsd"
 	/>
 
 	<system
 		systemId="http://docs.oasis-open.org/wsrf/bf-2.xsd"
-		uri="bf-2.xsd"
+		uri="src/main/catalog/bf-2.xsd"
 	/>
 
 	<system
 		systemId="http://docs.oasis-open.org/wsn/t-1.xsd"
-		uri="t-1.xsd"
+		uri="src/main/catalog/t-1.xsd"
 	/>
 
 	<system
 		systemId="http://www.w3.org/2005/08/addressing/ws-addr.xsd"
-		uri="ws-addr.xsd"
+		uri="src/main/catalog/ws-addr.xsd"
 	/>
 
 	<system
 		systemId="http://www.w3.org/2003/05/soap-envelope"
-		uri="soap-envelope.xsd"
+		uri="src/main/catalog/soap-envelope.xsd"
 	/>
 
 	<system
 		systemId="http://www.w3.org/2005/05/xmlmime"
-		uri="xmlmime.xsd"
+		uri="src/main/catalog/xmlmime.xsd"
 	/>
 
 	<system
 		systemId="http://www.w3.org/2004/08/xop/include"
-		uri="include.xsd"
+		uri="src/main/catalog/include.xsd"
 	/>
 
 	<system
 		systemId="http://www.w3.org/2001/xml.xsd"
-		uri="xml.xsd"
+		uri="src/main/catalog/xml.xsd"
 	/>
 
 	<system
 		systemId="http://www.w3.org/2001/XMLSchema.dtd"
-		uri="XMLSchema.dtd"
+		uri="src/main/catalog/XMLSchema.dtd"
 	/>
 
 	<system
 		systemId="http://www.w3.org/2001/datatypes.dtd"
-		uri="datatypes.dtd"
+		uri="src/main/catalog/datatypes.dtd"
 	/>
 
 </catalog>

@@ -1,0 +1,33 @@
+<?xml encoding="UTF-8"?>
+
+<!--
+<!ELEMENT book (title, author, chapter+) >
+<!ELEMENT title (#PCDATA) >
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT chapter (#PCDATA) >
+-->
+
+<!--
+<!ELEMENT book (title, author, (prologue | preface), chapter+) >
+<!ELEMENT title (#PCDATA) >
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT prologue (#PCDATA) >
+<!ELEMENT preface (#PCDATA) >
+<!ELEMENT chapter (#PCDATA) >
+-->
+
+<!ELEMENT book (titlepage, (prologue | preface), toc, chapter+, epilogue?, appendix*) >
+<!ATTLIST book type ( fiction | travel | history | biography ) #REQUIRED >
+
+<!ELEMENT titlepage (title, author) >
+<!ELEMENT prologue (#PCDATA) >
+<!ELEMENT preface (#PCDATA) >
+<!ELEMENT toc (chaptitle+, appendixtitle*) >
+<!ELEMENT chaptitle (#PCDATA) >
+<!ELEMENT appendixtitle (#PCDATA) >
+<!ELEMENT title (#PCDATA) >
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT chapter (chaptitle, body) >
+<!ELEMENT body (#PCDATA) >
+<!ELEMENT epilogue (#PCDATA) >
+<!ELEMENT appendix (appendixtitle, body) >

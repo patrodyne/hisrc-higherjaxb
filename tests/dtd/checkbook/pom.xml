@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.patrodyne.jvnet</groupId>
+		<artifactId>hisrc-higherjaxb-maven-plugin-tests-dtd</artifactId>
+		<version>2.2.2-SNAPSHOT</version>
+	</parent>
+	<artifactId>hisrc-higherjaxb-maven-plugin-tests-dtd-checkbook</artifactId>
+	<packaging>jar</packaging>
+	<name>HiSrc HigherJAXB Plugin Tests [dtd-checkbook]</name>
+	<properties>
+		<root.basedir>${basedir}/../../..</root.basedir>
+	</properties>
+	<dependencies>
+		<!-- JAXB Implementation -->
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+		</dependency>
+		<!-- SLF4J Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Testing -->
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-runtime</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-testing</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-higherjaxb-maven-plugin-testing</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<defaultGoal>test</defaultGoal>
+		<plugins>
+			<!-- mvn exec:java -Dexec.args="src/test/samples/CheckBook-200102A.xml" -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${exec-maven-plugin.version}</version>
+				<configuration>
+					<classpathScope>test</classpathScope>
+					<mainClass>org.example.checkbook.CheckbookApp</mainClass>
+				</configuration>
+			</plugin>
+			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+			<!-- mvn hisrc-higherjaxb:generate -->
+			<plugin>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<verbose>false</verbose>
+							<debug>true</debug>
+							<extension>true</extension>
+							<schemaLanguage>DTD</schemaLanguage>
+							<schemaIncludes>
+								<schemaInclude>*.dtd</schemaInclude>
+							</schemaIncludes>
+							<bindingIncludes>
+								<bindingInclude>*.xjs</bindingInclude>
+							</bindingIncludes>
+							<args>
+								<arg>-no-header</arg>
+							</args>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

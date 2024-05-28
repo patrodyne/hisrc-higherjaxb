@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Permission: -Djavax.xml.accessExternalDTD=all -->
+<!DOCTYPE xml-java-binding-schema SYSTEM "../../../../doc/xjs.dtd">
+<!-- Xml Java-binding Schema (XJS) Document Type Definition (DTD) -->
+<!-- See http://xml.coverpages.org/jaxb0530spec.pdf -->
+<xml-java-binding-schema version="1.0ea2" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+
+	<xjc:serializable uid="20240501" />
+	<xjc:superClass name="Account" />
+	
+	<options package="org.example.checkbook" />
+
+	<enumeration name="DepCategory" members="salary interest-income other"/>
+	<enumeration name="CheckCategory" members="rent groceries other"/>
+
+	<conversion name="BigDecimal" type="java.math.BigDecimal"/>
+	<conversion name="TransDate" type="java.util.Date" parse="TransDate.parseDate" print="TransDate.printDate"/>
+
+	<element name="amount" type="class">
+		<constructor properties="value"/>
+		<attribute name="value" convert="BigDecimal"/>
+	</element>
+
+	<element name="balance" type="class">
+		<constructor properties="value"/>
+		<attribute name="value" convert="BigDecimal"/>
+	</element>
+
+	<element name="date" type="class">
+		<constructor properties="value"/>
+		<attribute name="value" convert="TransDate"/>
+	</element>
+
+	<element name="deposit" type="class">
+		<attribute name="category" convert="DepCategory"/>
+	</element>
+
+	<element name="check" type="class">
+		<content>
+			<element-ref name="date"/>
+			<element-ref name="name"/>
+			<element-ref name="amount"/>
+			<choice property="pend-void-clrd"/>
+		</content>
+		<attribute name="number" convert="int"/>
+		<attribute name="category" convert="CheckCategory"/>
+	</element>
+
+	<element name="transactions" type="class" root="true">
+		<content>
+			<choice property="depositOrCheckOrWithdrawal" collection="list" />
+		</content>
+	</element>
+
+	<!--
+	<interface name="Entry" members="Deposit Check Withdrawal"/>
+	-->
+	
+</xml-java-binding-schema>

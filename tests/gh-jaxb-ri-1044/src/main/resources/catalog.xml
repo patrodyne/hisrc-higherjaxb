@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE catalog
+    PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+           "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"
+>
+<!-- See https://www.oasis-open.org/committees/entity/spec.html -->
+<!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
+<catalog  xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">  
+
+	<group xml:base="tests/gh-jaxb-ri-1044/xcatalog" >
+
+		<systemSuffix
+			systemIdSuffix="a.xsd"
+			uri="src/main/resources/a.xsd"
+		/>
+
+		<systemSuffix
+			systemIdSuffix="b.xsd"
+			uri="src/main/resources/b.xsd"
+		/>
+
+	</group>
+
+</catalog>

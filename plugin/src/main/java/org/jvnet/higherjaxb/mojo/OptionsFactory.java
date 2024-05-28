@@ -18,12 +18,29 @@ import com.sun.tools.xjc.api.SpecVersion;
 public class OptionsFactory implements CoreOptionsFactory<Options>
 {
 	/**
+	 * Set any/all system properties prior to MOJO execution.
+	 */
+	@Override
+	public void setSystemOptions(SystemOptionsConfiguration soc)
+	{
+		if (soc.getAccessExternalSchema() != null)
+			System.setProperty("javax.xml.accessExternalSchema", soc.getAccessExternalSchema());
+		if (soc.getAccessExternalDTD() != null)
+			System.setProperty("javax.xml.accessExternalDTD", soc.getAccessExternalDTD());
+		if (soc.isEnableExternalEntityProcessing())
+			System.setProperty("enableExternalEntityProcessing",
+				soc.isEnableExternalEntityProcessing().toString());
+	}
+	
+	/**
 	 * Creates and initializes an instance of XJC options.
 	 */
 	@Override
 	public Options createOptions(OptionsConfiguration optionsConfiguration)
 		throws MojoExecutionException
 	{
+		setSystemOptions(optionsConfiguration);
+		
 		final Options options = new Options();
 		
 		final String encoding = optionsConfiguration.getEncoding();
@@ -42,12 +59,6 @@ public class OptionsFactory implements CoreOptionsFactory<Options>
 		options.noFileHeader = optionsConfiguration.isNoFileHeader();
 		options.enableIntrospection = optionsConfiguration.isEnableIntrospection();
 		options.disableXmlSecurity = optionsConfiguration.isDisableXmlSecurity();
-		if (optionsConfiguration.getAccessExternalSchema() != null)
-			System.setProperty("javax.xml.accessExternalSchema", optionsConfiguration.getAccessExternalSchema());
-		if (optionsConfiguration.getAccessExternalDTD() != null)
-			System.setProperty("javax.xml.accessExternalDTD", optionsConfiguration.getAccessExternalDTD());
-		if (optionsConfiguration.isEnableExternalEntityProcessing())
-			System.setProperty("enableExternalEntityProcessing", Boolean.TRUE.toString());
 		options.contentForWildcard = optionsConfiguration.isContentForWildcard();
 		if (optionsConfiguration.isExtension())
 			options.compatibilityMode = Options.EXTENSION;

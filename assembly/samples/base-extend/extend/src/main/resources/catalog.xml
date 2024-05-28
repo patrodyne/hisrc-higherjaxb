@@ -7,7 +7,8 @@
 <!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
 
-	<!-- The public element associates a URI reference with a public identifier.  -->
+	<!-- The public element associates a URI reference with a public identifier. -->
+	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver -->
 	<public
 		publicId="h-spamfilter-p://it.test.base.model"
 		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-sample-base-extend-base!/basemodel.xsd"

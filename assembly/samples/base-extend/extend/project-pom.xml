@@ -55,6 +55,7 @@
 							</episodes>
 							<!-- Using catalogs to resolve schema URIs in strict mode is known to be problematic and may fail. -->
 							<strict>false</strict>
+							<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
 							<catalog>src/main/resources/catalog.xml</catalog>
 						</configuration>
 					</execution>

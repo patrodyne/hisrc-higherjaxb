@@ -1,8 +1,0 @@
---
-    OASIS TR 9401 (https://www.oasis-open.org/specs/a401.htm)
-
-    If the <catalog/> parameter isn't working, this link to schema A is
-    not recognized and the test will fail because of a missing schema.
---
-REWRITE_SYSTEM "https://raw.githubusercontent.com/patrodyne/hisrc-higherjaxb/master/tests/jvnet-issue-79/a/src/main/resources/a.xsd" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-79-a:jar::!/a.xsd"
-

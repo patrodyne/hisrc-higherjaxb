@@ -5,9 +5,7 @@ import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.jvnet.basicjaxb.lang.ContextUtils.createMarshaller;
 import static org.jvnet.basicjaxb.lang.ContextUtils.createUnmarshaller;
-import static org.jvnet.basicjaxb.lang.ContextUtils.marshalToString;
 import static org.jvnet.basicjaxb.xmlschema.XmlSchemaConstants.BOOLEAN;
 import static org.jvnet.basicjaxb.xmlschema.XmlSchemaConstants.DATE;
 import static org.jvnet.basicjaxb.xmlschema.XmlSchemaConstants.DECIMAL;
@@ -30,7 +28,6 @@ import org.jvnet.basicjaxb.lang.ContextUtils;
 import org.jvnet.basicjaxb.testing.AbstractSamplesTest;
 
 import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 
 @Order(1)
@@ -100,9 +97,8 @@ public class RunMarshalXmlSchemaTest extends AbstractSamplesTest
 	public void testMarshalXmlSchema() throws JAXBException
 	{
 		Schema pos = createSchema();
-		Marshaller schemaMarshaller = createMarshaller(getJaxbContext(), true);
-		schemaMarshaller.setProperty("org.glassfish.jaxb.namespacePrefixMapper", NPM);
-		String poxsd = marshalToString(schemaMarshaller, pos);
+		getMarshaller().setProperty("org.glassfish.jaxb.namespacePrefixMapper", NPM);
+		String poxsd = marshalToString(pos);
 		assertNotNull(poxsd);
 		getLogger().debug("po.xsd:\n{}", poxsd);
 	}

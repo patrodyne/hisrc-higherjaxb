@@ -17,6 +17,7 @@
 	<modules>
 		<module>catalog</module>
 		<module>catalog-xml</module>
+		<module>dtd</module>
 		<module>issues</module>
 		<module>episodes</module>
 		<module>genpkgs</module>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Permission: -Djavax.xml.accessExternalDTD=all -->
+<!DOCTYPE xml-java-binding-schema SYSTEM "../../../../doc/xjs.dtd">
+<!-- Xml Java-binding Schema (XJS) Document Type Definition (DTD) -->
+<!-- See http://xml.coverpages.org/jaxb0530spec.pdf -->
+<xml-java-binding-schema version="1.0ea2" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+
+	<xjc:serializable uid="20240501" />
+	<options package="org.example.book" />
+
+	<element name="book" type="class" root="true"/>	
+
+	<!--
+	<element name="prologue" type="class" root="false"/>	
+	<element name="preface" type="class" root="false"/>	
+	<element name="chapter" type="class" root="false"/>	
+	-->
+
+	<!--
+	<element name="book" type="class" root="true">	
+		<content>
+			<element-ref name="title"/>
+			<element-ref name="author"/>
+			<choice property="prologue-or-preface"/>
+		</content>
+	</element>
+	-->
+
+</xml-java-binding-schema>

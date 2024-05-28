@@ -37,7 +37,8 @@
 							<artifactId>hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-79-a</artifactId>
 						</episode>
 					</episodes>
-					<catalog>src/main/resources/catalog.cat</catalog>
+					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
+					<catalog>src/main/resources/catalog.xml</catalog>
 					<strict>false</strict>
 				</configuration>
 			</plugin>

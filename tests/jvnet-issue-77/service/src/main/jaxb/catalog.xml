@@ -14,11 +14,13 @@
 		See https://github.com/eclipse-ee4j/jaxb-ri/issues/1046
 	-->
 
+	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver -->
 	<public
 		publicId="http://company.com/project/schemas/common-types"
 		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-77-common-types:jar::!/META-INF/project/schemas/CommonTypes.xsd"
 	/>
 
+	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver -->
 	<public
 		publicId="http://company.com/project/schemas/iso/currency"
 		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-77-common-types:jar::!/META-INF/project/schemas/ISOCurrencyCodeType-V2008.xsd"

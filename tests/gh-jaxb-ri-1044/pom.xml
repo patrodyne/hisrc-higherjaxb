@@ -45,7 +45,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<catalog>src/main/resources/catalog.cat</catalog>
+							<catalog>src/main/resources/catalog.xml</catalog>
 							<strict>false</strict>
 							<schemaIncludes/>
 							<schemas>
