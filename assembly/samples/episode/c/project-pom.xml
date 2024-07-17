@@ -39,7 +39,7 @@
 								<groupId>org.patrodyne.jvnet</groupId>
 								<artifactId>${project.artifactId}-b</artifactId>
 								<version>${hisrc-higherjaxb-maven-plugin.version}</version>
-								<resource>catalog.cat</resource>
+								<resource>catalog.xml</resource>
 							</dependencyResource>
 						</catalog>
 					</catalogs>

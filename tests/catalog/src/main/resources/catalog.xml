@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE catalog
+	PUBLIC "-//OASIS//DTD XML Catalogs V1.1//EN"
+		"http://www.oasis-open.org/committees/entity/release/1.1/catalog.dtd"
+>
+<!--
+	Eclipse: Window -> Preference -> XML (Wild Web Developer)
+	x Download external resources like referenced DTD, XSD.
+-->
+<!-- See https://www.oasis-open.org/committees/entity/spec.html -->
+<!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
+	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver -->
+	
+	<!-- SUCCESS -->
+	<systemSuffix
+		systemIdSuffix="schema_a.xsd"
+		uri="classpath:schema_a.xsd"
+	/>
+
+	<!-- SUCCESS
+	<rewriteSystem
+		systemIdStartString="http://example.org/schemas/"
+		rewritePrefix="classpath:/"
+	/>
+	-->
+	
+	<!-- SUCCESS
+	<system
+		systemId="http://example.org/schemas/schema_a.xsd"
+		uri="classpath:/schema_a.xsd"
+	/>
+	-->
+	
+	<!-- 
+	The URI type entries, including uri, rewriteURI, and uriSuffix, can be used in a
+	similar way as the system type entries. While the XML Catalog Standard gives a
+	preference to the system type entries for resolving DTD references, and uri type
+	entries for everything else, the Java XML Catalog API doesn’t make that distinction.
+	This is because the specifications for the existing Java XML Resolvers, such as
+	XMLResolver and LSResourceResolver, doesn’t give a preference. The uri type entries,
+	including uri, rewriteURI, and uriSuffix, can be used in a similar way as the system
+	type entries.
+	-->
+	
+	<!-- SUCCESS
+	<uriSuffix
+		uriSuffix="schema_a.xsd"
+		uri="classpath:schema_a.xsd"
+	/>
+	-->
+	
+	<!-- SUCCESS
+	<rewriteURI
+		uriStartString="http://example.org/schemas/"
+		rewritePrefix="classpath:/"
+	/>
+	-->
+	
+	<!-- SUCCESS
+	<uri
+		name="http://example.org/schemas/schema_a.xsd"
+		uri="classpath:/schema_a.xsd"
+	/>
+	-->
+	
+	<!-- 
+	If no system entry matches the desired resource, and the PREFER property is specified
+	to match public, then a public entry can do the same as a system entry.
+	Note that public is the default setting for the PREFER property.
+	-->
+	
+	<!-- SUCCESS
+	<public
+		publicId="http://example.org/A"
+		uri="classpath:/schema_a.xsd"
+	/>
+	-->
+
+</catalog>
+

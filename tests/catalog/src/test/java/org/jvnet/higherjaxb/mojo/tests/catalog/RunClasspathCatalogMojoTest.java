@@ -8,7 +8,7 @@ import org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver;
 import org.jvnet.higherjaxb.mojo.testing.AbstractMojoTest;
 import org.jvnet.higherjaxb.mojo.testing.SLF4JLogger;
 
-public class RunPlainCatalogMojoTest extends AbstractMojoTest
+public class RunClasspathCatalogMojoTest extends AbstractMojoTest
 {
 	@Test
 	public void testExecute() throws Exception
@@ -22,7 +22,7 @@ public class RunPlainCatalogMojoTest extends AbstractMojoTest
 		
 		mojo.setProject(createMavenProject());
 		mojo.setCatalogResolver(ClasspathCatalogResolver.class.getName());
-		mojo.setCatalog(fullpath("src/main/resources/catalog.cat"));
+		mojo.setCatalog(fullpath("src/main/resources/catalog.xml"));
 		mojo.setStrict(false);
 		mojo.setSchemaDirectory(fullpath("src/main/resources"));
 		mojo.setSchemaIncludes(new String[] { "schema_b.xsd" } );

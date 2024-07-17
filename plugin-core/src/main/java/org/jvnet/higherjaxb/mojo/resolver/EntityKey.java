@@ -7,6 +7,8 @@ public class EntityKey
 {
 	private String publicId;
 	private String systemId;
+	private String baseUri;
+	private String namespace;
 
 	/**
 	 * Gets the value of the publicId property.
@@ -21,7 +23,6 @@ public class EntityKey
 	 * Sets the value of the publicId property.
 	 * 
 	 * @param value Allowed object is {@link String }
-	 *	   
 	 */
 	public void setPublicId(String value)
 	{
@@ -32,7 +33,6 @@ public class EntityKey
 	 * Gets the value of the systemId property.
 	 * 
 	 * @return Possible object is {@link String }
-	 *	   
 	 */
 	public String getSystemId()
 	{
@@ -42,13 +42,50 @@ public class EntityKey
 	 * Sets the value of the systemId property.
 	 * 
 	 * @param value Allowed object is {@link String }
-	 *	   
 	 */
 	public void setSystemId(String value)
 	{
 		this.systemId = value;
 	}
-
+	
+	/**
+	 * Gets the value of the baseUri property.
+	 * 
+	 * @return Possible object is {@link String }
+	 */
+	public String getBaseUri()
+	{
+		return baseUri;
+	}
+	/**
+	 * Sets the value of the baseUri property.
+	 * 
+	 * @param baseUri Allowed object is {@link String }
+	 */
+	public void setBaseUri(String baseUri)
+	{
+		this.baseUri = baseUri;
+	}
+	
+	/**
+	 * Gets the value of the namespace property.
+	 * 
+	 * @return Possible object is {@link String }
+	 */
+	public String getNamespace()
+	{
+		return namespace;
+	}
+	/**
+	 * Sets the value of the namespace property.
+	 * 
+	 * @param namespace Allowed object is {@link String }
+	 */
+	public void setNamespace(String namespace)
+	{
+		this.namespace = namespace;
+	}
+	
 	/**
 	 * Construct with a publicId and a systemId.
 	 * 
@@ -59,6 +96,23 @@ public class EntityKey
 	{
 		setPublicId(publicId);
 		setSystemId(systemId);
+	}
+	
+	
+	/**
+	 * Construct with a publicId, systemId, baseUri and namespace.
+	 * 
+	 * @param publicId The XML entity public identifier.
+	 * @param systemId The XML entity system identifier
+	 * @param baseUri The XML entity baseUri property.
+	 * @param namespace The XML entity namespace property.
+	 */
+	public EntityKey(String publicId, String systemId, String baseUri, String namespace)
+	{
+		setPublicId(publicId);
+		setSystemId(systemId);
+		setBaseUri(baseUri);
+		setNamespace(namespace);
 	}
 	
 	@Override
@@ -78,6 +132,20 @@ public class EntityKey
 			String theSystemId = this.getSystemId();
 			if (this.systemId!= null)
 				currentHashCode += theSystemId.hashCode();
+		}
+
+		{
+			currentHashCode = (currentHashCode* 31);
+			String theBaseUri = this.getBaseUri();
+			if (this.baseUri!= null)
+				currentHashCode += theBaseUri.hashCode();
+		}
+
+		{
+			currentHashCode = (currentHashCode* 31);
+			String theNamespace = this.getNamespace();
+			if (this.namespace!= null)
+				currentHashCode += theNamespace.hashCode();
 		}
 
 		return currentHashCode;
@@ -133,6 +201,47 @@ public class EntityKey
 					return false;
 			}
 		}
+		
+		{
+			String lhsBaseUri = this.getBaseUri();
+			String rhsBaseUri = that.getBaseUri();
+			if (this.baseUri!= null)
+			{
+				if (that.baseUri!= null)
+				{
+					if (!lhsBaseUri.equals(rhsBaseUri))
+						return false;
+				}
+				else
+					return false;
+			}
+			else
+			{
+				if (that.baseUri!= null)
+					return false;
+			}
+		}
+		
+		{
+			String lhsNamespace = this.getNamespace();
+			String rhsNamespace = that.getNamespace();
+			if (this.namespace!= null)
+			{
+				if (that.namespace!= null)
+				{
+					if (!lhsNamespace.equals(rhsNamespace))
+						return false;
+				}
+				else
+					return false;
+			}
+			else
+			{
+				if (that.namespace!= null)
+					return false;
+			}
+		}
+		
 		return true;
 	}
 

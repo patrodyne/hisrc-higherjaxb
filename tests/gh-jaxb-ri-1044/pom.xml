@@ -47,7 +47,7 @@
 						<configuration>
 							<catalog>src/main/resources/catalog.xml</catalog>
 							<strict>false</strict>
-							<schemaIncludes/>
+							<catalog>src/main/catalog/catalog.xml</catalog>
 							<schemas>
 								<schema>
 									<url>http://www.ab.org/a.xsd</url>

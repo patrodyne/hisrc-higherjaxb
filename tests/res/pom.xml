@@ -24,10 +24,17 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
+		<!-- Build dependencies -->
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-higherjaxb-maven-plugin-tests-po</artifactId>
+		</dependency>
+
+		<!-- Testing -->
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>
 			<artifactId>hisrc-basicjaxb-plugins</artifactId>
@@ -54,6 +61,7 @@
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
 				<executions>
 					<execution>
+						<?m2e ignore?>
 						<id>default</id>
 						<goals>
 							<goal>generate</goal>
@@ -67,7 +75,7 @@
 							</args>
 							<!-- This is a problem -->
 							<!--forceRegenerate>true</forceRegenerate-->
-							<catalog>src/main/resources/catalog.cat</catalog>
+							<catalog>src/main/resources/catalog.xml</catalog>
 							<strict>false</strict>
 							<schemas>
 								<schema>

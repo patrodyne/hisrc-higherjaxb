@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- See https://www.oasis-open.org/committees/entity/spec.html -->
+<!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:entity:xmlns:xml:catalog catalog.xsd"
+>
+
+	<rewriteSystem systemIdStartString="http://example.org/schemas" rewritePrefix="."/>
+
+</catalog>

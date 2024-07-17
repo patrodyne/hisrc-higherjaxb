@@ -1,9 +1,0 @@
---
-    OASIS TR 9401 (https://www.oasis-open.org/specs/a401.htm)
-
-    If the <catalog/> parameter isn't working, this link to schema A is
-    not recognized and the test will fail because of a missing schema.
---
-
--- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver --
-PUBLIC "http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a" "maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-53-a:jar::!/a.xsd"

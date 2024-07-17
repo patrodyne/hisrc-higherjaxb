@@ -10,6 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLStreamHandler;
+import java.net.URLStreamHandlerFactory;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,10 +20,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.catalog.CatalogFeatures;
+import javax.xml.catalog.CatalogResolver;
+
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -32,9 +39,12 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
+import org.jvnet.higherjaxb.mojo.protocol.ConfigurableStreamHandlerFactory;
+import org.jvnet.higherjaxb.mojo.resolver.tools.ReResolvingEntityResolverWrapper;
 import org.jvnet.higherjaxb.mojo.util.IOUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
 import org.sonatype.plexus.build.incremental.DefaultBuildContext;
+import org.xml.sax.EntityResolver;
 
 /**
  * This abstract higherjaxb 'parameter' mojo provides common parameterized
@@ -54,6 +64,19 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	public static final String DEFAULT_REMOTE_REPO_ID = org.apache.maven.repository.RepositorySystem.DEFAULT_REMOTE_REPO_ID;
 	public static final String DEFAULT_REMOTE_REPO_URL = org.apache.maven.repository.RepositorySystem.DEFAULT_REMOTE_REPO_URL;
 	public static final String DEFAULT_REMOTE_REPO_TYPE = "default";
+	
+    // Catalog feature values for the prefer property
+	public static final String CATALOG_FEATURE_PREFER_SYSTEM = "system";
+	public static final String CATALOG_FEATURE_PREFER_PUBLIC = "public";
+
+    // Catalog feature values for the defer property
+	public static final String CATALOG_FEATURE_DEFER_TRUE = "true";
+	public static final String CATALOG_FEATURE_DEFER_FALSE = "false";
+	
+    // Catalog feature values for the resolve property
+    public static final String CATALOG_FEATURE_RESOLVE_STRICT = "strict";
+    public static final String CATALOG_FEATURE_RESOLVE_CONTINUE = "continue";
+    public static final String CATALOG_FEATURE_RESOLVE_IGNORE = "ignore";
 
 	/**
 	 * Creates and initializes an instance of XJC options.
@@ -187,18 +210,21 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * If left undefined, then all <code>*.xsd</code> files in
 	 * <code>schemaDirectory</code> will be processed.
 	 * </p>
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".schemaIncludes", defaultValue = "*.xsd")
 	private String[] schemaIncludes = new String[] { "*.xsd" };
 	public String[] getSchemaIncludes() { return schemaIncludes; }
 	public void setSchemaIncludes(String[] schemaIncludes) { this.schemaIncludes = schemaIncludes; }
 
 	/**
-	 * A list of regular expression file search patterns to specify the schemas
+	 * <p>A list of regular expression file search patterns to specify the schemas
 	 * to be excluded from the <code>schemaIncludes</code> list. Searching is
-	 * based from the root of schemaDirectory.
+	 * based from the root of schemaDirectory.</p>
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".schemaExcludes")
 	private String[] schemaExcludes;
 	public String[] getSchemaExcludes() { return schemaExcludes; }
 	public void setSchemaExcludes(String[] schemaExcludes) { this.schemaExcludes = schemaExcludes; }
@@ -206,8 +232,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	/**
 	 * A list of schema resources which could includes file sets, URLs, Maven
 	 * artifact resources.
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".schemas")
 	private ResourceEntry[] schemas = new ResourceEntry[0];
 	public ResourceEntry[] getSchemas() { return schemas; }
 	public void setSchemas(ResourceEntry[] schemas) { this.schemas = schemas; }
@@ -222,16 +250,17 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".bindingDirectory")
 	private File bindingDirectory;
-	public void setBindingDirectory(File bindingDirectory) { this.bindingDirectory = bindingDirectory; }
 	public File getBindingDirectory() { return bindingDirectory != null ? bindingDirectory : getSchemaDirectory(); }
+	public void setBindingDirectory(File bindingDirectory) { this.bindingDirectory = bindingDirectory; }
 
 	/**
-	 * The source directory containing <code>*.cat</code> catalog files. Defaults to the <code>schemaDirectory</code>.
+	 * The source directory containing <code>catalog.xml</code> catalog files. 
+	 * Defaults to the <code>schemaDirectory</code>.
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogDirectory")
 	private File catalogDirectory;
-	public void setCatalogDirectory(File catalogDirectory) { this.catalogDirectory = catalogDirectory; }
 	public File getCatalogDirectory() { return catalogDirectory != null ? catalogDirectory : getSchemaDirectory(); }
+	public void setCatalogDirectory(File catalogDirectory) { this.catalogDirectory = catalogDirectory; }
 
 	/**
 	 * <p>
@@ -243,8 +272,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * If left undefined, then all *.xjb files in schemaDirectory will be
 	 * processed.
 	 * </p>
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".bindingIncludes", defaultValue = "*.xjb")
 	private String[] bindingIncludes = new String[] { "*.xjb" };
 	public String[] getBindingIncludes() { return bindingIncludes; }
 	public void setBindingIncludes(String[] bindingIncludes) { this.bindingIncludes = bindingIncludes; }
@@ -253,8 +284,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * A list of regular expression file search patterns to specify the binding
 	 * files to be excluded from the <code>bindingIncludes</code>. Searching is
 	 * based from the root of bindingDirectory.
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".bindingExcludes")
 	private String[] bindingExcludes;
 	public String[] getBindingExcludes() { return bindingExcludes; }
 	public void setBindingExcludes(String[] bindingExcludes) { this.bindingExcludes = bindingExcludes; }
@@ -262,27 +295,95 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	/**
 	 * A list of binding resources which could includes file sets, URLs, Maven
 	 * artifact resources.
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".bindings")
 	private ResourceEntry[] bindings = new ResourceEntry[0];
 	public ResourceEntry[] getBindings() { return bindings; }
 	public void setBindings(ResourceEntry[] bindings) { this.bindings = bindings; }
 
 	/**
-	 * If 'true', maven's default exludes are NOT added to all the excludes
+	 * If 'true', maven's default excludes are NOT added to all the excludes
 	 * lists.
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".disableDefaultExcludes", defaultValue = "false")
 	private boolean disableDefaultExcludes;
 	public boolean getDisableDefaultExcludes() { return disableDefaultExcludes; }
 	public void setDisableDefaultExcludes(boolean disableDefaultExcludes) { this.disableDefaultExcludes = disableDefaultExcludes; }
+	
+	/**
+	 * Indicates the preference between the public and system identifiers. The default value is public.
+	 */
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogFeaturePrefer", defaultValue = "public")
+	private String catalogFeaturePrefer;
+	public String getCatalogFeaturePrefer()
+	{
+		if ( catalogFeaturePrefer == null )
+			setCatalogFeaturePrefer("public");
+		return catalogFeaturePrefer;
+	}
+	public void setCatalogFeaturePrefer(String catalogFeaturePrefer)
+	{
+		this.catalogFeaturePrefer = catalogFeaturePrefer;
+	}
 
 	/**
-	 * Specify the catalog file to resolve external entity references (xjc's
-	 * -catalog option) </p>
+	 * Indicates that the alternative catalogs including those specified in delegate entries or 
+	 * nextCatalog are not read until they are needed. The default value is true.
+	 */
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogFeatureDefer", defaultValue = "true")
+	private String catalogFeatureDefer = "true";
+	public String getCatalogFeatureDefer()
+	{
+		if ( catalogFeatureDefer == null )
+			setCatalogFeatureDefer("true");
+		return catalogFeatureDefer;
+	}
+	public void setCatalogFeatureDefer(String catalogFeatureDefer)
+	{
+		this.catalogFeatureDefer = catalogFeatureDefer;
+	}
+
+	/**
+	 * Determines the action if there is no matching entry found after all of the specified
+	 * catalogs are exhausted. The default is the value of the XJC strict parameter:
+	 * if the value of the XJC strict parameter is <code>true</code> then the default for
+	 * this parameter is "strict"; otherwise, it is "continue" with original URI.
+	 */
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogFeatureResolve")
+	private String catalogFeatureResolve;
+	public String getCatalogFeatureResolve()
+	{
+		if ( catalogFeatureResolve == null )
+		{
+			setCatalogFeatureResolve(getStrict()
+				? CATALOG_FEATURE_RESOLVE_STRICT
+				: CATALOG_FEATURE_RESOLVE_CONTINUE);
+		}
+		return catalogFeatureResolve;
+	}
+	public void setCatalogFeatureResolve(String catalogFeatureResolve)
+	{
+		this.catalogFeatureResolve = catalogFeatureResolve;
+	}
+
+	/**
 	 * <p>
-	 * Support TR9401, XCatalog, and OASIS XML Catalog format. See the
-	 * catalog-resolver sample and this article for details.
+	 * Specify the catalog file to resolve external entity references
+	 * (xjc's "-catalog" option).
+	 * </p>
+	 * 
+	 * <p>
+	 * The system property {@code javax.xml.catalog.files}, as defined
+	 * in {@link CatalogFeatures}, will be read to locate the initial
+     * list of catalog files.
+	 * </p>
+     * 
+	 * <p>
+	 * CatalogReader from 'javax.xml.catalog' handles SAX events while
+	 * parsing through a 'catalog.xml' file to create a catalog object.
+	 * The legacy TR9401 file format is not supported.
 	 * </p>
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalog")
@@ -292,17 +393,19 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 
 	/**
 	 * <p>
-	 * A list of regular expression file search patterns to specify the catalogs
-	 * to be processed. Searching is based from the root of
-	 * <code>catalogDirectory</code>.
+	 * A list of regular expression file search patterns to specify
+	 * the catalogs to be processed. Searching is based from the root
+	 * of <code>catalogDirectory</code>.
 	 * </p>
 	 * <p>
-	 * If left undefined, then all <code>*.cat</code> files in
+	 * If left undefined, then all <code>catalog*.xml</code> files in
 	 * <code>catalogDirectory</code> will be processed.
 	 * </p>
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
-	private String[] catalogIncludes = new String[] { "*.cat" };
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogIncludes", defaultValue = "catalog*.xml")
+	private String[] catalogIncludes = new String[] { "catalog*.xml" };
 	public String[] getCatalogIncludes() { return catalogIncludes; }
 	public void setCatalogIncludes(String[] catalogIncludes) { this.catalogIncludes = catalogIncludes; }
 
@@ -310,8 +413,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * A list of regular expression file search patterns to specify the catalogs
 	 * to be excluded from the <code>catalogIncludes</code> list. Searching is
 	 * based from the root of <code>catalogDirectory</code>.
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogExcludes")
 	private String[] catalogExcludes;
 	public String[] getCatalogExcludes() { return catalogExcludes; }
 	public void setCatalogExcludes(String[] catalogExcludes) { this.catalogExcludes = catalogExcludes; }
@@ -319,21 +424,51 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	/**
 	 * A list of catalog resources which could includes file sets, URLs, Maven
 	 * artifact resources.
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogs")
 	private ResourceEntry[] catalogs = new ResourceEntry[0];
 	public ResourceEntry[] getCatalogs() { return catalogs; }
 	public void setCatalogs(ResourceEntry[] catalogs) { this.catalogs = catalogs; }
 
 	/**
-	 * Provides the class name of a catalog resolver:
+	 * Provides the full class name of a catalog (entity) resolver:
 	 * 
 	 * <ul>
 	 * <li>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</li>
 	 * <li>org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver</li>
 	 * </ul>
 	 * 
-	 * defaultValue = "org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver"
+	 * <p>
+	 * The full class name of a catalog resolver must be an extension of
+	 * {@link javax.xml.catalog.CatalogResolver}. Then the class for the given
+	 * name is loaded by this plugin at build time and an instance is
+	 * constructed with a reference to this {@link Mojo} and its {@link Log}.
+	 * </p>
+	 * 
+	 * <p>
+	 * The {@link CatalogResolver} instance is passed to the constructor of {@link URLStreamHandler}
+	 * instance(s) which is used to construct a {@link ConfigurableStreamHandlerFactory} instance.
+	 * The factory implements {@link URLStreamHandlerFactory} and is used to <em>statically</em>
+	 * configure the JVM's {@link URL} class using its {@code setURLStreamHandlerFactory(factory)}
+	 * method. That factory provides custom protocol handler(s) like {@code "maven:"} and 
+	 * {@code "classpath:"} to any/all XML parsers in the JVM.
+	 * </p>
+	 * 
+	 * <p>
+	 * In addition, {@link CatalogResolver} extends {@link EntityResolver} and the
+	 * resolver instance created from this parameter is used to configure XJC, too;
+	 * but not directly. Instead, an instance of {@link ReResolvingEntityResolverWrapper}
+	 * is constructed to wrap this resolve instance as an {@link EntityResolver}. The
+	 * instance of {@link ReResolvingEntityResolverWrapper} is used to set the 
+	 * <code>entityResolver</code> property on {@link OptionsConfiguration} and then
+	 * the <code>entityResolver</code> field on {@code com.sun.tools.xjc.Options}.
+	 * </p>
+	 * 
+	 * <p>
+	 * defaultValue = {@code "org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver"}
+	 * </p>
 	 */
 	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogResolver")
 	private String catalogResolver = null;
@@ -551,8 +686,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * <p>
 	 * Arguments set here take precedence over other mojo parameters.
 	 * </p>
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".args")
 	private List<String> args = new LinkedList<String>();
 	public List<String> getArgs() { return args; }
 	public void setArgs(List<String> args) { this.args.addAll(args); }
@@ -601,18 +738,20 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * Specifies patterns of files produced by this plugin. This is used to
 	 * check if produced files are up-to-date. Default value is ** /*.*, **
 	 * /*.java, ** /bgm.ser, ** /jaxb.properties.
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".produces")
 	private String[] produces = new String[] { "**/*.*", "**/*.java", "**/bgm.ser", "**/jaxb.properties" };
 	public String[] getProduces() { return produces; }
 	public void setProduces(String[] produces) { this.produces = produces; }
 
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".otherDependsIncludes")
 	private String[] otherDependsIncludes;
 	public String[] getOtherDependsIncludes() { return otherDependsIncludes; }
 	public void setOtherDependsIncludes(String[] otherDependsIncludes) { this.otherDependsIncludes = otherDependsIncludes; }
 
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".otherDependsExcludes")
 	private String[] otherDependsExcludes;
 	public String[] getOtherDependsExcludes() { return otherDependsExcludes; }
 	public void setOtherDependsExcludes(String[] otherDependsExcludes) { this.otherDependsExcludes = otherDependsExcludes; }
@@ -661,8 +800,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	/**
 	 * XJC plugins to be made available to XJC. They still need to be activated
 	 * by using &lt;args/&gt; and enable plugin activation option.
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".plugins")
 	private Dependency[] plugins;
 	public Dependency[] getPlugins() { return plugins; }
 	public void setPlugins(Dependency[] plugins) { this.plugins = plugins; }
@@ -689,8 +830,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * It is useful when you have one XML schema that is imported by other schemas, as it prevents
 	 * the model from being regenerated. XJC will scan JARs for '*.episode files', then use them
 	 * as binding files automatically.
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".episodes")
 	private Dependency[] episodes;
 	public Dependency[] getEpisodes() { return episodes; }
 	public void setEpisodes(Dependency[] episodes) { this.episodes = episodes; }
@@ -699,8 +842,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * Use all of the compile-scope project dependencies as episode artifacts.
 	 * It is assumed that episode artifacts contain an appropriate
 	 * META-INF/sun-jaxb.episode resource. Default is false.
+	 * 
+	 * <p>For -Dname, use a comma separated list of values.</p>
 	 */
-	@Parameter
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".useDependenciesAsEpisodes")
 	private boolean useDependenciesAsEpisodes = false;
 	public boolean getUseDependenciesAsEpisodes() { return useDependenciesAsEpisodes; }
 	public void setUseDependenciesAsEpisodes(boolean useDependenciesAsEpisodes) { this.useDependenciesAsEpisodes = useDependenciesAsEpisodes; }
@@ -708,7 +853,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	/**
 	 * Scan all compile-scoped project dependencies for XML binding files.
 	 */
-	@Parameter(defaultValue = "false")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".scanDependenciesForBindings", defaultValue = "false")
 	private boolean scanDependenciesForBindings = false;
 	public boolean getScanDependenciesForBindings() { return scanDependenciesForBindings; }
 	public void setScanDependenciesForBindings( boolean scanDependenciesForBindings) { this.scanDependenciesForBindings = scanDependenciesForBindings; }
@@ -716,7 +861,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	/**
 	 * Version of the JAXB specification (ex. 2.0, 2.1, 2.2, 2.3 or 3.0).
 	 */
-	@Parameter(defaultValue = "3.0")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".specVersion", defaultValue = "3.0")
 	private String specVersion = "3.0";
 	public String getSpecVersion() { return specVersion; }
 	public void setSpecVersion(String specVersion) { this.specVersion = specVersion; }
@@ -888,20 +1033,42 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		}
 	}
 	
+	/**
+	 * Create the list of catalog locations configured by any of these parameters:
+	 * 
+	 * <ul>
+	 * <li><code>HIGHERJAXB_MOJO_PREFIX + ".catalog"</code></li>
+	 * <li><code>HIGHERJAXB_MOJO_PREFIX + ".catalogs"</code></li>
+	 * <li><code>HIGHERJAXB_MOJO_PREFIX + ".catalogDirectory"</code></li>
+	 * <li><code>HIGHERJAXB_MOJO_PREFIX + ".catalogIncludes"</code></li>
+	 * <li><code>HIGHERJAXB_MOJO_PREFIX + ".catalogExcludes"</code></li>
+	 * </ul>
+	 * 
+	 * @return The list of primary and alternative catalog locations.
+	 * 
+	 * @throws MojoExecutionException When the list cannot be created.
+	 */
 	protected List<URI> createCatalogURIs() throws MojoExecutionException
 	{
+		final List<URI> catalogURIs = new ArrayList<URI>();
+		
 		final File catalog = getCatalog();
-		final ResourceEntry[] catalogs = getCatalogs();
-		final List<URI> catalogURIs = new ArrayList<URI>((catalog == null ? 0 : 1) + catalogs.length);
-
 		if (catalog != null)
 			catalogURIs.add(getCatalog().toURI());
-
+		
+		final ResourceEntry[] catalogs = getCatalogs();
 		for (ResourceEntry resourceEntry : catalogs)
 		{
-			catalogURIs.addAll(createResourceEntryURIs(resourceEntry,
+			catalogURIs.addAll
+			(
+				createResourceEntryURIs
+				(
+					resourceEntry,
 					getCatalogDirectory().getAbsolutePath(),
-					getCatalogIncludes(), getCatalogExcludes()));
+					getCatalogIncludes(),
+					getCatalogExcludes()
+				)
+			);
 		}
 		return catalogURIs;
 	}
@@ -1083,14 +1250,14 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 			{
 				URL artifactURL = null;
 				if ( dependencyResource.getSystemPath().toLowerCase().startsWith("file:") )
-					artifactURL = new URL(dependencyResource.getSystemPath());
+					artifactURL = new URI(dependencyResource.getSystemPath()).toURL();
 				else
 					artifactURL = Path.of(dependencyResource.getSystemPath()).toUri().toURL();
 				
 				File artifactFile = new File(artifactURL.getFile());
 				return createArtifactResourceURL(artifactFile, dependencyResource.getResource());
 			}
-			catch (MalformedURLException muex)
+			catch (MalformedURLException | URISyntaxException muex)
 			{
 				throw new MojoExecutionException(format(
 					"Dependency resource [%s] has a malformed systemPath.",

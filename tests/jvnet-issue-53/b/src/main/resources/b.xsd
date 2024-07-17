@@ -11,8 +11,13 @@
 	<!--
 	<xsd:import namespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a"/>
 	<xsd:import namespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a" schemaLocation="../../../../a/src/main/resources/a.xsd"/>
-	-->
 	<xsd:import namespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a" schemaLocation="../../../../a/src/main/resources/a.xsd"/>
+	-->
+	
+	<xsd:import
+		namespace="http://jvnet.org/higherjaxb/mojo/tests/jvnet_issue_53/a"
+		schemaLocation="urn:/a.xsd"
+	/>
 
 	<xsd:element name="b" type="b:BType"/>
 

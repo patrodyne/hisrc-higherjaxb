@@ -22,6 +22,25 @@
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<?m2e ignore?>
+						<id>default</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<noFileHeader>true</noFileHeader>
+							<extension>true</extension>
+							<debug>false</debug>
+							<verbose>true</verbose>
+							<strict>false</strict>
+							<schemaIncludes>
+								<schemaInclude>a.xsd</schemaInclude>
+							</schemaIncludes>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

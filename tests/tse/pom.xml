@@ -33,6 +33,19 @@
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+				<configuration>
+					<!--
+					<catalog>src/main/resources/catalog.xml</catalog>
+					-->
+					<!--
+					Set strict to 'false' to enable relative
+					entity file resolution. See also:
+					  https://xmlcatalogs.org/catalogs-1.1
+					  https://docs.oracle.com/en/java/javase/17/core/xml-catalog-api1.html
+					  com.sun.xml.xsom.impl.parser.NGCCRuntimeEx
+					-->
+					<strict>false</strict>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

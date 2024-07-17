@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	targetNamespace="b"
@@ -5,6 +6,11 @@
 	xmlns:b="b"
 	elementFormDefault="qualified">
 
+	<!--
+        If the catalog entry ﬁle is speciﬁed with a relative URI, it is relative
+        to the base URI of the document that contains the processing
+        instruction.
+	-->
 	<xsd:import namespace="a" schemaLocation="a.xsd"/>
 
 	<xsd:element name="b2" type="b:B2Type"/>

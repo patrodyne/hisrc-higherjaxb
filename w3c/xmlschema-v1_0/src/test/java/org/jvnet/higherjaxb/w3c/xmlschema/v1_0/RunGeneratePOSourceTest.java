@@ -31,6 +31,12 @@ public class RunGeneratePOSourceTest extends AbstractMojoTest
 		mojo.setForceRegenerate(true);
 		mojo.setNoFileHeader(true);
 		mojo.setExtension(true);
+		
+		mojo.setStrict(true);
+//		mojo.setCatalogFeaturePrefer("public");
+//		mojo.setCatalogFeatureDefer("true");
+//		mojo.setCatalogFeatureResolve("continue");
+		
 		mojo.setArgs(new ArrayList<>());
 		mojo.getArgs().add("-XfixedValue");
 		mojo.getArgs().add("-XfluentAPI");

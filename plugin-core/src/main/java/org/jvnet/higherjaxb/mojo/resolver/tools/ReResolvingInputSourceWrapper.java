@@ -1,8 +1,10 @@
 package org.jvnet.higherjaxb.mojo.resolver.tools;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.io.StringReader;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -10,6 +12,9 @@ import org.xml.sax.SAXException;
 
 /**
  * A wrapper to re-resolve for a single input source for an XML entity.
+ * 
+ * <p>At this time, instances of this class are only created by 
+ * {@link ReResolvingEntityResolverWrapper}</p>
  */
 public class ReResolvingInputSourceWrapper extends InputSource
 {
@@ -18,8 +23,8 @@ public class ReResolvingInputSourceWrapper extends InputSource
 	protected void setEntityResolver(EntityResolver entityResolver) { this.entityResolver = entityResolver; }
 
 	private InputSource resolvedSource;
-	protected InputSource getResolvedSource() { return resolvedSource; }
-	protected void setResolvedSource(InputSource resolvedSource) { this.resolvedSource = resolvedSource; }
+	public InputSource getResolvedSource() { return resolvedSource; }
+	public void setResolvedSource(InputSource resolvedSource) { this.resolvedSource = resolvedSource; }
 	
 	/**
 	 * Construct with an {@link EntityResolver}, an {@link InputSource},
@@ -47,31 +52,44 @@ public class ReResolvingInputSourceWrapper extends InputSource
 	@Override
 	public Reader getCharacterStream()
 	{
-		// Get the resolved reader or or null if none was supplied.
-		final Reader resolvedReader = getResolvedSource().getCharacterStream();
-		if (resolvedReader == null)
-			return null;
-		else
+		// By default, get the wrapped resolved reader or null if none was supplied.
+		Reader resolvedReader = getResolvedSource().getCharacterStream();
+		if (resolvedReader != null)
 		{
 			try
 			{
-				InputSource resolvedEntity = getEntityResolver().resolveEntity( getPublicId(), getSystemId());
-				if (resolvedEntity != null)
-					return resolvedEntity.getCharacterStream();
+				if ( resolvedReader instanceof StringReader )
+				{
+					StringReader resetableReader = (StringReader) resolvedReader;
+					resetableReader.reset();
+				}
 				else
-					return resolvedReader;
+				{
+					// Re-resolve InputSource using wrapped EntityResolver.
+					InputSource reResolvedSource =
+						getEntityResolver().resolveEntity( getPublicId(), getSystemId());
+
+					if ( reResolvedSource != null )
+					{
+						resolvedReader = reResolvedSource.getCharacterStream();
+						setResolvedSource(reResolvedSource);
+					}
+				}
 			}
 			catch (IOException | SAXException ioex)
 			{
 				return resolvedReader;
-			}
+			}				
 		}
+		
+		// Return resolved reader or or null if none was supplied.
+		return resolvedReader;
 	}
 
-	/** No operation. */
 	@Override
 	public void setCharacterStream(Reader characterStream)
 	{
+		getResolvedSource().setCharacterStream(characterStream);
 	}
 
     /**
@@ -82,30 +100,43 @@ public class ReResolvingInputSourceWrapper extends InputSource
 	@Override
 	public InputStream getByteStream()
 	{
-		final InputStream resolvedStream = getResolvedSource().getByteStream();
-		if (resolvedStream == null)
-			return null;
-		else
+		// By default, get the wrapper resolved stream or null if none was supplied.
+		InputStream resolvedStream = getResolvedSource().getByteStream();
+		if ( resolvedStream != null )
 		{
 			try
 			{
-				InputSource resolvedEntity = getEntityResolver().resolveEntity( getPublicId(), getSystemId());
-
-				if (resolvedEntity != null)
-					return resolvedEntity.getByteStream();
+				if ( resolvedStream instanceof ByteArrayInputStream )
+				{
+					ByteArrayInputStream resetableStream = (ByteArrayInputStream) resolvedStream;
+					resetableStream.reset();
+				}
 				else
-					return resolvedStream;
+				{
+					// Re-resolve the InputSource using wrapped EntityResolver.
+					InputSource reResolvedSource =
+						getEntityResolver().resolveEntity( getPublicId(), getSystemId());
+
+					if ( reResolvedSource != null )
+					{
+						resolvedStream = reResolvedSource.getByteStream();
+						setResolvedSource(reResolvedSource);
+					}
+				}
 			}
 			catch (IOException | SAXException ioex)
 			{
 				return resolvedStream;
 			}
 		}
+		
+		// Return resolved stream or or null if none was supplied.
+		return resolvedStream;
 	}
 
-	/** No operation. */
 	@Override
 	public void setByteStream(InputStream byteStream)
 	{
+		getResolvedSource().setByteStream(byteStream);
 	}
 }

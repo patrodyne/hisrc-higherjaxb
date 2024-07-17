@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE catalog
-    PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
-           "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"
+	PUBLIC "-//OASIS//DTD XML Catalogs V1.1//EN"
+		"http://www.oasis-open.org/committees/entity/release/1.1/catalog.dtd"
 >
+<!--
+	Eclipse: Window -> Preference -> XML (Wild Web Developer)
+	x Download external resources like referenced DTD, XSD.
+-->
 <!-- See https://www.oasis-open.org/committees/entity/spec.html -->
 <!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
 	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver -->
-	<rewriteSystem systemIdStartString="http://www.w3.org" rewritePrefix="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c"/>
+	<rewriteSystem
+		systemIdStartString="http://www.w3.org"
+		rewritePrefix="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c"
+	/>
+
 </catalog>

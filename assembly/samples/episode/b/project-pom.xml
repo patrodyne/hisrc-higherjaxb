@@ -40,7 +40,7 @@
 					</episodes>
 					<strict>false</strict>
 					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
-					<catalog>src/main/resources/catalog.cat</catalog>
+					<catalog>src/main/resources/catalog.xml</catalog>
 				</configuration>
 			</plugin>
 		</plugins>

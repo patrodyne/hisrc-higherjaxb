@@ -74,6 +74,11 @@
 						<goals>
 							<goal>generate</goal>
 						</goals>
+						<configuration>
+							<debug>false</debug>
+							<verbose>true</verbose>
+							<strict>false</strict>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

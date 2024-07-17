@@ -7,6 +7,9 @@
 	xmlns:p="urn:p">
 
 	<import namespace="urn:b" schemaLocation="b.xsd"/>
+	<!--
+	<import namespace="urn:p" schemaLocation="../two/p.xsd"/>
+	-->
 	<import namespace="urn:p" schemaLocation="http://www.ab.org/two/p.xsd"/>
 	
 	<element name="a" type="a:AType"/>

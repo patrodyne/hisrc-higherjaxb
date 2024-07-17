@@ -42,7 +42,7 @@
 								<groupId>org.patrodyne.jvnet</groupId>
 								<artifactId>hisrc-higherjaxb-maven-plugin-tests-episodes-b</artifactId>
 								<version>${project.version}</version>
-								<resource>catalog.cat</resource>
+								<resource>catalog.xml</resource>
 							</dependencyResource>
 						</catalog>
 					</catalogs>

@@ -5,21 +5,26 @@ import static java.lang.String.format;
 import java.io.IOException;
 
 import org.apache.maven.plugin.logging.Log;
+import org.jvnet.higherjaxb.mojo.OptionsConfiguration;
 import org.jvnet.higherjaxb.mojo.plugin.logging.NullLog;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * An {@link EntityResolver} to re-resolve {@code publicId} and/or {@code systemId} external
- * entities.
+ * An {@link EntityResolver} to re-resolve a {@code publicId} and/or a {@code systemId} external
+ * entity.
  * 
  * <ul>
  * <li><b>Public Identifiers</b> − Public identifiers provide a mechanism to locate DTD resources.</li>
  * <li><b>System Identifiers</b> − A system identifier enables you to specify the location of an external file containing DTD declarations.</li>
  * </ul>
  * 
- * See: org.jvnet.higherjaxb.mojo.AbstractHigherjaxbBaseMojo.createEntityResolver(CatalogResolver)
+ * <b>See:</b> org.jvnet.higherjaxb.mojo.AbstractHigherjaxbBaseMojo.createEntityResolver(CatalogResolver)
+ * 
+ * <p><b>Note:</b> Typically, An instance of {@link ReResolvingEntityResolverWrapper} is
+ * used to set the <code>entityResolver</code> property on {@link OptionsConfiguration}
+ * and then the <code>entityResolver</code> field on {@code com.sun.tools.xjc.Options}.</p>
  */
 public class ReResolvingEntityResolverWrapper implements EntityResolver
 {
@@ -75,7 +80,6 @@ public class ReResolvingEntityResolverWrapper implements EntityResolver
 	public InputSource resolveEntity(String publicId, String systemId)
 		throws SAXException, IOException
 	{
-		getLog().debug(format("RESOLVE publicId [%s], systemId [%s].", publicId, systemId));
 		if ( getLog().isDebugEnabled() )
 		{
 			getLog().debug("RESOLVE from publicId and systemId:");
@@ -84,7 +88,9 @@ public class ReResolvingEntityResolverWrapper implements EntityResolver
 		}
 		
 		// Invoke the wrapped entity resolver.
-		final InputSource resolvedInputSource = getEntityResolver().resolveEntity(publicId, systemId);
+		final InputSource resolvedInputSource =
+			getEntityResolver().resolveEntity(publicId, systemId);
+		
 		if (resolvedInputSource == null)
 		{
 			getLog().debug("RESOLVE to null; thus, open a regular URI connection.");
@@ -97,17 +103,23 @@ public class ReResolvingEntityResolverWrapper implements EntityResolver
 		}
 		else
 		{
-			if ( getLog().isInfoEnabled() )
+			if ( getLog().isDebugEnabled() )
 			{
-				getLog().info("RESOLVE to publicId and systemId:");
-				getLog().info(format("  publicId [%s]", resolvedInputSource.getPublicId()));
-				getLog().info(format("  systemId [%s]", resolvedInputSource.getSystemId()));
+				getLog().debug("RESOLVED to publicId and systemId:");
+				getLog().debug(format("  publicId [%s]", resolvedInputSource.getPublicId()));
+				getLog().debug(format("  systemId [%s]", resolvedInputSource.getSystemId()));
 			}
 			
 			final String pId = publicId != null ? publicId : resolvedInputSource.getPublicId();
 			final String sId = systemId != null ? systemId : resolvedInputSource.getSystemId();
 
-			return new ReResolvingInputSourceWrapper(getEntityResolver(), resolvedInputSource, pId, sId);
+			// Create a ReResolvingInputSourceWrapper instance.
+			InputSource reResolvingInputSourceWrapper = 
+				new ReResolvingInputSourceWrapper(getEntityResolver(),
+					resolvedInputSource, pId, sId);
+			
+			// Create a ReResolvingInputSourceWrapper instance.
+			return reResolvingInputSourceWrapper;
 		}
 	}
 }

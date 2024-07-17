@@ -39,11 +39,15 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
+							<!--
 							<schemaIncludes>
-								<!--include>one/a.xsd</include-->
+								<include>one/a.xsd</include>
 							</schemaIncludes>
+							-->
 							<schemas>
-								<schema><url>http://www.ab.org/one/a.xsd</url></schema>
+								<schema>
+									<url>http://www.ab.org/one/a.xsd</url>
+								</schema>
 							</schemas>
 							<catalog>src/main/resources/META-INF/one/catalog.xml</catalog>
 							<strict>false</strict>

@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE catalog
-    PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
-           "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"
+<!-- xml:base="tests/gh-issue-16/xcatalog" -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:entity:xmlns:xml:catalog
+		../../../../../w3c/schemas/src/main/resources/w3c/2005/10/catalog/catalog.xsd"
 >
-<!-- See https://www.oasis-open.org/committees/entity/spec.html -->
-<!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
-<catalog  xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">  
 
-	<group xml:base="tests/gh-issue-23/xcatalog">
+	<!-- xml:base="two-non-strict/src/main/resources/META-INF/two" -->
+	<group >
 
 		<systemSuffix
 			systemIdSuffix="a.xsd"
-			uri="two-non-strict/src/main/resources/one/a.xsd"
+			uri="../../one/a.xsd"
 		/>
 
 		<systemSuffix
 			systemIdSuffix="b.xsd"
-			uri="two-non-strict/src/main/resources/one/b.xsd"
+			uri="../../one/b.xsd"
 		/>
 
 		<systemSuffix
 			systemIdSuffix="b1.xsd"
-			uri="two-non-strict/src/main/resources/one/b1.xsd"
+			uri="../../one/b1.xsd"
 		/>
 
 		<systemSuffix
 			systemIdSuffix="p.xsd"
-			uri="two-non-strict/src/main/resources/two/p.xsd"
+			uri="../../two/p.xsd"
 		/>
 
 

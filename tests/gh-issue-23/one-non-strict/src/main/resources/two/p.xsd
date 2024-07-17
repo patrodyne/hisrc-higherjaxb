@@ -5,7 +5,10 @@
 	xmlns:a="urn:a"
 	xmlns:p="urn:p">
 
+	<!--
 	<import namespace="urn:a" schemaLocation="http://www.ab.org/one/a.xsd"/>
+	<import namespace="urn:a" schemaLocation="../one/a.xsd"/>
+	-->
 	
 	<element name="p" type="p:PType"/>
 	<complexType name="PType">

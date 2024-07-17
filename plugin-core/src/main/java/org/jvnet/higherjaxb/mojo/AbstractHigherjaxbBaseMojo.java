@@ -1,13 +1,16 @@
 package org.jvnet.higherjaxb.mojo;
 
 import static java.lang.String.format;
-import static java.lang.System.getProperty;
 import static java.lang.Thread.currentThread;
-import static java.net.URLConnection.guessContentTypeFromName;
-import static java.nio.file.Files.probeContentType;
+import static javax.xml.catalog.CatalogFeatures.Feature.DEFER;
+import static javax.xml.catalog.CatalogFeatures.Feature.PREFER;
+import static javax.xml.catalog.CatalogFeatures.Feature.RESOLVE;
 import static org.apache.maven.artifact.Artifact.SCOPE_COMPILE;
 import static org.codehaus.plexus.util.FileUtils.deleteDirectory;
 import static org.eclipse.aether.util.filter.DependencyFilterUtils.classpathFilter;
+import static org.jvnet.higherjaxb.mojo.protocol.AbstractURLConnection.CONFIGURABLE_STREAM_HANDLER_FACTORY;
+import static org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver.URI_SCHEME_CLASSPATH;
+import static org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver.URI_SCHEME_MAVEN;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.getFiles;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.mergeDependencyWithDefaults;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.resolve;
@@ -24,12 +27,11 @@ import static org.jvnet.higherjaxb.mojo.util.LocaleUtils.valueOf;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,14 +42,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import javax.xml.catalog.Catalog;
+import javax.xml.catalog.CatalogException;
+import javax.xml.catalog.CatalogFeatures;
+import javax.xml.catalog.CatalogFeatures.Builder;
+import javax.xml.catalog.CatalogFeatures.Feature;
+import javax.xml.catalog.CatalogResolver;
+import javax.xml.stream.XMLResolver;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -68,20 +79,22 @@ import org.eclipse.aether.graph.DependencyFilter;
 import org.jvnet.higherjaxb.mojo.net.CompositeURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.FileURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.URILastModifiedResolver;
+import org.jvnet.higherjaxb.mojo.protocol.classpath.ClasspathURLHandler;
+import org.jvnet.higherjaxb.mojo.protocol.maven.MavenURLHandler;
+import org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.BuildClasspathClassLoader;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ReResolvingEntityResolverWrapper;
+import org.jvnet.higherjaxb.mojo.resolver.tools.ReResolvingInputSourceWrapper;
 import org.jvnet.higherjaxb.mojo.util.CollectionUtils.Function;
 import org.sonatype.plexus.build.incremental.BuildContext;
+import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.sun.org.apache.xml.internal.resolver.Catalog;
-import com.sun.org.apache.xml.internal.resolver.CatalogException;
-import com.sun.org.apache.xml.internal.resolver.CatalogManager;
-import com.sun.org.apache.xml.internal.resolver.tools.CatalogResolver;
+import com.google.inject.Provides;
 
 /**
  * This Maven abstract higherjaxb 'base' mojo provides common properties and methods
@@ -91,11 +104,39 @@ import com.sun.org.apache.xml.internal.resolver.tools.CatalogResolver;
  * 
  * @author Aleksei Valikov (valikov@gmx.net)
  */
-public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbParmMojo<O> {
+public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbParmMojo<O>
+{
+	public static final String ABSTRACT_HIGHERJAXB_BASE_MOJO_RESOURCE_NAME =
+		"/"	+ AbstractHigherjaxbBaseMojo.class.getPackage().getName().replace('.', '/');
 
 	public static final String ADD_IF_EXISTS_TO_EPISODE_SCHEMA_BINDINGS_TRANSFORMATION_RESOURCE_NAME =
-		"/"	+ AbstractHigherjaxbBaseMojo.class.getPackage().getName().replace('.', '/') + "/addIfExistsToEpisodeSchemaBindings.xslt";
+		ABSTRACT_HIGHERJAXB_BASE_MOJO_RESOURCE_NAME + "/addIfExistsToEpisodeSchemaBindings.xslt";
 
+	public static final String FILESUFFIX_TO_MIMETYPES_PROPERTIES_RESOURCE_NAME =
+		ABSTRACT_HIGHERJAXB_BASE_MOJO_RESOURCE_NAME + "/filesuffix-to-mimetype.properties";
+
+	private Properties fileSuffixToMimeTypesProperties = null;
+	public Properties getFileSuffixToMimeTypesProperties()
+	{
+		if ( fileSuffixToMimeTypesProperties == null )
+		{
+			try ( InputStream is = getClass().getResourceAsStream(FILESUFFIX_TO_MIMETYPES_PROPERTIES_RESOURCE_NAME) )
+			{
+				setFileSuffixToMimeTypesProperties(new Properties());
+				fileSuffixToMimeTypesProperties.load(is);
+			}
+			catch (IOException e)
+			{
+				setFileSuffixToMimeTypesProperties(new Properties());
+			}
+		}
+		return fileSuffixToMimeTypesProperties;
+	}
+	public void setFileSuffixToMimeTypesProperties(Properties fileSuffixToMimeTypesProperties)
+	{
+		this.fileSuffixToMimeTypesProperties = fileSuffixToMimeTypesProperties;
+	}
+	
 	private Collection<Artifact> xjcPluginArtifacts;
 	public Collection<Artifact> getXjcPluginArtifacts() { return xjcPluginArtifacts; }
 	public void setXjcPluginArtifacts(Collection<Artifact> xjcPluginArtifacts) { this.xjcPluginArtifacts = xjcPluginArtifacts; }
@@ -150,10 +191,10 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	private void setupSchemas() throws MojoExecutionException
 	{
 		setSchemaURIs(createSchemaURIs(getSchemaFiles()));
-		setResolvedSchemaURIs(resolveURIs(getSchemaURIs()));
 		setGrammars(createGrammars(getSchemaURIs()));
+		setResolvedSchemaURIs(inputSourcesToURIs(getGrammars()));
 	}
-
+	
 	private List<URI> createSchemaURIs(List<File> schemaFiles) throws MojoExecutionException
 	{
 		final List<URI> schemaURIs = new ArrayList<URI>(schemaFiles.size());
@@ -167,8 +208,12 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			for (ResourceEntry resourceEntry : schemas)
 			{
-				schemaURIs.addAll(createResourceEntryURIs(resourceEntry, getSchemaDirectory().getAbsolutePath(),
-					getSchemaIncludes(), getSchemaExcludes()));
+				String schemaPath = getSchemaDirectory().getAbsolutePath();
+				String[] includes = getSchemaIncludes();
+				String[] encludes = getSchemaExcludes();
+				List<URI> resourceEntryURIs =
+					createResourceEntryURIs(resourceEntry, schemaPath, includes, encludes);
+				schemaURIs.addAll(resourceEntryURIs);
 			}
 		}
 		return schemaURIs;
@@ -180,16 +225,58 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			return createInputSources(schemaURIs);
 		}
-		catch (IOException ioex)
-		{
-			throw new MojoExecutionException("Could not resolve grammars.", ioex);
-		}
-		catch (SAXException ioex)
+		catch (IOException | SAXException ioex)
 		{
 			throw new MojoExecutionException("Could not resolve grammars.", ioex);
 		}
 	}
+	
+	private List<InputSource> createInputSources(final List<URI> uris) throws IOException, SAXException
+	{
+		final List<InputSource> inputSources = new ArrayList<InputSource>(uris.size());
+		for (final URI uri : uris)
+		{
+			InputSource inputSource = getInputSource(uri);
+			final InputSource resolvedInputSource =
+				getEntityResolver().resolveEntity(inputSource.getPublicId(), inputSource.getSystemId());
 
+			if (resolvedInputSource != null)
+				inputSource = resolvedInputSource;
+			
+			inputSources.add(inputSource);
+		}
+		return inputSources;
+	}
+	
+	private List<URI> inputSourcesToURIs(List<InputSource> inputSources)
+		throws MojoExecutionException
+	{
+		final List<URI> inputSourceURIs = new ArrayList<>(inputSources.size());
+		for ( InputSource inputSource : inputSources )
+		{
+			try
+			{
+				URI inputSourceURI = null;
+				
+				if ( inputSource instanceof ReResolvingInputSourceWrapper )
+				{
+					ReResolvingInputSourceWrapper rris =
+						(ReResolvingInputSourceWrapper) inputSource;
+					inputSourceURI = new URI(rris.getResolvedSource().getSystemId());
+				}
+				else
+					inputSourceURI = new URI(inputSource.getSystemId());
+				
+				inputSourceURIs.add(inputSourceURI);
+			}
+			catch (URISyntaxException ex)
+			{
+				throw new MojoExecutionException("Could not convert an InputSource to a URI.", ex);
+			}
+		}
+		return inputSourceURIs;
+	}
+	
 	private List<File> bindingFiles;
 	public List<File> getBindingFiles() { return bindingFiles; }
 	public void setBindingFiles(List<File> bindingFiles) { this.bindingFiles = bindingFiles; }
@@ -224,11 +311,11 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	private void setupBindings() throws MojoExecutionException
 	{
 		setBindingURIs(createBindingURIs());
-		setResolvedBindingURIs(resolveURIs(getBindingURIs()));
 		setBindFiles(createBindFiles());
+		setResolvedBindingURIs(inputSourcesToURIs(getBindFiles()));
 	}
 
-	protected List<URI> createBindingURIs() throws MojoExecutionException
+	private List<URI> createBindingURIs() throws MojoExecutionException
 	{
 		final List<File> bindingFiles = new LinkedList<File>();
 		bindingFiles.addAll(getBindingFiles());
@@ -318,6 +405,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				getLog().debug("PC Size: "+ pc.size());
 			}
 		}
+		
 		synchronized (lock)
 		{
 			injectDependencyDefaults();
@@ -334,7 +422,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			{
 				final Locale locale = valueOf(getLocale());
 				Locale.setDefault(locale);
-				//
+				
+				// EXECUTE XJC
 				doExecute();
 
 			}
@@ -351,13 +440,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	 * ************************************************************************* *
 	 */
 
-	protected void injectDependencyDefaults()
+	private void injectDependencyDefaults()
 	{
 		injectDependencyDefaults(getPlugins());
 		injectDependencyDefaults(getEpisodes());
 	}
 
-	protected void injectDependencyDefaults(Dependency[] dependencies)
+	private void injectDependencyDefaults(Dependency[] dependencies)
 	{
 		if (dependencies != null)
 		{
@@ -392,7 +481,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 	}
 
-	protected void resolveArtifacts() throws MojoExecutionException
+	private void resolveArtifacts() throws MojoExecutionException
 	{
 		try
 		{
@@ -405,7 +494,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 	}
 
-	protected void resolveXJCPluginArtifacts()
+	private void resolveXJCPluginArtifacts()
 		throws MojoExecutionException
 	{
         // Select dependencies with "runtime" scope .
@@ -435,7 +524,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		setXjcPluginURLs(apply(getXjcPluginFiles(), GET_URL));
 	}
 
-	protected void resolveEpisodeArtifacts()
+	private void resolveEpisodeArtifacts()
 		throws MojoExecutionException
 	{
 		setEpisodeArtifacts(new LinkedHashSet<Artifact>());
@@ -481,12 +570,12 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 	}
 
-	protected ClassLoader createClassLoader(ClassLoader parent)
+	private ClassLoader createClassLoader(ClassLoader parent)
 	{
 		final Collection<URL> xpu = getXjcPluginURLs();
 		return new ParentFirstClassLoader(xpu.toArray(new URL[xpu.size()]), parent);
 	}
-
+	
 	protected void doExecute() throws MojoExecutionException
 	{
 		setupLogging();
@@ -502,6 +591,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		setupBindInfoPackage();
 		setupEpisodePackage();
 		setupMavenPaths();
+		setupCatalogURIs();
 		setupCatalogResolver();
 		setupEntityResolver();
 		setupSchemaFiles();
@@ -566,7 +656,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	abstract protected String getJaxbNamespaceURI();
 	abstract protected String[] getXmlSchemaNames(final Class<?> packageInfoClass);
 
-	protected void setupBindInfoPackage()
+	private void setupBindInfoPackage()
 	{
 		String packageInfoClassName = "com.sun.tools.xjc.reader.xmlschema.bindinfo.package-info";
 		try
@@ -683,7 +773,8 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	
 	private void setupURILastModifiedResolver()
 	{
-		setURILastModifiedResolver(new CompositeURILastModifiedResolver(getLog()));
+		setURILastModifiedResolver(new CompositeURILastModifiedResolver(
+			getCatalogResolverInstance(), getLog()));
 	}
 
 	private void checkCatalogsInStrictMode()
@@ -707,7 +798,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	 * system property on to enable debuggin of XJC plugins.
 	 * 
 	 */
-	protected void setupLogging()
+	private void setupLogging()
 	{
 		setVerbose(getVerbose() || getLog().isDebugEnabled());
 
@@ -718,7 +809,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	/**
 	 * Augments Maven paths with generated resources.
 	 */
-	protected void setupMavenPaths()
+	private void setupMavenPaths()
 	{
 		if (getAddCompileSourceRoot())
 			getProject().addCompileSourceRoot(getGenerateDirectory().getPath());
@@ -759,7 +850,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 	}
 
-	protected void setupDirectories()
+	private void setupDirectories()
 	{
 		final File generateDirectory = getGenerateDirectory();
 		if (getRemoveOldOutput() && generateDirectory.exists())
@@ -786,7 +877,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 	}
 
-	protected void setupSchemaFiles() throws MojoExecutionException
+	private void setupSchemaFiles() throws MojoExecutionException
 	{
 		try
 		{
@@ -799,7 +890,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			{
 				setSchemaFiles(scanDirectoryForFiles(getBuildContext(), schemaDirectory,
 					getSchemaIncludes(), getSchemaExcludes(), !getDisableDefaultExcludes()));
-
 			}
 			else
 			{
@@ -822,7 +912,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 	}
 
-	protected void setupBindingFiles() throws MojoExecutionException
+	private void setupBindingFiles() throws MojoExecutionException
 	{
 		try
 		{
@@ -854,7 +944,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 	}
 
-	protected void setupDependsURIs() throws MojoExecutionException
+	private void setupDependsURIs() throws MojoExecutionException
 	{
 		final List<URI> dependsURIs = new LinkedList<URI>();
 
@@ -893,7 +983,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		setProducesURIs(createProducesURIs());
 	}
 
-	protected List<URI> createProducesURIs() throws MojoExecutionException
+	private List<URI> createProducesURIs() throws MojoExecutionException
 	{
 		final List<URI> producesURIs = new LinkedList<URI>();
 		try
@@ -992,6 +1082,24 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 	}
 
+	private CatalogFeatures catalogFeatures = null;
+	public CatalogFeatures getCatalogFeatures()
+	{
+		if ( catalogFeatures == null )
+		{
+			Builder builder = CatalogFeatures.builder()
+				.with(PREFER, getCatalogFeaturePrefer())
+				.with(DEFER, getCatalogFeatureDefer())
+				.with(RESOLVE, getCatalogFeatureResolve());
+			setCatalogFeatures(builder.build());
+		}
+		return catalogFeatures;
+	}
+	public void setCatalogFeatures(CatalogFeatures catalogFeatures)
+	{
+		this.catalogFeatures = catalogFeatures;
+	}
+	
 	private List<URI> catalogURIs;
 	protected List<URI> getCatalogURIs()
 	{
@@ -1009,33 +1117,62 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return resolvedCatalogURIs;
 	}
 	protected void setResolvedCatalogURIs(List<URI> resolvedCatalogURIs) { this.resolvedCatalogURIs = resolvedCatalogURIs; }
-
-	private CatalogManager catalogManager = null;
-	public CatalogManager getCatalogManager()
-	{
-		if ( catalogManager == null )
-			setCatalogManager(new CatalogManager());
-		return catalogManager;
-	}
-	public void setCatalogManager(CatalogManager catalogManager)
-	{
-		this.catalogManager = catalogManager;
-	}
 	
-	private CatalogResolver catalogResolverInstance;
-	protected CatalogResolver getCatalogResolverInstance() {
+	private AbstractCatalogResolver catalogResolverInstance;
+	protected AbstractCatalogResolver getCatalogResolverInstance()
+	{
 		if (catalogResolverInstance == null)
 			throw new IllegalStateException("Catalog resolver was not set up yet.");
 		return catalogResolverInstance;
 	}
-	protected void setCatalogResolverInstance(CatalogResolver catalogResolverInstance) { this.catalogResolverInstance = catalogResolverInstance; }
+	protected void setCatalogResolverInstance(AbstractCatalogResolver catalogResolverInstance)
+	{
+		this.catalogResolverInstance = catalogResolverInstance;
+	}
 
-	protected void setupCatalogResolver() throws MojoExecutionException
+	/**
+	 * Create a list of catalog {@link URI}(s) locations configured by other
+	 * Mojo 'catalog' parameters.
+	 * 
+	 * <p>Sets up the list of primary and alternative catalog locations.</p>
+	 * 
+	 * @throws MojoExecutionException Whrn catalog resolver cannot be instantiated.
+	 */
+	private void setupCatalogURIs() throws MojoExecutionException
+	{
+		setCatalogURIs(createCatalogURIs());
+	}
+	
+	/**
+	 * Create a list of catalog {@link URI}(s) then create a
+	 * {@link CatalogResolver} instance as configured by this
+	 * mojo's parameters.
+	 * 
+	 * <p>When the {@link CatalogResolver} is constructed it
+	 * creates or is supplied with a {@link Catalog} instance.
+	 * When a new {@link Catalog} instance is constructed it loads
+	 * the root catalog file and parses its entries for use by its
+	 * resolution methods.</p>
+	 * 
+	 * @throws MojoExecutionException When catalog resolver cannot be instantiated.
+	 */
+	private void setupCatalogResolver() throws MojoExecutionException
 	{
 		setCatalogResolverInstance(createCatalogResolver());
-		setCatalogURIs(createCatalogURIs());
+		
+		if ( getCatalogResolverInstance() instanceof MavenCatalogResolver )
+		{
+			MavenURLHandler mavenURLHandler = new MavenURLHandler(getCatalogResolverInstance(),
+				getFileSuffixToMimeTypesProperties());
+			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_MAVEN, mavenURLHandler);
+		}
+		else if ( getCatalogResolverInstance() instanceof ClasspathCatalogResolver )
+		{
+			ClasspathURLHandler classpathURLHandler = new ClasspathURLHandler(getCatalogResolverInstance());
+			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_CLASSPATH, classpathURLHandler);
+		}
+		
 		setResolvedCatalogURIs(resolveURIs(getCatalogURIs()));
-		parseResolvedCatalogURIs();
 	}
 
 	/**
@@ -1044,7 +1181,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	 * 
 	 * @return An enhanced thread context {@link ClassLoader}.
 	 */
-	public ClassLoader createBuildClasspathClassLoader()
+	private ClassLoader createBuildClasspathClassLoader()
 	{
 		ClassLoader parentLoader = currentThread().getContextClassLoader();
 		File buildClasspath = new File(getProject().getBuild().getOutputDirectory());
@@ -1052,81 +1189,110 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	}
 
 	/**
+	 * Provide an instance of {@link ClasspathCatalogResolver} for injection.
+	 * 
+	 * @return An instance of {@link ClasspathCatalogResolver}.
+	 */
+	@Provides
+	public ClasspathCatalogResolver createClasspathCatalogResolver()
+	{
+		ClassLoader classLoader = createBuildClasspathClassLoader();
+		return new ClasspathCatalogResolver(classLoader, getLog(), getCatalogFeatures(), toArray(getCatalogURIs()));
+	}
+
+	/**
+	 * Provide an instance of {@link MavenCatalogResolver} for injection.
+	 * 
+	 * @return An instance of {@link MavenCatalogResolver}.
+	 */
+	@Provides
+	public MavenCatalogResolver createMavenCatalogResolver()
+	{
+		return new MavenCatalogResolver(this, getLog(), getCatalogFeatures(), toArray(getCatalogURIs()));
+	}
+
+	/**
 	 * Creates an instance of catalog resolver for <code>setupCatalogResolver()</code>. 
 	 * 
-	 * @return Instance of the catalog resolver.
+	 * <p>Creates a {@link CatalogResolver} implementation using the Mojo's
+	 * <code>catalogResolver</code> parameter which is the fully qualified Java
+	 * class name of the desired custom type.</p>
+	 * 
+	 * <p>When a {@link CatalogResolver} is constructed it
+	 * creates or is supplied with a {@link Catalog} instance.
+	 * When a new {@link Catalog} instance is constructed it loads
+	 * the root catalog file and parses its entries for use by its
+	 * resolution methods.</p>
+	 * 
+	 * @return Instance of the {@link AbstractCatalogResolver}.
 	 * 
 	 * @throws MojoExecutionException If catalog resolver cannot be instantiated.
+	 *
 	 */
-	protected CatalogResolver createCatalogResolver() throws MojoExecutionException
+	private AbstractCatalogResolver createCatalogResolver() throws MojoExecutionException
 	{
-		String ignoreMissing = getProperty("xml.catalog.ignoreMissing");
-		if ( ignoreMissing != null )
-			getCatalogManager().setIgnoreMissingProperties(Boolean.parseBoolean(ignoreMissing));
-		else
-			getCatalogManager().setIgnoreMissingProperties(true);
+		// See #setupCatalogResolver()
+		AbstractCatalogResolver catalogResolver = null;
 		
-		getCatalogManager().setUseStaticCatalog(false);
+		if ( getCatalogResolver() == null )
+		{
+			catalogResolver = new MavenCatalogResolver(this, getLog(), getCatalogFeatures(),
+				toArray(getCatalogURIs()));
+		}
+		else if ( getCatalogResolver().equals(MavenCatalogResolver.class.getName()) )
+		{
+			catalogResolver = new MavenCatalogResolver(this, getLog(), getCatalogFeatures(),
+				toArray(getCatalogURIs()));
+		}
+		else if ( getCatalogResolver().equals(ClasspathCatalogResolver.class.getName()) )
+		{
+			ClassLoader classLoader = createBuildClasspathClassLoader();
+			catalogResolver = new ClasspathCatalogResolver(classLoader, getLog(), getCatalogFeatures(),
+				toArray(getCatalogURIs()));
+		}
+		else
+		{
+			catalogResolver =  createCatalogResolverByClassName(getCatalogResolver());
+			if ( catalogResolver instanceof AbstractCatalogResolver )
+			{
+				AbstractCatalogResolver abstractCatalogResolver =
+					((AbstractCatalogResolver) catalogResolver);
+				abstractCatalogResolver.setCatalogFeatures(getCatalogFeatures());
+				abstractCatalogResolver.setCatalogFiles(toArray(getCatalogURIs()));
+				abstractCatalogResolver.setLog(getLog());
+			}
+		}
 		
 		// Enable verbose logging
 		if (getLog().isDebugEnabled())
 		{
-			// CatalogManager lazily reads its properties...
-			int cmVerbosity = getCatalogManager().getVerbosity();
-			getCatalogManager().setVerbosity(cmVerbosity);
-			
-			getLog().debug("CatalogManager (system, file)");
-			getLog().debug("  xml.catalog.ignoreMissing, NONE.................: " + getCatalogManager().getIgnoreMissingProperties());
-			getLog().debug("  xml.catalog.files, catalogs.....................: " + getCatalogManager().getCatalogFiles());
-			getLog().debug("  NONE, relative-catalogs.........................: " + getCatalogManager().getRelativeCatalogs());
-			getLog().debug("  xml.catalog.verbosity, verbosity................: " + getCatalogManager().getVerbosity());
-			getLog().debug("  xml.catalog.prefer, prefer......................: " + getCatalogManager().getPreferPublic());
-			getLog().debug("  xml.catalog.staticCatalog, static-catalog.......: " + getCatalogManager().getUseStaticCatalog());
-			getLog().debug("  xml.catalog.allowPI, allow-oasis-xml-catalog-pi.: " + getCatalogManager().getAllowOasisXMLCatalogPI());
-			getLog().debug("  xml.catalog.className, catalog-class-name.......: " + getCatalogManager().getCatalogClassName());
-			getLog().debug("  org.jvnet.higherjaxb.mojo.xjc.catalogResolver...: " + getCatalogResolver());
+			//
+			// Features and properties can be set through the catalog.xml file, the Catalog API, system properties,
+			// and jaxp.properties, with a preference in the given order. For example, if a prefer attribute is set
+			// in the catalog file as in <catalog prefer="public">, any other input for the "prefer" property is not
+			// necessary or will be ignored.
+			// 
+			// The jaxp.properties file is typically in the conf directory of the Java installation:
+			//
+			//   grep "javax.xml.catalog" /usr/lib/jvm/java-21-openjdk-amd64/conf/jaxp.properties
+			//
+			//   # javax.xml.catalog.files = file:///users/auser/catalog/catalog.xml
+			//   # javax.xml.catalog.defer=true
+			//   # javax.xml.catalog.resolve=strict
+			//
+			CatalogFeatures features = catalogResolver.getCatalogFeatures();
+			getLog().debug("CatalogFeatures");
+			getLog().debug("  javax.xml.catalog.defer.......................: " + features.get(Feature.DEFER));
+			getLog().debug("  javax.xml.catalog.files.......................: " + features.get(Feature.FILES));
+			getLog().debug("  javax.xml.catalog.prefer......................: " + features.get(Feature.PREFER));
+			getLog().debug("  javax.xml.catalog.resolve.....................: " + features.get(Feature.RESOLVE));
+			getLog().debug("  org.jvnet.higherjaxb.mojo.xjc.catalogResolver.: " + catalogResolver.getClass().getName());
 		}
-		
-		// See #setupCatalogResolver()
-		CatalogResolver catalogResolver = null;
-		
-		if ( getCatalogResolver() == null )
-			catalogResolver = new MavenCatalogResolver(getCatalogManager(), this, getLog());
-		else if ( getCatalogResolver().equals(MavenCatalogResolver.class.getName()) )
-			catalogResolver = new MavenCatalogResolver(getCatalogManager(), this, getLog());
-		else if ( getCatalogResolver().equals(ClasspathCatalogResolver.class.getName()) )
-		{
-			ClassLoader classLoader = createBuildClasspathClassLoader();
-			catalogResolver = new ClasspathCatalogResolver(getCatalogManager(), classLoader, getLog());
-		}
-		else
-		{
-			final String catalogResolverClassName = getCatalogResolver().trim();
-			catalogResolver =  createCatalogResolverByClassName(catalogResolverClassName);
-			if ( catalogResolver instanceof MavenCatalogResolver )
-			{
-				MavenCatalogResolver mavenCatalogResolver =
-					((MavenCatalogResolver) catalogResolver);
-				mavenCatalogResolver.setCatalogManager(getCatalogManager());
-				mavenCatalogResolver.setDependencyResourceResolver(this);
-				mavenCatalogResolver.setLog(getLog());
-			}
-			else if ( catalogResolver instanceof ClasspathCatalogResolver )
-			{
-				ClasspathCatalogResolver classpathCatalogResolver =
-					((ClasspathCatalogResolver) catalogResolver);
-				classpathCatalogResolver.setCatalogManager(getCatalogManager());
-				classpathCatalogResolver.setClassloader(createBuildClasspathClassLoader());
-				classpathCatalogResolver.setLog(getLog());
-			}
-		}
-		
-		getLog().debug("  org.jvnet.higherjaxb.mojo.xjc.catalogResolver...: " + catalogResolver.getClass().getName());
 		
 		return catalogResolver;
 	}
-
-	protected CatalogResolver createCatalogResolverByClassName(final String catalogResolverClassName)
+	
+	private AbstractCatalogResolver createCatalogResolverByClassName(final String catalogResolverClassName)
 		throws MojoExecutionException
 	{
 		try
@@ -1134,16 +1300,17 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			final Class<?> draftCatalogResolverClass = Thread.currentThread().getContextClassLoader()
 				.loadClass(catalogResolverClassName);
 
-			if (!CatalogResolver.class.isAssignableFrom(draftCatalogResolverClass))
+			if (!AbstractCatalogResolver.class.isAssignableFrom(draftCatalogResolverClass))
 			{
 				throw new MojoExecutionException(format(
 					"Specified catalog resolver class [%s] could not be casted to [%s].",
-					draftCatalogResolverClass, CatalogResolver.class));
+					draftCatalogResolverClass, AbstractCatalogResolver.class));
 			}
 			else
 			{
 				@SuppressWarnings("unchecked")
-				final Class<? extends CatalogResolver> catalogResolverClass = (Class<? extends CatalogResolver>) draftCatalogResolverClass;
+				final Class<? extends AbstractCatalogResolver> catalogResolverClass =
+					(Class<? extends AbstractCatalogResolver>) draftCatalogResolverClass;
 				return catalogResolverClass.getDeclaredConstructor().newInstance();
 			}
 		}
@@ -1173,10 +1340,26 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		setEntityResolver(createEntityResolver(getCatalogResolverInstance()));
 	}
 
-	protected EntityResolver createEntityResolver(CatalogResolver catalogResolver)
+	/**
+	 * Create XML {@link EntityResolver} with an instance of {@link CatalogResolver}
+	 * 
+	 * <p>A Catalog Resolver that implements SAX {@link EntityResolver},
+	 * StAX {@link XMLResolver}, and DOM LS {@link LSResourceResolver}
+	 * used by Schema Validation, and transform {@link URIResolver}, and
+	 * resolves external references using one or more {@link Catalog}.</p>
+	 * 
+	 * @param catalogResolver A {@link CatalogResolver} to resolve external references
+	 *                        using one or more {@link Catalog}.
+	 * 
+	 * @return A instance of the basic interface for resolving XML entities.
+	 */
+	private EntityResolver createEntityResolver(CatalogResolver catalogResolver)
 	{
+		// Create a ReResolvingEntityResolverWrapper instance.
 		final EntityResolver entityResolver =
 			new ReResolvingEntityResolverWrapper(catalogResolver, getLog());
+		
+		// Return the ReResolvingEntityResolverWrapper instance.
 		return entityResolver;
 	}
 
@@ -1185,7 +1368,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	 *		   from input files is earlier than the younger from the output files
 	 *		   (meaning no re-execution required).
 	 */
-	protected boolean isUpToDate()
+	private boolean isUpToDate()
 	{
 		final List<URI> dependsURIs = getDependsURIs();
 		final List<URI> producesURIs = getProducesURIs();
@@ -1293,6 +1476,12 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 		return createXJCProxyArgument(activeProxy.getHost(), activeProxy.getPort(), activeProxy.getUsername(),
 			activeProxy.getPassword());
+	}
+
+	private URI[] toArray(List<URI> uriList)
+	{
+		URI[] uris = new URI[uriList.size()];
+		return uriList.toArray(uris);
 	}
 
 	private String createXJCProxyArgument(String host, int port, String username, String password)
@@ -1433,7 +1622,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return httpproxy;
 	}
 
-	public SystemOptionsConfiguration createSystemOptionsConfiguration()
+	private SystemOptionsConfiguration createSystemOptionsConfiguration()
 	{
 		final SystemOptionsConfiguration systemOptionsConfiguration = new SystemOptionsConfiguration
 		(
@@ -1444,7 +1633,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return systemOptionsConfiguration;
 	}
 	
-	public OptionsConfiguration createOptionsConfiguration() throws MojoExecutionException
+	private OptionsConfiguration createOptionsConfiguration() throws MojoExecutionException
 	{
 		final OptionsConfiguration optionsConfiguration = new OptionsConfiguration
 		(
@@ -1474,114 +1663,73 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		);
 		return optionsConfiguration;
 	}
+	
+	// Note: javax.xml.catalog.CatalogResolverImpl.resolveEntity(String, String)
+	//       handles {@link CatalogFeature}
 
-	private List<URI> resolveURIs(final List<URI> uris)
+	/**
+	 * Resolve a list of {@link URI}(s) by delegation to the <code>resolveEntity(String, String)</code>
+	 * method in the class <code>CatalogResolverImpl</code> in the <code>javax.xml.catalog</code> package.
+	 * 
+	 * <p>The delegated method handles the {@link CatalogFeatures.Feature} <code>RESOLVE</code> option:</p>
+	 * 
+	 * <ul>
+	 * <li><b>strict</b> - Throws CatalogException if there is no match.</li>
+	 * <li><b>continue</b> - Allows the XML parser to continue as if there is no match.</li>
+	 * <li><b>ignored</b> - Tells the XML parser to skip the external references if there no match.</li>
+	 * </ul>
+	 * 
+	 * <p>When the delegated method does not find a matching {@link Catalog} entry to resolve
+	 * a {@link URI} then is refers to the <code>RESOLVE</code> option to return one of the following
+	 * values:
+	 * </p>
+	 * 
+	 * <ul>
+	 * <li><b>strict</b> - Throws {@link CatalogException}</li>
+	 * <li><b>continue</b> - Returns a <em>null</em> {@link InputSource}.</li>
+	 * <li><b>ignored</b> - Returns an {@link InputSource} with <em>null</em> <code>systemId</code>
+	 *                      and an empty {@link Reader}.</li>
+	 * </ul>
+	 * 
+	 * @param systemIds A list of {@link URI}(s) to be resolved.
+	 * 
+	 * @return The list of resolved {@link URI}(s).
+	 */
+	private List<URI> resolveURIs(final List<URI> systemIds)
 	{
-		final List<URI> resolvedURIs = new ArrayList<URI>(uris.size());
-		for (URI uri : uris)
+		final List<URI> resolvedURIs = new ArrayList<URI>(systemIds.size());
+		for (URI systemId : systemIds)
 		{
-			final String URI = getCatalogResolverInstance().getResolvedEntity(null, uri.toString());
-			if (URI != null)
+			InputSource resolveEntitySource =
+				getCatalogResolverInstance().resolveEntity(null, systemId.toString());
+			
+			// Handle resolveEntitySource return value: strict, continue, ignore.
+			if ( resolveEntitySource == null )
 			{
+				// The delegated method did not resolve the systemId; but signaled "continue".
+				// Add the original systemId to the list of resolved URI(s).
+				resolvedURIs.add(systemId);
+			}
+			else if ( resolveEntitySource.getSystemId() != null )
+			{
+				// The delegated method resolved the systemId.
 				try
 				{
-					uri = new URI(URI);
+					systemId = new URI(resolveEntitySource.getSystemId());
+					resolvedURIs.add(systemId);
 				}
-				catch (URISyntaxException ignored)
+				catch (URISyntaxException warn)
 				{
-					// Ignored
+					getLog().warn(warn.getClass().getSimpleName() + ": " + warn.getMessage());
 				}
 			}
-			resolvedURIs.add(uri);
+			else
+			{
+				// The delegated method did not resolve the systemId; but signaled "ignore";
+				// thus, ignore the original systemId.
+				systemId = null;
+			}
 		}
 		return resolvedURIs;
-	}
-
-	private void parseResolvedCatalogURIs() throws MojoExecutionException
-	{
-		for (URI catalogURI : getResolvedCatalogURIs())
-		{
-			if (catalogURI != null)
-			{
-				try
-				{
-
-					// Ignore "Malformed URL on system identifier: maven:"
-					Catalog catalog = getCatalogResolverInstance().getCatalog();
-					URL catalogURL = catalogURI.toURL();
-					InputStream inputStream = null;
-					try
-					{
-						URLConnection connection = catalogURL.openConnection();
-						String scheme = catalogURI.getScheme();
-					    String mimeType = connection.getContentType();
-						getLog().debug("parseResolvedCatalogURIs: scheme=" + scheme + "; MIME=" + mimeType);
-					    if ( unknownMimeType(mimeType) )
-					    {
-					    	if ( "file".equals(scheme) || "jar".equals(scheme) )
-					    	{
-					    		String fqfn = catalogURI.getPath();
-					    		if (fqfn == null)
-					    			fqfn = catalogURI.getSchemeSpecificPart();
-					    		if (fqfn != null)
-					    		{
-									// xcatalog...: "application/xml"
-									// catalog.xml: "application/xml"
-									// catalog.cat: "text/plain"
-					    			if ( fqfn.endsWith(".xml") || fqfn.endsWith("xcatalog") )
-					    				mimeType = "application/xml";
-					    			else if ( fqfn.endsWith(".cat") || fqfn.endsWith(".txt") )
-					    				mimeType = "text/plain";
-					    			if ( unknownMimeType(mimeType) )
-					    			{
-								    	mimeType = guessContentTypeFromName(fqfn);
-								    	if ( unknownMimeType(mimeType) && "file".equals(scheme) )
-						    				mimeType = probeContentType(Path.of(catalogURI));
-					    			}
-					    		}
-						    	else
-									getLog().warn(format("Error parsing catalog [%s].",	catalogURI));
-					    	}
-					    }
-						getLog().debug("parseResolvedCatalogURIs: URI=" + catalogURI + "; MIME=" + mimeType);
-						inputStream = connection.getInputStream();
-						catalog.parseCatalog(mimeType, inputStream);
-						getLog().debug("Catalog XML: xml:base, Catalog TR9401: BASE: " + catalog.getCurrentBase());
-					}
-					finally
-					{
-						if (inputStream != null)
-							inputStream.close();
-					}
-				}
-				catch (IOException | CatalogException ex)
-				{
-					throw new MojoExecutionException(
-						format("Error parsing catalog [%s].", catalogURI), ex);
-				}
-			}
-		}
-	}
-
-	protected boolean unknownMimeType(String mimeType)
-	{
-		return (mimeType == null) || "content/unknown".equals(mimeType);
-	}
-	
-	private List<InputSource> createInputSources(final List<URI> uris) throws IOException, SAXException
-	{
-		final List<InputSource> inputSources = new ArrayList<InputSource>(uris.size());
-		for (final URI uri : uris)
-		{
-			InputSource inputSource = getInputSource(uri);
-			final InputSource resolvedInputSource =
-				getEntityResolver().resolveEntity(inputSource.getPublicId(), inputSource.getSystemId());
-
-			if (resolvedInputSource != null)
-				inputSource = resolvedInputSource;
-			
-			inputSources.add(inputSource);
-		}
-		return inputSources;
 	}
 }

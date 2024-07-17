@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE catalog
-  PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
-         "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
-<!--
-	See https://www.oasis-open.org/committees/entity/spec.html;
-	xmlcatalog -v catalog.xml [publicId|systemId]
--->
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+<!-- See https://www.oasis-open.org/committees/entity/spec.html -->
+<!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:entity:xmlns:xml:catalog
+		../../../../schemas/src/main/resources/w3c/2005/10/catalog/catalog.xsd"
+>
 
 	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver -->
-	<rewriteSystem
-		systemIdStartString="http://www.w3.org"
-		rewritePrefix="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c"
+	<systemSuffix
+		systemIdSuffix="datatypes.dtd"
+		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/datatypes.dtd"
 	/>
+	<systemSuffix
+		systemIdSuffix="XMLSchema.dtd"
+		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.dtd"
+	/>
+	<systemSuffix
+		systemIdSuffix="xml.xsd"
+		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/xml.xsd"
+	/>
+	<systemSuffix
+		systemIdSuffix="XMLSchema.xsd"
+		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.xsd"
+	/>
+
 </catalog>

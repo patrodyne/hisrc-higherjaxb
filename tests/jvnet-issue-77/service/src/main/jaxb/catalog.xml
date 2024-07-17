@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE catalog
-    PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
-           "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"
->
 <!-- See https://www.oasis-open.org/committees/entity/spec.html -->
 <!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:entity:xmlns:xml:catalog
+		../../../../../w3c/schemas/src/main/resources/w3c/2005/10/catalog/catalog.xsd"
+>
 
 	<!--
 		This is one of the reasons for "MyType is already defined" (see #1045).
@@ -14,12 +14,20 @@
 		See https://github.com/eclipse-ee4j/jaxb-ri/issues/1046
 	-->
 
+	<!--
+        PUBLIC entries are only considered if prefer is public (default) and
+        system entries are not found. A system entry is always used if found.
+	-->
 	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver -->
 	<public
 		publicId="http://company.com/project/schemas/common-types"
 		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-77-common-types:jar::!/META-INF/project/schemas/CommonTypes.xsd"
 	/>
 
+	<!--
+        PUBLIC entries are only considered if prefer is public (default) and
+        system entries are not found. A system entry is always used if found.
+	-->
 	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver -->
 	<public
 		publicId="http://company.com/project/schemas/iso/currency"

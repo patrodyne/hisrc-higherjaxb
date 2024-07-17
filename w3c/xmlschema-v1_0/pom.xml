@@ -99,6 +99,8 @@
 		<plugins>
 			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
 			<!-- mvn hisrc-higherjaxb:generate -->
+			<!-- mvn hisrc-higherjaxb:generate@default -->
+			<!-- mvn hisrc-higherjaxb:generate@test -->
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
@@ -112,12 +114,25 @@
 						<configuration>
 							<debug>false</debug>
 							<verbose>true</verbose>
-							<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
-							<catalog>src/main/resources/catalog.xml</catalog>
+							<extension>true</extension>
 							<strict>false</strict>
+							<catalogFeaturePrefer>public</catalogFeaturePrefer>
+							<catalogFeatureDefer>true</catalogFeatureDefer>
+							<catalogFeatureResolve>continue</catalogFeatureResolve>
+							<catalog>src/main/resources/catalog.xml</catalog>
+							<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
+							<bindingDirectory>${basedir}/src/main/resources</bindingDirectory>
+							<bindingIncludes>*.xjb</bindingIncludes>
+							<!--
+							<schemaDirectory>${basedir}/src/main/resources</schemaDirectory>
+							<schemaIncludes>*.xsd</schemaIncludes>
+							-->
 							<schemas>
 								<schema>
+									<!--
 									<url>http://www.w3.org/2001/XMLSchema.xsd</url>
+									-->
+									<url>maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.xsd</url>
 								</schema>
 							</schemas>
 							<args>
@@ -141,9 +156,13 @@
 						<configuration>
 							<debug>false</debug>
 							<verbose>true</verbose>
+							<strict>false</strict>
+							<bindingDirectory>${basedir}/src/test/resources</bindingDirectory>
+							<bindingIncludes>*.xjb</bindingIncludes>
 							<schemaDirectory>${basedir}/src/test/resources</schemaDirectory>
 							<schemaIncludes>*.xsd</schemaIncludes>
 							<generateDirectory>${project.build.directory}/generated-test-sources/xjc</generateDirectory>
+							<episodeFile>${project.build.directory}/generated-test-sources/xjc/META-INF/sun-jaxb-test.episode</episodeFile>
 							<addCompileSourceRoot>false</addCompileSourceRoot>
 							<addTestCompileSourceRoot>true</addTestCompileSourceRoot>
 							<args>

@@ -36,6 +36,7 @@
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
 				<executions>
 					<execution>
+						<?m2e ignore?>
 						<id>default</id>
 						<goals>
 							<goal>generate</goal>
@@ -43,7 +44,6 @@
 						<configuration>
 							<noFileHeader>true</noFileHeader>
 							<extension>true</extension>
-							<strict>false</strict>
 							<debug>false</debug>
 							<verbose>true</verbose>
 							<args>
@@ -53,6 +53,9 @@
 							<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
 							<catalog>src/main/catalog/catalog.xml</catalog>
 							<strict>false</strict>
+							<bindingIncludes>
+								<bindingInclude>bindings.xjb</bindingInclude>
+							</bindingIncludes>
 							<schemaIncludes>
 								<schemaInclude>common.xsd</schemaInclude>
 								<schemaInclude>onvif.xsd</schemaInclude>

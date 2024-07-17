@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- See https://www.oasis-open.org/committees/entity/spec.html -->
+<!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:entity:xmlns:xml:catalog ../../../../doc/catalog.xsd"
+>
+
+	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver -->
+	<systemSuffix
+		systemIdSuffix="a.xsd"
+		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-sample-episode-a!/a.xsd"
+	/>
+
+</catalog>

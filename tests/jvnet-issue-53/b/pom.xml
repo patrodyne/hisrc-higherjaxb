@@ -35,19 +35,36 @@
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
-				<configuration>
-					<extension>true</extension>
-					<generateDirectory>${generate-directory}</generateDirectory>
-					<episodes>
-						<episode>
-							<groupId>org.patrodyne.jvnet</groupId>
-							<artifactId>hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-53-a</artifactId>
-						</episode>
-					</episodes>
-					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
-					<catalog>src/main/resources/catalog.cat</catalog>
-					<strict>false</strict>
-				</configuration>
+				<executions>
+					<execution>
+						<?m2e ignore?>
+						<id>default</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<noFileHeader>true</noFileHeader>
+							<extension>true</extension>
+							<debug>false</debug>
+							<verbose>true</verbose>
+							<strict>false</strict>
+							<episodes>
+								<episode>
+									<groupId>org.patrodyne.jvnet</groupId>
+									<artifactId>hisrc-higherjaxb-maven-plugin-tests-jvnet-issue-53-a</artifactId>
+								</episode>
+							</episodes>
+							<catalog>src/main/resources/catalog.xml</catalog>
+							<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
+							<catalogFeaturePrefer>public</catalogFeaturePrefer>
+							<catalogFeatureDefer>true</catalogFeatureDefer>
+							<catalogFeatureResolve>continue</catalogFeatureResolve>
+							<schemaIncludes>
+								<schemaInclude>b.xsd</schemaInclude>
+							</schemaIncludes>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<!--
 				Episode dependencies are getting re-generated and incomplete jaxb classes.
@@ -61,6 +78,7 @@
 
 				- Alexey
 			-->
+			<!--
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -74,7 +92,7 @@
 						<configuration>
 							<target>
 								<delete includeEmptyDirs="true">
-									<fileset dir="${generate-directory}" includes="**/jvnet_issue_53/a/**"/>
+									<fileset dir="${project.build.directory}" includes="**/xjc/jvnet_issue_53/a/**"/>
 								</delete>
 								<echo level="info">Deleted ${generate-directory}/**/jvnet_issue_53/a</echo>
 							</target>
@@ -82,6 +100,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 </project>

@@ -10,6 +10,12 @@
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
 
+	<jaxb:bindings schemaLocation="http://www.ab.org/b.xsd" node="/xs:schema">
+		<jaxb:schemaBindings>
+			<jaxb:package name="org.ab.b"/>
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
 </jaxb:bindings>
 
 

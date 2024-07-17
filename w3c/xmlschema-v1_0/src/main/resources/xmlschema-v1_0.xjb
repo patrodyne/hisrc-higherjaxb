@@ -6,7 +6,10 @@
 	jaxb:extensionBindingPrefixes="simplify">
 >
 
-	<jaxb:bindings schemaLocation="http://www.w3.org/2001/XMLSchema.xsd" node="/xs:schema">
+	<jaxb:bindings
+		schemaLocation="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.xsd"
+		node="/xs:schema"
+	>
 
 		<jaxb:schemaBindings>
 			<jaxb:package name="org.jvnet.higherjaxb.w3c.xmlschema.v1_0"/>

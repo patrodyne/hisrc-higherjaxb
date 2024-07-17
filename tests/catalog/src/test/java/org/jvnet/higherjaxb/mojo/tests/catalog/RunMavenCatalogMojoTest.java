@@ -24,7 +24,7 @@ public class RunMavenCatalogMojoTest extends AbstractMojoTest
 
 		mojo.setProject(createMavenProject());
 		mojo.setCatalogResolver(MavenCatalogResolver.class.getName());
-		mojo.setCatalog(fullpath("src/main/resources/catalog.cat"));
+		mojo.setCatalog(fullpath("src/main/resources/catalog.xml"));
 		mojo.setAccessExternalDTD("all");
 		mojo.setAccessExternalSchema("all");
 		mojo.setEnableExternalEntityProcessing(true);

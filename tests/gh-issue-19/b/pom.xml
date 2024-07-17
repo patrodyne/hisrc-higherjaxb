@@ -41,7 +41,7 @@
 					</schemaIncludes>
 					<debug>false</debug>
 					<strict>false</strict>
-					<catalog>src/main/resources/b/b.cat</catalog>
+					<catalog>src/main/resources/b/catalog.xml</catalog>
 				</configuration>
 			</plugin>
 		</plugins>

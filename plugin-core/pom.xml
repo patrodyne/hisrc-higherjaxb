@@ -19,11 +19,13 @@
 		</dependency>
 		<!-- OBS: (WARNING: Cannot find CatalogManager.properties) -->
 		<!-- JEP 268: XML Catalogs -->
+		<!--
 		<dependency>
 			<groupId>com.sun.org.apache.xml.internal</groupId>
 			<artifactId>resolver</artifactId>
 			<version>20050927</version>
 		</dependency>
+		-->
 		<!-- Maven plugin and api classes -->
 		<dependency>
 			<groupId>org.apache.maven</groupId>

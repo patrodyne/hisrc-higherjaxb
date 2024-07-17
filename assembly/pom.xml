@@ -14,10 +14,10 @@
 	<packaging>pom</packaging>
 	<name>HiSrc HigherJAXB Assembly</name>
 	<properties>
-		<hisrc-basicjaxb.version>2.2.1</hisrc-basicjaxb.version>
-		<hisrc-higherjaxb.version>2.2.1</hisrc-higherjaxb.version>
-		<hisrc-higherjaxb-maven-plugin.version>2.2.1</hisrc-higherjaxb-maven-plugin.version>
-		<hisrc-hyperjaxb-annox-plugin.version>2.2.1</hisrc-hyperjaxb-annox-plugin.version>
+		<hisrc-basicjaxb.version>2.2.2-SNAPSHOT</hisrc-basicjaxb.version>
+		<hisrc-higherjaxb.version>2.2.2-SNAPSHOT</hisrc-higherjaxb.version>
+		<hisrc-higherjaxb-maven-plugin.version>2.2.2-SNAPSHOT</hisrc-higherjaxb-maven-plugin.version>
+		<hisrc-hyperjaxb-annox-plugin.version>2.2.2-SNAPSHOT</hisrc-hyperjaxb-annox-plugin.version>
 		<root.basedir>${basedir}/..</root.basedir>
 	</properties>
 	<modules>

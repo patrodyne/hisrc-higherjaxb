@@ -48,7 +48,7 @@
 					</plugins>
 					-->
 					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
-					<catalog>src/main/resources/catalog.cat</catalog>
+					<catalog>src/main/resources/catalog.xml</catalog>
 					<strict>false</strict>
 					<useDependenciesAsEpisodes>true</useDependenciesAsEpisodes>
 				</configuration>

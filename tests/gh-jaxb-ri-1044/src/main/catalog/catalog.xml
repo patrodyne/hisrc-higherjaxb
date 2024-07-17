@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- xml:base="tests/gh-issue-16/xcatalog" -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:entity:xmlns:xml:catalog
+		../../../../../w3c/schemas/src/main/resources/w3c/2005/10/catalog/catalog.xsd"
+> 
+
+	<!-- xml:base="tests/gh-jaxb-ri-1044/xcatalog" -->
+	<group>
+
+		<systemSuffix
+			systemIdSuffix="a.xsd"
+			uri="a.xsd"
+		/>
+
+		<systemSuffix
+			systemIdSuffix="b.xsd"
+			uri="b.xsd"
+		/>
+
+	</group>
+
+</catalog>
