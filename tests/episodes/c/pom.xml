@@ -46,6 +46,7 @@
 							</dependencyResource>
 						</catalog>
 					</catalogs>
+					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
 					<strict>false</strict>
 					<useDependenciesAsEpisodes>true</useDependenciesAsEpisodes>
 				</configuration>

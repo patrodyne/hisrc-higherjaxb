@@ -1,4 +1,4 @@
-package org.jvnet.higherjaxb.mojo.protocol.classpath;
+package org.jvnet.higherjaxb.mojo.protocol.via;
 
 import java.io.IOException;
 import java.net.Proxy;
@@ -12,11 +12,11 @@ import javax.xml.catalog.CatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver;
 
 /**
- * Protocol: {@code classpath:}
+ * Protocol: {@code via:}
  * 
  * <p>
  * An extension of {@link URLStreamHandler} to manage a {@link URLConnection}
- * to read resources from the {@code classpath}.
+ * to resolve entities using other resolvers: maven, classpath, etc..
  * </p>
  * 
  * <p>
@@ -31,7 +31,7 @@ import org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver;
  * use a vertical bar {@code "foo|bar"} to separate the package names.
  * </p>
  */
-public class ClasspathURLHandler
+public class ViaURLHandler
    extends URLStreamHandler
 {
 	private AbstractCatalogResolver catalogResolver;
@@ -55,7 +55,7 @@ public class ClasspathURLHandler
 	 * @param catalogResolver An instance of {@link CatalogResolver}.
 	 * @param fileSuffixToMimeTypesProperties suffix-to-mime {@link Properties}
 	 */
-	public ClasspathURLHandler(AbstractCatalogResolver catalogResolver,
+	public ViaURLHandler(AbstractCatalogResolver catalogResolver,
 		Properties fileSuffixToMimeTypesProperties)
 	{
 		setCatalogResolver(catalogResolver);
@@ -67,15 +67,15 @@ public class ClasspathURLHandler
 	 * 
 	 * @param catalogResolver An instance of {@link CatalogResolver}.
 	 */
-	public ClasspathURLHandler(AbstractCatalogResolver catalogResolver)
+	public ViaURLHandler(AbstractCatalogResolver catalogResolver)
 	{
 		this(catalogResolver, new Properties());
 	}
 	
     /**
-     * Opens a connection to the {@code classpath} referenced by the given {@link URL}.
+     * Opens a connection to the {@code via} referenced by the given {@link URL}.
      *
-     * @param url A URL for the {@code classpath} resource connection.
+     * @param url A URL for the {@code via} resource connection.
      * 
      * @return A {@link URLConnection} instance for the {@link URL}.
      * 
@@ -90,9 +90,9 @@ public class ClasspathURLHandler
    }
 
    /**
-    * Opens a connection to the {@code classpath} referenced by the given {@link URL}.
+    * Opens a connection to the {@code via} referenced by the given {@link URL}.
     *
-    * @param url A URL for the {@code classpath} resource connection.
+    * @param url A URL for the {@code via} resource connection.
     * @param proxy A proxy through which the connection will be made.
     * 
     * @return A {@link URLConnection} instance for the {@link URL}.
@@ -104,6 +104,6 @@ public class ClasspathURLHandler
 	  throws IOException
    {
 	   // ViaURLConnection does not support proxy at this time.
-	   return new ClasspathURLConnection(url, getCatalogResolver(), getFileSuffixToMimeTypesProperties());
+	   return new ViaURLConnection(url, getCatalogResolver(), getFileSuffixToMimeTypesProperties());
    }
 }

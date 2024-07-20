@@ -10,19 +10,19 @@
 	<!-- Requires: org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver -->
 	<systemSuffix
 		systemIdSuffix="datatypes.dtd"
-		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/datatypes.dtd"
+		uri="via:maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/datatypes.dtd"
 	/>
 	<systemSuffix
 		systemIdSuffix="XMLSchema.dtd"
-		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.dtd"
+		uri="via:maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.dtd"
 	/>
 	<systemSuffix
 		systemIdSuffix="xml.xsd"
-		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/xml.xsd"
+		uri="via:maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/xml.xsd"
 	/>
 	<systemSuffix
 		systemIdSuffix="XMLSchema.xsd"
-		uri="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.xsd"
+		uri="via:maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.xsd"
 	/>
 
 </catalog>

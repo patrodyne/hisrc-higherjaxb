@@ -34,6 +34,7 @@
 			<plugin>
 				<groupId>org.patrodyne.jvnet</groupId>
 				<artifactId>hisrc-higherjaxb-maven-plugin</artifactId>
+				<?m2e ignore?>
 				<configuration>
 					<useDependenciesAsEpisodes>true</useDependenciesAsEpisodes>
 					<schemaIncludes>
@@ -42,6 +43,7 @@
 					<debug>false</debug>
 					<strict>false</strict>
 					<catalog>src/main/resources/b/catalog.xml</catalog>
+					<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
 				</configuration>
 			</plugin>
 		</plugins>

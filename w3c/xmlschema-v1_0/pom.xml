@@ -120,7 +120,7 @@
 							<catalogFeatureDefer>true</catalogFeatureDefer>
 							<catalogFeatureResolve>continue</catalogFeatureResolve>
 							<catalog>src/main/resources/catalog.xml</catalog>
-							<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</catalogResolver>
+							<catalogResolver>org.jvnet.higherjaxb.mojo.resolver.tools.ViaCatalogResolver</catalogResolver>
 							<bindingDirectory>${basedir}/src/main/resources</bindingDirectory>
 							<bindingIncludes>*.xjb</bindingIncludes>
 							<!--
@@ -132,7 +132,7 @@
 									<!--
 									<url>http://www.w3.org/2001/XMLSchema.xsd</url>
 									-->
-									<url>maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.xsd</url>
+									<url>via:maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.xsd</url>
 								</schema>
 							</schemas>
 							<args>

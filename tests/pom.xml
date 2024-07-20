@@ -25,11 +25,9 @@
 		<module>p o</module>
 		<module>po</module>
 		<module>po-scd</module>
-		<!-- URLStreamHandlerFactory aleady defined.
 		<module>po-2.3</module>
 		<module>po-3.0</module>
 		<module>po-4.0</module>
-		-->
 		<!-- RELAXNG_COMPACT (OBS?)
 		<module>rnc</module>
 		-->

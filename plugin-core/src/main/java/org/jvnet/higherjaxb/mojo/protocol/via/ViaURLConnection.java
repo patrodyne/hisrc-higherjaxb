@@ -1,4 +1,4 @@
-package org.jvnet.higherjaxb.mojo.protocol.classpath;
+package org.jvnet.higherjaxb.mojo.protocol.via;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,26 +9,26 @@ import javax.xml.catalog.CatalogResolver;
 
 import org.jvnet.higherjaxb.mojo.protocol.AbstractURLConnection;
 import org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver;
-import org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver;
+import org.jvnet.higherjaxb.mojo.resolver.tools.ViaCatalogResolver;
 import org.xml.sax.InputSource;
 
 /**
  * Represents a single {@link URL} connection, and implements a protocol to
- * read resources from the classpath.
+ * read resources from the {@code via}.
  */
-public class ClasspathURLConnection
+public class ViaURLConnection
    extends AbstractURLConnection
 {
-	// Represents a CatalogResolver to parse a catalog uri for the "classpath:" scheme.
-	// See AbstractHigherjaxbBaseMojo#createClasspathCatalogResolver()
-	private ClasspathCatalogResolver classpathCatalogResolver;
-	public ClasspathCatalogResolver getClasspathCatalogResolver()
+	// Represents a CatalogResolver to parse a catalog uri for the {@code via} scheme.
+	// See AbstractHigherjaxbBaseMojo#createViaCatalogResolver()
+	private ViaCatalogResolver viaCatalogResolver;
+	public ViaCatalogResolver getViaCatalogResolver()
 	{
-		return classpathCatalogResolver;
+		return viaCatalogResolver;
 	}
-	public void setClasspathCatalogResolver(ClasspathCatalogResolver classpathCatalogResolver)
+	public void setViaCatalogResolver(ViaCatalogResolver viaCatalogResolver)
 	{
-		this.classpathCatalogResolver = classpathCatalogResolver;
+		this.viaCatalogResolver = viaCatalogResolver;
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class ClasspathURLConnection
 	 * @param url The specified URL.
 	 * @param catalogResolver An instance of {@link CatalogResolver}.
 	 */
-	public ClasspathURLConnection(URL url, AbstractCatalogResolver catalogResolver)
+	public ViaURLConnection(URL url, AbstractCatalogResolver catalogResolver)
 	{
 		this(url, catalogResolver, new Properties());
 	}
@@ -48,18 +48,18 @@ public class ClasspathURLConnection
 	 * object referenced by the URL is not created.
 	 *
 	 * @param url The specified URL.
-	 * @param catalogResolver An instance of {@link CatalogResolver}.
+	 * @param viaResolver An instance of {@link CatalogResolver}.
 	 * @param fileSuffixToMimeTypesProperties suffix-to-mime {@link Properties}
 	 */
-	protected ClasspathURLConnection(URL url, AbstractCatalogResolver catalogResolver,
+	protected ViaURLConnection(URL url, AbstractCatalogResolver viaResolver,
 		Properties fileSuffixToMimeTypesProperties)
 	{
 		super(url);
 		setDoInput(true);
 		setDoOutput(false);
 		setUseCaches(false);
-		if ( catalogResolver instanceof ClasspathCatalogResolver )
-			setClasspathCatalogResolver((ClasspathCatalogResolver) catalogResolver);
+		if ( viaResolver instanceof ViaCatalogResolver )
+			setViaCatalogResolver((ViaCatalogResolver) viaResolver);
 		setFileSuffixToMimeTypesProperties(fileSuffixToMimeTypesProperties);
 	}
 
@@ -101,8 +101,8 @@ public class ClasspathURLConnection
             	
 			    // Searches through the catalog entries in the primary
 				// and alternative catalogs to attempt to resolve the
-				// custom "classpath:" scheme.
-            	InputSource inputSource = getClasspathCatalogResolver()
+				// custom {@code via} scheme.
+            	InputSource inputSource = getViaCatalogResolver()
             		.resolveEntity(publicId, systemId);
             	
             	setInputSource(inputSource);

@@ -19,8 +19,8 @@ import org.jvnet.higherjaxb.mojo.plugin.logging.NullLog;
 import org.xml.sax.InputSource;
 
 /**
- * A CatalogResolver to parse a catalog URI for a "maven" scheme.
- * The "maven" scheme has the form:
+ * A CatalogResolver to parse a catalog URI for a {@code maven} scheme.
+ * The {@code maven} scheme has the form:
  * 
  * <pre>
  * maven:groupId:artifactId:type:classifier:version!/resource/path/in/jar/schema.xsd
@@ -87,14 +87,14 @@ public class MavenCatalogResolver
 	/**
      * Implements {@link org.xml.sax.EntityResolver}. The method searches through
      * the catalog entries in the primary and alternative catalogs to attempt to
-     * resolve the custom "maven:" scheme.
+     * resolve the custom {@code maven} scheme.
      *
-	 * <p>First, if the initial systemId is not a "maven:" scheme then attempt to
+	 * <p>First, if the initial systemId is not a {@code maven} scheme then attempt to
 	 * resolve the <code>systemId</code> from the delegate instance resolver.
 	 * </p>
 	 * 
-	 * <p>Second, if the <code>systemId</code> or the delegate result matches the "maven:"
-	 * scheme then a {@link DependencyResourceResolver} is used to  resolve the
+	 * <p>Second, if the <code>systemId</code> or the delegate result matches the
+	 * {@code maven} scheme then a {@link DependencyResourceResolver} is used to resolve the
 	 * <code>systemId</code> to an <em>artifact resource URL</em> representing a directory
 	 * or a JAR location; otherwise, the resolved <code>systemId</code> is returned, as an
 	 * {@link InputSource} property.</p>
@@ -172,7 +172,7 @@ public class MavenCatalogResolver
 								systemId, delegateSource.getSystemId()));
 						}
 						else
-							delegateSource.setSystemId(delegateSource.getSystemId());
+							inputSource.setSystemId(delegateSource.getSystemId());
 					}
 				}				
 			}

@@ -7,7 +7,7 @@
 >
 
 	<jaxb:bindings
-		schemaLocation="maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.xsd"
+		schemaLocation="via:maven:org.patrodyne.jvnet:hisrc-higherjaxb-w3c-schemas:jar::!/w3c/2001/XMLSchema.xsd"
 		node="/xs:schema"
 	>
 

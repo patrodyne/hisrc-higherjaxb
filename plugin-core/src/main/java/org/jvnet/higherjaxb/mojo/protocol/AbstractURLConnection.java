@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ abstract public class AbstractURLConnection
 
 	public static final ConfigurableStreamHandlerFactory CONFIGURABLE_STREAM_HANDLER_FACTORY =
 		new ConfigurableStreamHandlerFactory();
+	private static boolean CONFIGURABLE_STREAM_HANDLER_FACTORY_IS_SET;
+    private static final Object STREAM_HANDLER_LOCK = new Object();
 	static
 	{
 		// Sets an application's URLStreamHandlerFactory.
@@ -28,17 +31,34 @@ abstract public class AbstractURLConnection
 		//
 		// The URLStreamHandlerFactory instance is used to construct a stream
 		// protocol handler from a URI scheme name.
-		try
+		synchronized (STREAM_HANDLER_LOCK)
 		{
-			URL.setURLStreamHandlerFactory(CONFIGURABLE_STREAM_HANDLER_FACTORY);
-		}
-		catch ( Throwable t)
-		{
-			String msg = t.getClass().getSimpleName() + t.getMessage();
-			getLogger().warn("Cannot set stream handler factory: {}", msg);
+			if ( !CONFIGURABLE_STREAM_HANDLER_FACTORY_IS_SET )
+			{
+				try
+				{
+					URL.setURLStreamHandlerFactory(CONFIGURABLE_STREAM_HANDLER_FACTORY);
+					CONFIGURABLE_STREAM_HANDLER_FACTORY_IS_SET = true;
+				}
+				catch ( Throwable t)
+				{
+					String msg = t.getClass().getSimpleName() + t.getMessage();
+					getLogger().warn("Cannot set stream handler factory: {}", msg);
+				}
+			}
 		}
 	}
-
+	
+	public Properties fileSuffixToMimeTypesProperties;
+	public Properties getFileSuffixToMimeTypesProperties()
+	{
+		return fileSuffixToMimeTypesProperties;
+	}
+	public void setFileSuffixToMimeTypesProperties(Properties fileSuffixToMimeTypesProperties)
+	{
+		this.fileSuffixToMimeTypesProperties = fileSuffixToMimeTypesProperties;
+	}
+	
 	// Represents a single input source for an XML entity.
 	private InputSource inputSource;
 	public InputSource getInputSource()
@@ -83,5 +103,20 @@ abstract public class AbstractURLConnection
 		}
 		else
 			throw new IOException("not connected: " + getURL());
+	}
+	
+	protected String guessContentType(String systemId, String charset)
+		throws IOException
+	{
+		int systemIdSuffixIndex = systemId.lastIndexOf('.');
+		String systemIdSuffix = systemId.substring(systemIdSuffixIndex + 1);
+		String mimeType = getFileSuffixToMimeTypesProperties().getProperty(systemIdSuffix);
+		if ( mimeType == null )
+			mimeType = getFileNameMap().getContentTypeFor(getInputSource().getSystemId());
+		if ( mimeType == null )
+			mimeType = guessContentTypeFromStream(getInputSource().getByteStream());
+		
+		String contentType = mimeType + "; charset=" + charset;
+		return contentType;
 	}
 }

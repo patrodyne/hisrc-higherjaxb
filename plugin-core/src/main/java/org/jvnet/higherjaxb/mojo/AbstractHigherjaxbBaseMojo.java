@@ -11,6 +11,7 @@ import static org.eclipse.aether.util.filter.DependencyFilterUtils.classpathFilt
 import static org.jvnet.higherjaxb.mojo.protocol.AbstractURLConnection.CONFIGURABLE_STREAM_HANDLER_FACTORY;
 import static org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver.URI_SCHEME_CLASSPATH;
 import static org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver.URI_SCHEME_MAVEN;
+import static org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver.URI_SCHEME_VIA;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.getFiles;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.mergeDependencyWithDefaults;
 import static org.jvnet.higherjaxb.mojo.util.ArtifactUtils.resolve;
@@ -81,20 +82,20 @@ import org.jvnet.higherjaxb.mojo.net.FileURILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.net.URILastModifiedResolver;
 import org.jvnet.higherjaxb.mojo.protocol.classpath.ClasspathURLHandler;
 import org.jvnet.higherjaxb.mojo.protocol.maven.MavenURLHandler;
+import org.jvnet.higherjaxb.mojo.protocol.via.ViaURLHandler;
 import org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.BuildClasspathClassLoader;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ReResolvingEntityResolverWrapper;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ReResolvingInputSourceWrapper;
+import org.jvnet.higherjaxb.mojo.resolver.tools.ViaCatalogResolver;
 import org.jvnet.higherjaxb.mojo.util.CollectionUtils.Function;
 import org.sonatype.plexus.build.incremental.BuildContext;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.google.inject.Provides;
 
 /**
  * This Maven abstract higherjaxb 'base' mojo provides common properties and methods
@@ -793,12 +794,11 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 	/**
 	 * Initializes logging. If Maven is run in debug mode (that is, debug level is
-	 * enabled in the log), turn on the verbose mode in Mojo. Further on, if vebose
+	 * enabled in the log), turn on the verbose mode in Mojo. Further on, if verbose
 	 * mode is on, set the <code>com.sun.tools.xjc.Options.findServices</code>
-	 * system property on to enable debuggin of XJC plugins.
-	 * 
+	 * system property on to enable debugging of XJC plugins.
 	 */
-	private void setupLogging()
+	protected void setupLogging()
 	{
 		setVerbose(getVerbose() || getLog().isDebugEnabled());
 
@@ -809,7 +809,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	/**
 	 * Augments Maven paths with generated resources.
 	 */
-	private void setupMavenPaths()
+	protected void setupMavenPaths()
 	{
 		if (getAddCompileSourceRoot())
 			getProject().addCompileSourceRoot(getGenerateDirectory().getPath());
@@ -1160,16 +1160,28 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	{
 		setCatalogResolverInstance(createCatalogResolver());
 		
-		if ( getCatalogResolverInstance() instanceof MavenCatalogResolver )
+		Properties mimeTypes = getFileSuffixToMimeTypesProperties();
+		if ( getCatalogResolverInstance() instanceof ViaCatalogResolver )
 		{
-			MavenURLHandler mavenURLHandler = new MavenURLHandler(getCatalogResolverInstance(),
-				getFileSuffixToMimeTypesProperties());
-			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_MAVEN, mavenURLHandler);
+			ViaCatalogResolver vcr = (ViaCatalogResolver) getCatalogResolverInstance();
+			
+			ViaURLHandler vuh = new ViaURLHandler(vcr, mimeTypes);
+			MavenURLHandler muh = new MavenURLHandler(vcr.getMavenCatalogResolver(), mimeTypes);
+			ClasspathURLHandler cuh = new ClasspathURLHandler(vcr.getClasspathCatalogResolver(), mimeTypes);
+			
+			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_VIA, vuh);
+			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_MAVEN, muh);
+			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_CLASSPATH, cuh);
+		}
+		else if ( getCatalogResolverInstance() instanceof MavenCatalogResolver )
+		{
+			MavenURLHandler muh = new MavenURLHandler(getCatalogResolverInstance(),	mimeTypes);
+			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_MAVEN, muh);
 		}
 		else if ( getCatalogResolverInstance() instanceof ClasspathCatalogResolver )
 		{
-			ClasspathURLHandler classpathURLHandler = new ClasspathURLHandler(getCatalogResolverInstance());
-			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_CLASSPATH, classpathURLHandler);
+			ClasspathURLHandler cuh = new ClasspathURLHandler(getCatalogResolverInstance(), mimeTypes);
+			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_CLASSPATH, cuh);
 		}
 		
 		setResolvedCatalogURIs(resolveURIs(getCatalogURIs()));
@@ -1186,29 +1198,6 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		ClassLoader parentLoader = currentThread().getContextClassLoader();
 		File buildClasspath = new File(getProject().getBuild().getOutputDirectory());
 		return new BuildClasspathClassLoader(parentLoader, buildClasspath, getLog());
-	}
-
-	/**
-	 * Provide an instance of {@link ClasspathCatalogResolver} for injection.
-	 * 
-	 * @return An instance of {@link ClasspathCatalogResolver}.
-	 */
-	@Provides
-	public ClasspathCatalogResolver createClasspathCatalogResolver()
-	{
-		ClassLoader classLoader = createBuildClasspathClassLoader();
-		return new ClasspathCatalogResolver(classLoader, getLog(), getCatalogFeatures(), toArray(getCatalogURIs()));
-	}
-
-	/**
-	 * Provide an instance of {@link MavenCatalogResolver} for injection.
-	 * 
-	 * @return An instance of {@link MavenCatalogResolver}.
-	 */
-	@Provides
-	public MavenCatalogResolver createMavenCatalogResolver()
-	{
-		return new MavenCatalogResolver(this, getLog(), getCatalogFeatures(), toArray(getCatalogURIs()));
 	}
 
 	/**
@@ -1234,9 +1223,19 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		// See #setupCatalogResolver()
 		AbstractCatalogResolver catalogResolver = null;
 		
-		if ( getCatalogResolver() == null )
+		if ( getCatalogResolver() == null || getCatalogResolver().equals(ViaCatalogResolver.class.getName()))
 		{
-			catalogResolver = new MavenCatalogResolver(this, getLog(), getCatalogFeatures(),
+			// Via Maven
+			MavenCatalogResolver mcr = new MavenCatalogResolver(this, getLog(), getCatalogFeatures(),
+				toArray(getCatalogURIs()));
+			
+			// Via Classpath
+			ClassLoader classLoader = createBuildClasspathClassLoader();
+			ClasspathCatalogResolver ccr = new ClasspathCatalogResolver(classLoader, getLog(), getCatalogFeatures(),
+				toArray(getCatalogURIs()));
+			
+			// Via Other
+			catalogResolver = new ViaCatalogResolver(mcr, ccr, getCatalogFeatures(),
 				toArray(getCatalogURIs()));
 		}
 		else if ( getCatalogResolver().equals(MavenCatalogResolver.class.getName()) )

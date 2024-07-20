@@ -31,16 +31,6 @@ public class MavenURLConnection
 		this.mavenCatalogResolver = mavenCatalogResolver;
 	}
 	
-	public Properties fileSuffixToMimeTypesProperties;
-	public Properties getFileSuffixToMimeTypesProperties()
-	{
-		return fileSuffixToMimeTypesProperties;
-	}
-	public void setFileSuffixToMimeTypesProperties(Properties fileSuffixToMimeTypesProperties)
-	{
-		this.fileSuffixToMimeTypesProperties = fileSuffixToMimeTypesProperties;
-	}
-	
 	/**
 	 * Constructs a URL connection to the specified URL. A connection to the
 	 * object referenced by the URL is not created.
@@ -130,15 +120,7 @@ public class MavenURLConnection
 				{
 					String charset = getInputSource().getEncoding();
 					
-					int systemIdSuffixIndex = systemId.lastIndexOf('.');
-					String systemIdSuffix = systemId.substring(systemIdSuffixIndex + 1);
-					String mimeType = getFileSuffixToMimeTypesProperties().getProperty(systemIdSuffix);
-					if ( mimeType == null )
-						mimeType = getFileNameMap().getContentTypeFor(getInputSource().getSystemId());
-					if ( mimeType == null )
-						mimeType = guessContentTypeFromStream(getInputSource().getByteStream());
-					
-					String contentType = mimeType + "; charset=" + charset;
+					String contentType = guessContentType(systemId, charset);
 					setRequestProperty("content-type", contentType);
 					setConnected(true);
 				}

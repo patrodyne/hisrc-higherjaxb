@@ -6,38 +6,36 @@ import static java.util.Objects.requireNonNull;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.apache.maven.plugin.logging.Log;
 import org.jvnet.higherjaxb.mojo.resolver.tools.AbstractCatalogResolver;
-import org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver;
+import org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver;
 import org.xml.sax.InputSource;
 
 /**
- * A Maven JAR {@link URI} last modified resolver. 
+ * A Classpath {@link URI} last modified resolver. 
  * 
- * <p>The "maven" URI has the form:</p>
+ * <p>The "classpath" URI has the form:</p>
  * 
  * <pre>
- * maven:groupId:artifactId:type:classifier:version!/resource/path/in/jar/schema.xsd
+ * classpath:resource
  * </pre>
  */
-public class MavenURILastModifiedResolver
+public class ClasspathURILastModifiedResolver
 	extends	AbstractSchemeAwareURILastModifiedResolver
 {
-	public static final String SCHEME = "maven";
-	public static final String SEPARATOR = "!/";
+	public static final String SCHEME = "classpath";
 	
-	// Represents a CatalogResolver to parse a catalog uri for the "maven:" scheme.
+	// Represents a CatalogResolver to parse a catalog uri for the "classpath:" scheme.
 	// See AbstractHigherjaxbBaseMojo#createCatalogResolver()
-	private MavenCatalogResolver mavenCatalogResolver;
-	public MavenCatalogResolver getMavenCatalogResolver()
+	private ClasspathCatalogResolver classpathCatalogResolver;
+	public ClasspathCatalogResolver getClasspathCatalogResolver()
 	{
-		return mavenCatalogResolver;
+		return classpathCatalogResolver;
 	}
-	public void setMavenCatalogResolver(MavenCatalogResolver mavenCatalogResolver)
+	public void setClasspathCatalogResolver(ClasspathCatalogResolver classpathCatalogResolver)
 	{
-		this.mavenCatalogResolver = mavenCatalogResolver;
+		this.classpathCatalogResolver = classpathCatalogResolver;
 	}
 	
 	private URILastModifiedResolver parent;
@@ -50,13 +48,13 @@ public class MavenURILastModifiedResolver
 		this.parent = parent;
 	}
 	
-	public MavenURILastModifiedResolver(AbstractCatalogResolver catalogResolver, Log logger,
+	public ClasspathURILastModifiedResolver(AbstractCatalogResolver catalogResolver, Log logger,
 		URILastModifiedResolver parent)
 	{
 		super(SCHEME, logger);
 		setParent(requireNonNull(parent));
-		if ( catalogResolver instanceof MavenCatalogResolver )
-			setMavenCatalogResolver((MavenCatalogResolver) catalogResolver);
+		if ( catalogResolver instanceof ClasspathCatalogResolver )
+			setClasspathCatalogResolver((ClasspathCatalogResolver) catalogResolver);
 	}
 	
 	@Override
@@ -66,11 +64,11 @@ public class MavenURILastModifiedResolver
 		
 		try
 		{
-			if ( getMavenCatalogResolver() != null )
+			if ( getClasspathCatalogResolver() != null )
 			{
 				String systemId = uri.toString();
 				InputSource entitySource =
-					getMavenCatalogResolver().resolveEntity(null, systemId);
+					getClasspathCatalogResolver().resolveEntity(null, systemId);
 				String resolvedId = entitySource.getSystemId();
 				
 				getLogger().debug(format(
@@ -80,7 +78,7 @@ public class MavenURILastModifiedResolver
 					lastModified = getParent().getLastModified(new URI(resolvedId));
 			}
 			else
-				getLogger().error(format("No MavenCatalogResolver is configured for URI [%s].", uri));
+				getLogger().error(format("No ClasspathCatalogResolver is configured for URI [%s].", uri));
 		}
 		catch (Exception ex)
 		{
@@ -96,22 +94,6 @@ public class MavenURILastModifiedResolver
 	public String getMainURI(URI uri)
 		throws MalformedURLException, URISyntaxException
 	{
-		final String uriString = uri.toString();
-		final URL url;
-		
-		if ( uriString.indexOf(SEPARATOR) < 0 )
-			url = new URI(uriString + SEPARATOR).toURL();
-		else
-			url = uri.toURL();
-		
-		final String spec = url.getFile();
-		final int separatorPosition = spec.indexOf(SEPARATOR);
-		
-		if ( separatorPosition == -1 )
-			throw new MalformedURLException(format("No [!/] found in url spec [%s].", spec));
-		
-		final String mainURIString = separatorPosition < 0 ? spec : spec.substring(0, separatorPosition);
-		
-		return mainURIString;
+		return uri.getSchemeSpecificPart();
 	}
 }

@@ -1,14 +1,10 @@
 package org.jvnet.higherjaxb.mojo.resolver.tools;
 
 import static java.lang.String.format;
-import static java.lang.Thread.currentThread;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import javax.xml.catalog.CatalogException;
 import javax.xml.catalog.CatalogFeatures;
@@ -19,68 +15,85 @@ import org.jvnet.higherjaxb.mojo.plugin.logging.NullLog;
 import org.xml.sax.InputSource;
 
 /**
- * A CatalogResolver to parse a catalog uri for a {@code classpath} scheme.
- * The {@code classpath} scheme has the form:
+ * A CatalogResolver to parse a catalog uri for a {@code via} scheme.
+ * The {@code via} scheme has the form:
  * 
  * <pre>
- * classpath:/resource/path/in/jar/schema.xsd
+ * via:scheme:/scheme-specific-path
  * </pre>
  * 
  */
-public class ClasspathCatalogResolver 
+public class ViaCatalogResolver 
 	extends AbstractCatalogResolver
 {
-	private ClassLoader classloader;
-	public ClassLoader getClassloader()
+	private ClasspathCatalogResolver classpathCatalogResolver;
+	public ClasspathCatalogResolver getClasspathCatalogResolver()
 	{
-		return classloader;
+		return classpathCatalogResolver;
 	}
-	public void setClassloader(ClassLoader classloader)
+	public void setClasspathCatalogResolver(ClasspathCatalogResolver classpathCatalogResolver)
 	{
-		this.classloader = classloader;
+		this.classpathCatalogResolver = classpathCatalogResolver;
+	}
+	
+	private MavenCatalogResolver mavenCatalogResolver;
+	public MavenCatalogResolver getMavenCatalogResolver()
+	{
+		return mavenCatalogResolver;
+	}
+	public void setMavenCatalogResolver(MavenCatalogResolver mavenCatalogResolver)
+	{
+		this.mavenCatalogResolver = mavenCatalogResolver;
 	}
 	
 	/**
-	 * Construct with a collection of {@link CatalogFeatures} and default logger.
+	 * Construct with a collection of a {@link ClasspathCatalogResolver} instance,
+	 * a {@link MavenCatalogResolver} instance, a {@link CatalogFeatures}, and
+	 * uri(s) to one or more catalogs and default logger.
 	 * 
-	 * <p>Defaults to using the current thread context {@link ClassLoader}.</p>
-	 * 
+	 * @param mcr A {@link MavenCatalogResolver} instance.
+	 * @param ccr A {@link ClasspathCatalogResolver} instance.
 	 * @param features A collection of {@link CatalogFeatures}.
 	 * @param uris The uri(s) to one or more catalogs
 	 */
-	public ClasspathCatalogResolver(CatalogFeatures features, URI... uris)
+	public ViaCatalogResolver(MavenCatalogResolver mcr, ClasspathCatalogResolver ccr,
+		CatalogFeatures features, URI... uris)
 	{
-		this(currentThread().getContextClassLoader(), NullLog.INSTANCE, features, uris);
+		this(mcr, ccr, NullLog.INSTANCE, features, uris);
 	}
 
 	/**
-	 * Construct with a {@link ClassLoader}, {@link CatalogFeatures} and a 
-	 * {@link Log} instance.
+	 * Construct with a {@link ClasspathCatalogResolver} instance,
+	 * a {@link MavenCatalogResolver} instance, a {@link Log} instance,
+	 * a collection of {@link CatalogFeatures} and uri(s) to one or more
+	 * catalogs.
 	 * 
-	 * #param classLoader Object responsible for loading classes and reading resources.
+	 * @param mcr A {@link MavenCatalogResolver} instance.
+	 * @param ccr A {@link ClasspathCatalogResolver} instance.
 	 * @param log Feedback from the {@link AbstractMojo}, using <code>Maven</code> channels.
 	 * @param features A collection of {@link CatalogFeatures}.
-	 * @param uris The uri(s) to one or more catalogs
+	 * @param uris The uri(s) to one or more catalogs.
 	 */
-	public ClasspathCatalogResolver(ClassLoader classLoader, Log log,
-		CatalogFeatures features, URI... uris)
+	public ViaCatalogResolver(MavenCatalogResolver mcr, ClasspathCatalogResolver ccr,
+		Log log, CatalogFeatures features, URI... uris)
 	{
 		super(features, uris);
-		setClassloader(classLoader);
+		setMavenCatalogResolver(mcr);
+		setClasspathCatalogResolver(ccr);
 		setLog(log != null ? log : NullLog.INSTANCE);
 	}
 	
 	/**
      * Implements {@link org.xml.sax.EntityResolver}. The method searches through
      * the catalog entries in the primary and alternative catalogs to attempt to
-     * resolve the custom {@code classpath} scheme.
+     * resolve the custom {@code via} scheme.
 	 * 
-	 * <p>First, if the initial systemId is not a {@code classpath} scheme then
-	 * attempt to resolve the <code>systemId</code> from the delegate resolver.
+	 * <p>First, if the initial systemId is not a {@code via} scheme then attempt to
+	 * resolve the <code>systemId</code> from the delegate resolver.
 	 * </p>
 	 * 
 	 * <p>Second, if the <code>systemId</code> or the delegate result matches the
-	 * {@code classpath} scheme then a {@link ClassLoader} is used to resolve the
+	 * {@code via} scheme then the scheme specific part is used to resolve the
 	 * <code>systemId</code> to a {@link URI} representing a local resource location;
 	 * otherwise, the resolved <code>systemId</code> is returned.
 	 * </p>
@@ -124,14 +137,20 @@ public class ClasspathCatalogResolver
 		
 		try
 		{
-			// First, if the initial systemId is not a "classpath:" scheme then
+			// First, if the initial systemId is not a "via:" scheme then
 			// attempt to resolve the systemId from delegate instance method.
 			URI systemIdURI = new URI(inputSource.getSystemId());
-			if ( !URI_SCHEME_CLASSPATH.equals(systemIdURI.getScheme()) )
+			if ( !URI_SCHEME_VIA.equals(systemIdURI.getScheme()) )
 			{
-				// The delegate result may resolve to a "classpath:", etc. scheme when
-				// the delegate resolves catalog entries!
-				InputSource delegateSource = delegateResolveEntity(inputSource.getPublicId(), inputSource.getSystemId());
+				InputSource delegateSource = null;
+				
+				if ( URI_SCHEME_MAVEN.equals(systemIdURI.getScheme()))
+					delegateSource = getMavenCatalogResolver().resolveEntity(publicId, systemId);
+				else if ( URI_SCHEME_CLASSPATH.equals(systemIdURI.getScheme()))
+					delegateSource = getClasspathCatalogResolver().resolveEntity(publicId, systemId);
+				else
+					delegateSource = delegateResolveEntity(inputSource.getPublicId(), inputSource.getSystemId());
+
 				if ( delegateSource != null )
 				{
 					if ( delegateSource.getByteStream() != null )
@@ -164,41 +183,23 @@ public class ClasspathCatalogResolver
 				}				
 			}
 			
-			// Second, if the systemId matches "classpath:" scheme then examine the resource.
-			if ( URI_SCHEME_CLASSPATH.equals(systemIdURI.getScheme()) )
+			// Second, if the systemId matches "via:" scheme then examine the resource.
+			if ( URI_SCHEME_VIA.equals(systemIdURI.getScheme()) )
 			{
-				getLog().debug(format("Resolving systemId [%s] as classpath resource.", inputSource.getSystemId()));
+				getLog().debug(format("Resolving systemId [%s] as via resource.", inputSource.getSystemId()));
 				String schemeSpecificPart = systemIdURI.getSchemeSpecificPart();
 				getLog().debug("Resolving path [" + schemeSpecificPart + "].");
 				
-				try
+				// Recursively resolve entity via scheme specific part as systemId.
+				InputSource resolveSource = resolveEntity(inputSource.getPublicId(), schemeSpecificPart);
+				if ( resolveSource.getByteStream() != null )
 				{
-					// Resolve a resource from the classpath.
-					final URL resourceIdURL = resolveResource(schemeSpecificPart, null);
-					if ( resourceIdURL != null )
-					{
-						String resourceId = resourceIdURL.toString();
-						inputSource.setPublicId(null);
-						inputSource.setSystemId(resourceId);
-						try ( InputStream resourceStream = resourceIdURL.openStream() )
-						{
-							inputSource.setByteStream(toByteArrayInputStream(resourceStream));
-							getResolvedSources().put(inputSource.getSystemId(), inputSource);
-						}
-						getLog().info(format("RESOLVED systemId [%s] to [%s].", systemIdURI, resourceId));
-					}
-					else
-					{
-						getLog().warn(format("NOT RESOLVED Classpath [%s]\n\tReturning delegate resolver result [%s].",
-							systemIdURI, inputSource.getSystemId()));
-					}
+					inputSource = resolveSource;
+					getLog().debug(format("RESOLVED systemId [%s] to [%s].",
+						systemId, resolveSource.getSystemId()));
 				}
-				catch (IllegalArgumentException | IOException ex)
-				{
-					getLog().warn(format(
-						"Failed to resolve location [%s] as '%s:' because %s.\n\tReturning delegate resolver result [%s].",
-						systemIdURI, URI_SCHEME_CLASSPATH, ex.getMessage(), inputSource.getSystemId()));
-				}
+				else
+					inputSource.setSystemId(resolveSource.getSystemId());
 			}
 			else
 			{
@@ -216,50 +217,5 @@ public class ClasspathCatalogResolver
 
 		return inputSource;
 	}
-	
-	/**
-	 * Resolve a locator to an {@link URI}. The locator may represent a
-	 * URL or a File. If the URL protocol is {@code classpath} then the URI
-	 * will be located as a resource.
-	 * 
-	 * If the class parameter is null, a {@link ClassLoader} is used to
-	 * resolve classpath resources; thus, a {@code classpath} locator must
-	 * provide the full path relative to the classpath root and any
-	 * leading '/' will be ignored.
-	 * 
-	 * @param resource The location of a file or resource.
-	 * @param clazz A classpath location for relative locators.
-	 * 
-	 * @return A {@link URL} representing the locator.
-	 */
-	private URL resolveResource(String resource, Class<?> clazz)
-	{
-		URL resourceURL = null;
-		try
-		{
-			if ( resource != null )
-			{
-				if ( clazz != null )
-					resourceURL = clazz.getResource(resource);	
-				else
-				{
-					if ( resource.startsWith("/") )
-						resource = resource.substring(1);
-					resourceURL = getClassloader().getResource(resource);
-				}
 
-				if ( resourceURL != null )
-					getLog().info(format("RESOLVED: '%s' to '%s'", resource, resourceURL));
-				else
-					getLog().warn(format("NOT RESOLVED: '%s'", resource));
-			}
-			else
-				getLog().warn("resolveLocator: locator is null");
-		}
-		catch (Exception ex)
-		{
-			getLog().warn(ex.getClass().getSimpleName() + ": cannot resolve " + resource);
-		}
-		return resourceURL;
-	}
 }

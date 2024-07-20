@@ -38,7 +38,9 @@ public class CompositeURILastModifiedResolver
 		this(logger);
 		addResolvers
 		(
-			new MavenURILastModifiedResolver(catalogResolver, logger, this)
+			new ClasspathURILastModifiedResolver(catalogResolver, logger, this),
+			new MavenURILastModifiedResolver(catalogResolver, logger, this),
+			new ViaURILastModifiedResolver(catalogResolver, logger, this)
 		);
 	}
 

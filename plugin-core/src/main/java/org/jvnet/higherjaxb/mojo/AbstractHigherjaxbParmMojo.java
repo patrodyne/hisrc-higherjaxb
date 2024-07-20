@@ -41,6 +41,7 @@ import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.jvnet.higherjaxb.mojo.protocol.ConfigurableStreamHandlerFactory;
 import org.jvnet.higherjaxb.mojo.resolver.tools.ReResolvingEntityResolverWrapper;
+import org.jvnet.higherjaxb.mojo.resolver.tools.ViaCatalogResolver;
 import org.jvnet.higherjaxb.mojo.util.IOUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
 import org.sonatype.plexus.build.incremental.DefaultBuildContext;
@@ -436,6 +437,7 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * Provides the full class name of a catalog (entity) resolver:
 	 * 
 	 * <ul>
+	 * <li>org.jvnet.higherjaxb.mojo.resolver.tools.ViaCatalogResolver</li>
 	 * <li>org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver</li>
 	 * <li>org.jvnet.higherjaxb.mojo.resolver.tools.ClasspathCatalogResolver</li>
 	 * </ul>
@@ -467,11 +469,12 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * </p>
 	 * 
 	 * <p>
-	 * defaultValue = {@code "org.jvnet.higherjaxb.mojo.resolver.tools.MavenCatalogResolver"}
+	 * defaultValue = {@code "org.jvnet.higherjaxb.mojo.resolver.tools.ViaCatalogResolver"}
 	 * </p>
 	 */
-	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogResolver")
-	private String catalogResolver = null;
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".catalogResolver",
+		defaultValue="org.jvnet.higherjaxb.mojo.resolver.tools.ViaCatalogResolver")
+	private String catalogResolver = ViaCatalogResolver.class.getName();
 	public String getCatalogResolver() { return catalogResolver; }
 	public void setCatalogResolver(String catalogResolver) { this.catalogResolver = catalogResolver; }
 

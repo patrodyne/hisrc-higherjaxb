@@ -39,6 +39,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 	public static final String URI_SCHEME_FILE = "file";
 	public static final String URI_SCHEME_CLASSPATH = "classpath";
 	public static final String URI_SCHEME_MAVEN = "maven";
+	public static final String URI_SCHEME_VIA = "via";
 
 	private Log log;
 	public Log getLog() { return log; }
