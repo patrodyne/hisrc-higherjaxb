@@ -22,10 +22,10 @@
 				<configuration>
 					<schemaDirectory>src/main/resources/META-INF/project/schemas</schemaDirectory>
 					<generatePackage>com.company.project.common.types</generatePackage>
+					<strict>false</strict>
 				</configuration>
 				<executions>
 					<execution>
-						<?m2e ignore?>
 						<id>default</id>
 						<goals>
 							<goal>generate</goal>
