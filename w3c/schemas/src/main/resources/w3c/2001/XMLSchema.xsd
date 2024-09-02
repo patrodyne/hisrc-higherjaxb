@@ -65,7 +65,15 @@
         <!ATTLIST xs:list id ID #IMPLIED>
         <!ATTLIST xs:union id ID #IMPLIED>
         ]>
-<xs:schema targetNamespace="http://www.w3.org/2001/XMLSchema" blockDefault="#all" elementFormDefault="qualified" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="EN" xmlns:hfp="http://www.w3.org/2001/XMLSchema-hasFacetAndProperty">
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	version="1.0"
+	blockDefault="#all"
+	xml:lang="EN"
+	xmlns:hfp="http://www.w3.org/2001/XMLSchema-hasFacetAndProperty"
+>
  <xs:annotation>
   <xs:documentation>
     Part 1 version: Id: structures.xsd,v 1.2 2004/01/15 11:34:25 ht Exp 
