@@ -16,6 +16,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.jvnet.higherjaxb.mojo.AbstractHigherjaxbBaseMojo;
+import org.jvnet.higherjaxb.mojo.CoreOptionsFactory;
 
 import com.sun.codemodel.CodeWriter;
 import com.sun.codemodel.JCodeModel;
@@ -51,9 +52,9 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 		return SpecVersion.V2_2.getVersion();
 	}
 
-	private final org.jvnet.higherjaxb.mojo.CoreOptionsFactory<Options> optionsFactory = new OptionsFactory();
+	private final CoreOptionsFactory<Options> optionsFactory = new OptionsFactory();
 	@Override
-	protected org.jvnet.higherjaxb.mojo.CoreOptionsFactory<Options> getOptionsFactory()
+	protected CoreOptionsFactory<Options> getOptionsFactory()
 	{
 		return optionsFactory;
 	}
@@ -240,7 +241,7 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 				{
 					if (getVerbose())
 					{
-						getLog().info(format("Cleaning directory [%s] of the package [%s].",
+						getLog().info(format("CLEAN: Cleaning directory [%s] of the package [%s].",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 					cleanPackageDirectory(packageDirectory);
@@ -250,7 +251,7 @@ public class Higherjaxb23Mojo extends AbstractHigherjaxbBaseMojo<Options>
 					if (getVerbose())
 					{
 						getLog().info(format(
-							"Skipping directory [%s] of the package [%s] as it does not contain generated classes or resources.",
+							"CLEAN: Skipping directory [%s] of the package [%s] as it does not contain relevent classes or resources.",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 				}

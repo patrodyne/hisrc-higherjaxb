@@ -14,6 +14,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.jvnet.higherjaxb.mojo.AbstractHigherjaxbBaseMojo;
+import org.jvnet.higherjaxb.mojo.CoreOptionsFactory;
 
 import com.sun.codemodel.CodeWriter;
 import com.sun.codemodel.JCodeModel;
@@ -34,7 +35,8 @@ import com.sun.xml.txw2.annotation.XmlNamespace;
 import jakarta.xml.bind.annotation.XmlSchema;
 
 /**
- * This concrete higherjaxb V3.X mojo provides a version specific implementation.
+ * This concrete higherjaxb V3.X mojo provides a version specific
+ * implementation.
  * 
  * @author Rick O'Sullivan
  */
@@ -50,15 +52,16 @@ public class Higherjaxb30Mojo extends AbstractHigherjaxbBaseMojo<Options>
 		return SpecVersion.V3_0.getVersion();
 	}
 
-	private final org.jvnet.higherjaxb.mojo.CoreOptionsFactory<Options> optionsFactory = new OptionsFactory();
+	private final CoreOptionsFactory<Options> optionsFactory = new OptionsFactory();
 	@Override
-	protected org.jvnet.higherjaxb.mojo.CoreOptionsFactory<Options> getOptionsFactory()
+	protected CoreOptionsFactory<Options> getOptionsFactory()
 	{
 		return optionsFactory;
 	}
 
 	@Override
-	public void doExecute(Options options) throws MojoExecutionException
+	public void doExecute(Options options)
+		throws MojoExecutionException
 	{
 		final Model model = loadModel(options);
 		final Outline outline = generateCode(model);
@@ -106,7 +109,8 @@ public class Higherjaxb30Mojo extends AbstractHigherjaxbBaseMojo<Options>
 		return xmlNamespaceNames;
 	}
 
-	protected Model loadModel(Options options) throws MojoExecutionException
+	protected Model loadModel(Options options)
+		throws MojoExecutionException
 	{
 		if (getVerbose())
 			getLog().info("Parsing input schema(s): Start");
@@ -231,7 +235,7 @@ public class Higherjaxb30Mojo extends AbstractHigherjaxbBaseMojo<Options>
 				{
 					if (getVerbose())
 					{
-						getLog().info(format("Cleaning directory [%s] of the package [%s].",
+						getLog().info(format("CLEAN: Cleaning directory [%s] of the package [%s].",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 					cleanPackageDirectory(packageDirectory);
@@ -241,7 +245,7 @@ public class Higherjaxb30Mojo extends AbstractHigherjaxbBaseMojo<Options>
 					if (getVerbose())
 					{
 						getLog().info(format(
-							"Skipping directory [%s] of the package [%s] as it does not contain generated classes or resources.",
+							"CLEAN: Skipping directory [%s] of the package [%s] as it does not contain relevant classes or resources.",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 				}

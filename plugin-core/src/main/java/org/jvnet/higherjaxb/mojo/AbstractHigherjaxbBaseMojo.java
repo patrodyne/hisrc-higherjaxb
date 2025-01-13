@@ -37,6 +37,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -425,8 +426,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				Locale.setDefault(locale);
 				
 				// EXECUTE XJC
+				setExecuteStartTime(new Date());
 				doExecute();
-
+				setExecuteFinishTime(new Date());
+				
+				long t1 = getExecuteStartTime().getTime();
+				long t2 = getExecuteFinishTime().getTime();
+				getLog().info(format("Execution time: %d", t2-t1));
 			}
 			finally
 			{

@@ -235,7 +235,7 @@ public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options>
 				{
 					if (getVerbose())
 					{
-						getLog().info(format("Cleaning directory [%s] of the package [%s].",
+						getLog().info(format("CLEAN: Cleaning directory [%s] of the package [%s].",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 					cleanPackageDirectory(packageDirectory);
@@ -245,7 +245,7 @@ public class Higherjaxb40Mojo extends AbstractHigherjaxbBaseMojo<Options>
 					if (getVerbose())
 					{
 						getLog().info(format(
-							"Skipping directory [%s] of the package [%s] as it does not contain generated classes or resources.",
+							"CLEAN: Skipping directory [%s] of the package [%s] as it does not contain relevant classes or resources.",
 							packageDirectory.getAbsolutePath(), _package.name()));
 					}
 				}

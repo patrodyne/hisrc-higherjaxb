@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -85,6 +86,14 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 */
 	protected abstract CoreOptionsFactory<O> getOptionsFactory();
 	
+	private Date executeStartTime = null;
+	protected Date getExecuteStartTime() { return executeStartTime; }
+	protected void setExecuteStartTime(Date executeStartTime) { this.executeStartTime = executeStartTime; }
+	
+	private Date executeFinishTime = null;
+	protected Date getExecuteFinishTime() { return executeFinishTime; }
+	protected void setExecuteFinishTime(Date executeFinishTime) { this.executeFinishTime = executeFinishTime; }
+
 	// Represents com.sun.tools.xjc.outline.Outline
 	private Object outline;
 	public Object getOutline() { return outline; }
@@ -730,12 +739,11 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 	 * If 'true', package directories will be cleaned before the XJC binding
 	 * compiler generates the source files.
 	 * </p>
-	 *
 	 */
-	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".removeOldPackages", defaultValue = "true")
+	@Parameter(property = HIGHERJAXB_MOJO_PREFIX + ".cleanPackageDirectories", defaultValue = "true")
 	private boolean cleanPackageDirectories = true;
 	public boolean getCleanPackageDirectories() { return cleanPackageDirectories; }
-	public void setCleanPackageDirectories(boolean removeOldPackages) { this.cleanPackageDirectories = removeOldPackages; }
+	public void setCleanPackageDirectories(boolean cleanPackageDirectories) { this.cleanPackageDirectories = cleanPackageDirectories; }
 
 	/**
 	 * Specifies patterns of files produced by this plugin. This is used to
@@ -1024,7 +1032,13 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 			@Override
 			public boolean accept(File file)
 			{
-				return file.isFile();
+				boolean accept = false;
+				if ( file.isFile() )
+				{
+					if ( file.lastModified() < getExecuteStartTime().getTime() )
+						accept = true;
+				}
+				return accept;
 			}
 		});
 
@@ -1032,7 +1046,10 @@ public abstract class AbstractHigherjaxbParmMojo<O> extends AbstractMojo
 		if (files != null)
 		{
 			for (File file : files)
+			{
+				getLog().debug(format("CLEAN: Deleting file [%s]", file));
 				file.delete();
+			}
 		}
 	}
 	
