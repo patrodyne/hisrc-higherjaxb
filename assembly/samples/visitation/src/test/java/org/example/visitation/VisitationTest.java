@@ -29,7 +29,8 @@ public class VisitationTest
 			CONTEXT.unmarshal(SAMPLE_FILE, GetNodeAnalysisListType.class);
 		assertNotNull(visitation, "Unmarshal visitaion");
 
-		JAXBElement<GetNodeAnalysisListType> jaxbVis = VIS.createGetNodeAnalysisList(visitation);
+		JAXBElement<GetNodeAnalysisListType> jaxbVis =
+			VIS.createGetNodeAnalysisList(visitation);
 
 		String xmlVisitation = CONTEXT.marshalToString(jaxbVis);
 		getLogger().info("Visitation:\n\n{}", xmlVisitation);
