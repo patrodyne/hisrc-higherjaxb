@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<getNodeAnalysisList
+	xmlns="http://in.mynet.visitation"
+	xmlns:mmd="http://mynet.in/MMDSLServices"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://in.mynet.visitation ../../main/resources/GetNodeAnalysisList.xsd"
+>
+	<nodeAnalysisListRequest>
+		<mmd:requestInfo>
+			<mmd:userId>USER_ID</mmd:userId>
+			<mmd:trackingId>TRACKING_ID</mmd:trackingId>
+			<mmd:versionId>VERSION_ID</mmd:versionId>
+			<mmd:companyId>COMPANY_ID</mmd:companyId>
+		</mmd:requestInfo>
+		<mmd:nodeAnalysisReq>
+			<mmd:zipCode>ZIP_CODE</mmd:zipCode>
+			<mmd:locality>LOCALITY</mmd:locality>
+			<mmd:streetName>STREET_NAME</mmd:streetName>
+			<mmd:houseNo>HOUSE_NO</mmd:houseNo>
+			<mmd:letter>LETTER</mmd:letter>
+			<mmd:floor>FLOOR</mmd:floor>
+			<mmd:side>SIDE</mmd:side>
+			<mmd:appartment>APPARTMENT</mmd:appartment>
+			<mmd:municipalityCode>MUNICIPALITY_CODE</mmd:municipalityCode>
+			<mmd:streetCode>STREET_CODE</mmd:streetCode>
+			<mmd:addressOwner>ADDRESS_OWNER</mmd:addressOwner>
+			<mmd:location>LOCATION</mmd:location>
+			<mmd:ispId>ISP_ID</mmd:ispId>
+			<mmd:existingCustomerCopperLIDs>
+				<mmd:lid>LID</mmd:lid>
+			</mmd:existingCustomerCopperLIDs>
+			<mmd:existingCustomerFiberLIDs>
+				<mmd:lid>LID</mmd:lid>
+			</mmd:existingCustomerFiberLIDs>
+			<mmd:madId>MAD_ID</mmd:madId>
+		</mmd:nodeAnalysisReq>
+	</nodeAnalysisListRequest>
+</getNodeAnalysisList>

@@ -101,9 +101,9 @@ import org.xml.sax.SAXException;
 /**
  * This Maven abstract higherjaxb 'base' mojo provides common properties and methods
  * to the concrete version specific implementations.
- * 
+ *
  * @param <O> Stores invocation options for XJC.
- * 
+ *
  * @author Aleksei Valikov (valikov@gmx.net)
  */
 public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbParmMojo<O>
@@ -138,7 +138,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	{
 		this.fileSuffixToMimeTypesProperties = fileSuffixToMimeTypesProperties;
 	}
-	
+
 	private Collection<Artifact> xjcPluginArtifacts;
 	public Collection<Artifact> getXjcPluginArtifacts() { return xjcPluginArtifacts; }
 	public void setXjcPluginArtifacts(Collection<Artifact> xjcPluginArtifacts) { this.xjcPluginArtifacts = xjcPluginArtifacts; }
@@ -150,7 +150,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	private List<URL> xjcPluginURLs;
 	public List<URL> getXjcPluginURLs() { return xjcPluginURLs; }
 	public void setXjcPluginURLs(List<URL> xjcPluginURLs) { this.xjcPluginURLs = xjcPluginURLs; }
-	
+
 	private Collection<Artifact> episodeArtifacts;
 	public Collection<Artifact> getEpisodeArtifacts() { return episodeArtifacts; }
 	public void setEpisodeArtifacts(Collection<Artifact> episodeArtifacts) { this.episodeArtifacts = episodeArtifacts; }
@@ -171,7 +171,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return schemaURIs;
 	}
 	protected void setSchemaURIs(List<URI> schemaURIs) { this.schemaURIs = schemaURIs; }
-	
+
 	private List<URI> resolvedSchemaURIs;
 	protected List<URI> getResolvedSchemaURIs()
 	{
@@ -180,7 +180,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return resolvedSchemaURIs;
 	}
 	protected void setResolvedSchemaURIs(List<URI> resolvedSchemaURIs) { this.resolvedSchemaURIs = resolvedSchemaURIs; }
-	
+
 	private List<InputSource> grammars;
 	protected List<InputSource> getGrammars()
 	{
@@ -189,14 +189,14 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return grammars;
 	}
 	protected void setGrammars(List<InputSource> grammars) { this.grammars = grammars; }
-	
+
 	private void setupSchemas() throws MojoExecutionException
 	{
 		setSchemaURIs(createSchemaURIs(getSchemaFiles()));
 		setGrammars(createGrammars(getSchemaURIs()));
 		setResolvedSchemaURIs(inputSourcesToURIs(getGrammars()));
 	}
-	
+
 	private List<URI> createSchemaURIs(List<File> schemaFiles) throws MojoExecutionException
 	{
 		final List<URI> schemaURIs = new ArrayList<URI>(schemaFiles.size());
@@ -232,7 +232,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			throw new MojoExecutionException("Could not resolve grammars.", ioex);
 		}
 	}
-	
+
 	private List<InputSource> createInputSources(final List<URI> uris) throws IOException, SAXException
 	{
 		final List<InputSource> inputSources = new ArrayList<InputSource>(uris.size());
@@ -244,12 +244,12 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 			if (resolvedInputSource != null)
 				inputSource = resolvedInputSource;
-			
+
 			inputSources.add(inputSource);
 		}
 		return inputSources;
 	}
-	
+
 	private List<URI> inputSourcesToURIs(List<InputSource> inputSources)
 		throws MojoExecutionException
 	{
@@ -259,7 +259,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			try
 			{
 				URI inputSourceURI = null;
-				
+
 				if ( inputSource instanceof ReResolvingInputSourceWrapper )
 				{
 					ReResolvingInputSourceWrapper rris =
@@ -268,7 +268,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				}
 				else
 					inputSourceURI = new URI(inputSource.getSystemId());
-				
+
 				inputSourceURIs.add(inputSourceURI);
 			}
 			catch (URISyntaxException ex)
@@ -278,11 +278,11 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		}
 		return inputSourceURIs;
 	}
-	
+
 	private List<File> bindingFiles;
 	public List<File> getBindingFiles() { return bindingFiles; }
 	public void setBindingFiles(List<File> bindingFiles) { this.bindingFiles = bindingFiles; }
-	
+
 	private List<URI> bindingURIs;
 	protected List<URI> getBindingURIs()
 	{
@@ -300,7 +300,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return resolvedBindingURIs;
 	}
 	protected void setResolvedBindingURIs(List<URI> resolvedBindingURIs) { this.resolvedBindingURIs = resolvedBindingURIs; }
-	
+
 	private List<InputSource> bindFiles;
 	protected List<InputSource> getBindFiles()
 	{
@@ -344,7 +344,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			uri = bindingFile.toURI();
 			bindingURIs.add(uri);
 		}
-		
+
 		if (getBindings() != null)
 		{
 			for (ResourceEntry resourceEntry : getBindings())
@@ -380,7 +380,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	private List<URI> dependsURIs;
 	public List<URI> getDependsURIs() { return dependsURIs; }
 	public void setDependsURIs(List<URI> dependsURIs) { this.dependsURIs = dependsURIs; }
-	
+
 	private List<URI> producesURIs;
 	public List<URI> getProducesURIs() { return producesURIs; }
 	public void setProducesURIs(List<URI> producesURIs) { this.producesURIs = producesURIs; }
@@ -407,7 +407,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				getLog().debug("PC Size: "+ pc.size());
 			}
 		}
-		
+
 		synchronized (lock)
 		{
 			injectDependencyDefaults();
@@ -419,17 +419,17 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			final ClassLoader classLoader = createClassLoader(currentClassLoader);
 			Thread.currentThread().setContextClassLoader(classLoader);
 			final Locale currentDefaultLocale = Locale.getDefault();
-			
+
 			try
 			{
 				final Locale locale = valueOf(getLocale());
 				Locale.setDefault(locale);
-				
+
 				// EXECUTE XJC
 				setExecuteStartTime(new Date());
 				doExecute();
 				setExecuteFinishTime(new Date());
-				
+
 				long t1 = getExecuteStartTime().getTime();
 				long t2 = getExecuteFinishTime().getTime();
 				getLog().info(format("Execution time: %d", t2-t1));
@@ -458,7 +458,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		if (dependencies != null)
 		{
 			final Map<String, Dependency> dependencyMap = new TreeMap<String, Dependency>();
-			
+
 			for (final Dependency dependency : dependencies)
 			{
 				if (dependency.getScope() == null)
@@ -470,7 +470,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 			if (dependencyManagement != null)
 				merge(dependencyMap, dependencyManagement.getDependencies());
-			
+
 			merge(dependencyMap, getProjectDependencies());
 		}
 	}
@@ -480,7 +480,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		for (final Dependency managedDependency : managedDependencies)
 		{
 			final String key = managedDependency.getManagementKey();
-			final Dependency dependency = (Dependency) dependencyMap.get(key);
+			final Dependency dependency = dependencyMap.get(key);
 			if (dependency != null)
 			{
 				mergeDependencyWithDefaults(dependency, managedDependency);
@@ -535,7 +535,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		throws MojoExecutionException
 	{
 		setEpisodeArtifacts(new LinkedHashSet<Artifact>());
-		
+
 		// Resolve episode dependencies.
 		{
 			final Collection<Artifact> episodeArtifacts = resolve
@@ -547,7 +547,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			);
 			getEpisodeArtifacts().addAll(episodeArtifacts);
 		}
-		
+
 		// Use Dependencies As Episodes
 		{
 			if (getUseDependenciesAsEpisodes())
@@ -566,9 +566,9 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				}
 			}
 		}
-		
+
 		setEpisodeFiles(getFiles(getEpisodeArtifacts()));
-		
+
 		if ( getLog().isDebugEnabled() )
 		{
 			getLog().debug("resolveEpisodeArtifacts: " + getEpisodeFiles().size());
@@ -582,19 +582,19 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		final Collection<URL> xpu = getXjcPluginURLs();
 		return new ParentFirstClassLoader(xpu.toArray(new URL[xpu.size()]), parent);
 	}
-	
+
 	protected void doExecute() throws MojoExecutionException
 	{
 		setupLogging();
-		
+
 		if (getVerbose())
 			getLog().info("Started execution.");
-		
+
 		// Set System Options before other setup!
 		final SystemOptionsConfiguration systemOptionsConfiguration =
 			createSystemOptionsConfiguration();
 		getOptionsFactory().setSystemOptions(systemOptionsConfiguration);
-		
+
 		setupBindInfoPackage();
 		setupEpisodePackage();
 		setupMavenPaths();
@@ -613,12 +613,12 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 		final OptionsConfiguration optionsConfiguration =
 			createOptionsConfiguration();
-		
+
 		if (getVerbose())
 			getLog().info("MOJO optionsConfiguration:" + optionsConfiguration);
-		
+
 		checkCatalogsInStrictMode();
-		
+
 		if (getGrammars().isEmpty())
 			getLog().warn("No schemas to compile. Skipping XJC execution. ");
 		else
@@ -698,7 +698,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 	abstract protected String getEpisodePackageName();
 	abstract protected String[] getXmlNamespaceNames(final Class<?> packageInfoClass);
-	
+
 	private void setupEpisodePackage()
 	{
 		String packageInfoClassName = "org.glassfish.jaxb.core.v2.schemagen.episode.package-info";
@@ -736,7 +736,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	{
 		if (!getEpisode() || !isAddIfExistsToEpisodeSchemaBindings())
 			return;
-		
+
 		final File episodeFile = getEpisodeFile();
 		if (!episodeFile.canWrite())
 		{
@@ -745,7 +745,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				episodeFile));
 			return;
 		}
-		
+
 		try ( InputStream is = getClass().getResourceAsStream(ADD_IF_EXISTS_TO_EPISODE_SCHEMA_BINDINGS_TRANSFORMATION_RESOURCE_NAME) )
 		{
 			final TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -777,23 +777,25 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return uriLastModifiedResolver;
 	}
 	protected void setURILastModifiedResolver(URILastModifiedResolver uriLastModifiedResolver) { this.uriLastModifiedResolver = uriLastModifiedResolver; }
-	
+
 	private void setupURILastModifiedResolver()
 	{
 		setURILastModifiedResolver(new CompositeURILastModifiedResolver(
 			getCatalogResolverInstance(), getLog()));
 	}
 
+
+	public static final String CATALOGS_IN_STRICT_MODE =
+		"The plugin is configured to use catalogs and strict mode at the same time.\n"
+		+ "Using catalogs to resolve schema URIs in strict mode is known to be problematic \n"
+		+ "and may fail. Please refer to the following link for more information:\n"
+		+ "https://github.com/highsource/maven-jaxb2-plugin/wiki/Catalogs-in-Strict-Mode\n"
+		+ "Consider setting <strict>false</strict> in your plugin configuration.\n";
+
 	private void checkCatalogsInStrictMode()
 	{
 		if (getStrict() && !getCatalogURIs().isEmpty())
-		{
-			getLog().warn("The plugin is configured to use catalogs and strict mode at the same time.\n"
-				+ "Using catalogs to resolve schema URIs in strict mode is known to be problematic\n"
-				+ " and may fail. Please refer to the following link for more information:\n"
-				+ "https://github.com/highsource/maven-jaxb2-plugin/wiki/Catalogs-in-Strict-Mode\n"
-				+ "Consider setting <strict>false</strict> in your plugin configuration.\n");
-		}
+			getLog().warn(CATALOGS_IN_STRICT_MODE);
 	}
 
 	public abstract void doExecute(O options) throws MojoExecutionException;
@@ -819,10 +821,10 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	{
 		if (getAddCompileSourceRoot())
 			getProject().addCompileSourceRoot(getGenerateDirectory().getPath());
-		
+
 		if (getAddTestCompileSourceRoot())
 			getProject().addTestCompileSourceRoot(getGenerateDirectory().getPath());
-		
+
 		if (getEpisode() && getEpisodeFile() != null)
 		{
 			final String episodeFilePath = getEpisodeFile().getAbsolutePath();
@@ -835,21 +837,21 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				final Resource resource = new Resource();
 				resource.setDirectory(generatedDirectoryPath);
 				resource.addInclude(path);
-				
+
 				if (getAddCompileSourceRoot())
 					getProject().addResource(resource);
-				
+
 				if (getAddTestCompileSourceRoot())
 					getProject().addTestResource(resource);
 			}
 		}
-		
+
 		if ( getLog().isDebugEnabled() )
 		{
 			getLog().debug("setupMavenPaths: Main Compile Source Roots");
 			for ( String csr : getProject().getCompileSourceRoots() )
 				getLog().debug("  Main: " + csr);
-			
+
 			getLog().debug("setupMavenPaths: Test Compile Source Roots");
 			for ( String csr : getProject().getTestCompileSourceRoots() )
 				getLog().debug(  "Test: " + csr);
@@ -901,7 +903,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			{
 				setSchemaFiles(Collections.emptyList());
 				getLog().warn(format(
-					"Schema directory [%s] is not a directory.", 
+					"Schema directory [%s] is not a directory.",
 					schemaDirectory.getPath()));
 			}
 		}
@@ -909,7 +911,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			throw new MojoExecutionException("Could not set up schema files.", ioex);
 		}
-		
+
 		if ( getLog().isDebugEnabled() )
 		{
 			getLog().debug("setupSchemaFiles: " + getSchemaFiles().size());
@@ -941,7 +943,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			throw new MojoExecutionException("Could not set up binding files.", ioex);
 		}
-		
+
 		if ( getLog().isDebugEnabled() )
 		{
 			getLog().debug("setupBindingFiles: " + getBindingFiles().size());
@@ -958,10 +960,10 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		dependsURIs.addAll(getResolvedSchemaURIs());
 		dependsURIs.addAll(getResolvedBindingURIs());
 		final File projectFile = getProject().getFile();
-		
+
 		if (projectFile != null)
 			dependsURIs.add(projectFile.toURI());
-		
+
 		if (getOtherDependsIncludes() != null)
 		{
 			try
@@ -969,7 +971,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				List<File> otherDependsFiles = scanDirectoryForFiles(getBuildContext(),
 					getProject().getBasedir(), getOtherDependsIncludes(), getOtherDependsExcludes(),
 					!getDisableDefaultExcludes());
-				
+
 				for (File file : otherDependsFiles)
 				{
 					if (file != null)
@@ -996,7 +998,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			final List<File> producesFiles = scanDirectoryForFiles(getBuildContext(), getGenerateDirectory(),
 				getProduces(), new String[0], !getDisableDefaultExcludes());
-			
+
 			if (producesFiles != null)
 			{
 				for (File producesFile : producesFiles)
@@ -1044,7 +1046,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		final Collection<Artifact> projectArtifacts = getProject().getArtifacts();
 		final List<Artifact> compileScopeArtifacts = new ArrayList<Artifact>(projectArtifacts.size());
 		final ArtifactFilter filter = new ScopeArtifactFilter(DefaultArtifact.SCOPE_COMPILE);
-		
+
 		for (Artifact artifact : projectArtifacts)
 		{
 			if (filter.include(artifact))
@@ -1105,7 +1107,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	{
 		this.catalogFeatures = catalogFeatures;
 	}
-	
+
 	private List<URI> catalogURIs;
 	protected List<URI> getCatalogURIs()
 	{
@@ -1123,7 +1125,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		return resolvedCatalogURIs;
 	}
 	protected void setResolvedCatalogURIs(List<URI> resolvedCatalogURIs) { this.resolvedCatalogURIs = resolvedCatalogURIs; }
-	
+
 	private AbstractCatalogResolver catalogResolverInstance;
 	protected AbstractCatalogResolver getCatalogResolverInstance()
 	{
@@ -1139,42 +1141,42 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	/**
 	 * Create a list of catalog {@link URI}(s) locations configured by other
 	 * Mojo 'catalog' parameters.
-	 * 
+	 *
 	 * <p>Sets up the list of primary and alternative catalog locations.</p>
-	 * 
+	 *
 	 * @throws MojoExecutionException Whrn catalog resolver cannot be instantiated.
 	 */
 	private void setupCatalogURIs() throws MojoExecutionException
 	{
 		setCatalogURIs(createCatalogURIs());
 	}
-	
+
 	/**
 	 * Create a list of catalog {@link URI}(s) then create a
 	 * {@link CatalogResolver} instance as configured by this
 	 * mojo's parameters.
-	 * 
+	 *
 	 * <p>When the {@link CatalogResolver} is constructed it
 	 * creates or is supplied with a {@link Catalog} instance.
 	 * When a new {@link Catalog} instance is constructed it loads
 	 * the root catalog file and parses its entries for use by its
 	 * resolution methods.</p>
-	 * 
+	 *
 	 * @throws MojoExecutionException When catalog resolver cannot be instantiated.
 	 */
 	private void setupCatalogResolver() throws MojoExecutionException
 	{
 		setCatalogResolverInstance(createCatalogResolver());
-		
+
 		Properties mimeTypes = getFileSuffixToMimeTypesProperties();
 		if ( getCatalogResolverInstance() instanceof ViaCatalogResolver )
 		{
 			ViaCatalogResolver vcr = (ViaCatalogResolver) getCatalogResolverInstance();
-			
+
 			ViaURLHandler vuh = new ViaURLHandler(vcr, mimeTypes);
 			MavenURLHandler muh = new MavenURLHandler(vcr.getMavenCatalogResolver(), mimeTypes);
 			ClasspathURLHandler cuh = new ClasspathURLHandler(vcr.getClasspathCatalogResolver(), mimeTypes);
-			
+
 			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_VIA, vuh);
 			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_MAVEN, muh);
 			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_CLASSPATH, cuh);
@@ -1189,14 +1191,14 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			ClasspathURLHandler cuh = new ClasspathURLHandler(getCatalogResolverInstance(), mimeTypes);
 			CONFIGURABLE_STREAM_HANDLER_FACTORY.addHandler(URI_SCHEME_CLASSPATH, cuh);
 		}
-		
+
 		setResolvedCatalogURIs(resolveURIs(getCatalogURIs()));
 	}
 
 	/**
 	 * Create a {@link ClassLoader} to find resources in the build's
 	 * output directory.
-	 * 
+	 *
 	 * @return An enhanced thread context {@link ClassLoader}.
 	 */
 	private ClassLoader createBuildClasspathClassLoader()
@@ -1207,20 +1209,20 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	}
 
 	/**
-	 * Creates an instance of catalog resolver for <code>setupCatalogResolver()</code>. 
-	 * 
+	 * Creates an instance of catalog resolver for <code>setupCatalogResolver()</code>.
+	 *
 	 * <p>Creates a {@link CatalogResolver} implementation using the Mojo's
 	 * <code>catalogResolver</code> parameter which is the fully qualified Java
 	 * class name of the desired custom type.</p>
-	 * 
+	 *
 	 * <p>When a {@link CatalogResolver} is constructed it
 	 * creates or is supplied with a {@link Catalog} instance.
 	 * When a new {@link Catalog} instance is constructed it loads
 	 * the root catalog file and parses its entries for use by its
 	 * resolution methods.</p>
-	 * 
+	 *
 	 * @return Instance of the {@link AbstractCatalogResolver}.
-	 * 
+	 *
 	 * @throws MojoExecutionException If catalog resolver cannot be instantiated.
 	 *
 	 */
@@ -1228,18 +1230,18 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	{
 		// See #setupCatalogResolver()
 		AbstractCatalogResolver catalogResolver = null;
-		
+
 		if ( getCatalogResolver() == null || getCatalogResolver().equals(ViaCatalogResolver.class.getName()))
 		{
 			// Via Maven
 			MavenCatalogResolver mcr = new MavenCatalogResolver(this, getLog(), getCatalogFeatures(),
 				toArray(getCatalogURIs()));
-			
+
 			// Via Classpath
 			ClassLoader classLoader = createBuildClasspathClassLoader();
 			ClasspathCatalogResolver ccr = new ClasspathCatalogResolver(classLoader, getLog(), getCatalogFeatures(),
 				toArray(getCatalogURIs()));
-			
+
 			// Via Other
 			catalogResolver = new ViaCatalogResolver(mcr, ccr, getCatalogFeatures(),
 				toArray(getCatalogURIs()));
@@ -1261,13 +1263,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			if ( catalogResolver instanceof AbstractCatalogResolver )
 			{
 				AbstractCatalogResolver abstractCatalogResolver =
-					((AbstractCatalogResolver) catalogResolver);
+					(catalogResolver);
 				abstractCatalogResolver.setCatalogFeatures(getCatalogFeatures());
 				abstractCatalogResolver.setCatalogFiles(toArray(getCatalogURIs()));
 				abstractCatalogResolver.setLog(getLog());
 			}
 		}
-		
+
 		// Enable verbose logging
 		if (getLog().isDebugEnabled())
 		{
@@ -1276,7 +1278,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			// and jaxp.properties, with a preference in the given order. For example, if a prefer attribute is set
 			// in the catalog file as in <catalog prefer="public">, any other input for the "prefer" property is not
 			// necessary or will be ignored.
-			// 
+			//
 			// The jaxp.properties file is typically in the conf directory of the Java installation:
 			//
 			//   grep "javax.xml.catalog" /usr/lib/jvm/java-21-openjdk-amd64/conf/jaxp.properties
@@ -1293,10 +1295,10 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			getLog().debug("  javax.xml.catalog.resolve.....................: " + features.get(Feature.RESOLVE));
 			getLog().debug("  org.jvnet.higherjaxb.mojo.xjc.catalogResolver.: " + catalogResolver.getClass().getName());
 		}
-		
+
 		return catalogResolver;
 	}
-	
+
 	private AbstractCatalogResolver createCatalogResolverByClassName(final String catalogResolverClassName)
 		throws MojoExecutionException
 	{
@@ -1347,15 +1349,15 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 	/**
 	 * Create XML {@link EntityResolver} with an instance of {@link CatalogResolver}
-	 * 
+	 *
 	 * <p>A Catalog Resolver that implements SAX {@link EntityResolver},
 	 * StAX {@link XMLResolver}, and DOM LS {@link LSResourceResolver}
 	 * used by Schema Validation, and transform {@link URIResolver}, and
 	 * resolves external references using one or more {@link Catalog}.</p>
-	 * 
+	 *
 	 * @param catalogResolver A {@link CatalogResolver} to resolve external references
 	 *                        using one or more {@link Catalog}.
-	 * 
+	 *
 	 * @return A instance of the basic interface for resolving XML entities.
 	 */
 	private EntityResolver createEntityResolver(CatalogResolver catalogResolver)
@@ -1363,7 +1365,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		// Create a ReResolvingEntityResolverWrapper instance.
 		final EntityResolver entityResolver =
 			new ReResolvingEntityResolverWrapper(catalogResolver, getLog());
-		
+
 		// Return the ReResolvingEntityResolverWrapper instance.
 		return entityResolver;
 	}
@@ -1407,7 +1409,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 				}
 			}
 		}
-		
+
 		if (itIsKnownThatNoDependsURIsWereChanged)
 		{
 			getLog().info("According to the build context, all of the [dependURIs] are up-to-date.");
@@ -1442,7 +1444,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			getLog().debug("Latest timestamp of the source resources is unknown. Assuming that something was changed.");
 			return false;
 		}
-		
+
 		if (producesTimestamp == null)
 		{
 			getLog().debug(MessageFormat.format(
@@ -1454,7 +1456,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		getLog().info(MessageFormat.format(
 			"Latest timestamp of the source resources is [{0,date,yyyy-MM-dd HH:mm:ss.SSS}], earliest timestamp of the target resources is [{1,date,yyyy-MM-dd HH:mm:ss.SSS}].",
 			dependsTimestamp, producesTimestamp));
-		
+
 		final boolean upToDate = dependsTimestamp < producesTimestamp;
 		return upToDate;
 	}
@@ -1499,13 +1501,13 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 					"Proxy port is configured to [{0,number,#}] but proxy host is missing. "
 					+ "Proxy port will be ignored.", port));
 			}
-			
+
 			if (username != null)
 			{
 				getLog().warn(format("Proxy username is configured to [%s] but proxy host is missing. "
 					+ "Proxy username will be ignored.", username));
 			}
-			
+
 			if (password != null)
 			{
 				getLog().warn(format(
@@ -1541,7 +1543,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 
 			if (port != -1)
 				proxyStringBuilder.append(":").append(port);
-			
+
 			return proxyStringBuilder.toString();
 		}
 	}
@@ -1550,7 +1552,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 	 * Returns array of command line arguments for XJC. These arguments are based on
 	 * the configured arguments (see {@link #getArgs()}) but also include episode
 	 * arguments.
-	 * 
+	 *
 	 * @return String array of XJC command line options.
 	 */
 	protected List<String> getArguments()
@@ -1578,7 +1580,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 			if (episodeFile.isFile())
 				arguments.add(episodeFile.getAbsolutePath());
 		}
-		
+
 		return arguments;
 	}
 
@@ -1587,7 +1589,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		final String httpproxy;
 		final String activeHttpproxy = getActiveProxyAsHttpproxy();
 		final String customHttpproxy = getCustomHttpproxy();
-		
+
 		if (isUseActiveProxyAsHttpproxy())
 		{
 			if (customHttpproxy != null)
@@ -1637,14 +1639,14 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		);
 		return systemOptionsConfiguration;
 	}
-	
+
 	private OptionsConfiguration createOptionsConfiguration() throws MojoExecutionException
 	{
 		final OptionsConfiguration optionsConfiguration = new OptionsConfiguration
 		(
 			getAccessExternalSchema(),
 			getAccessExternalDTD(),
-			isEnableExternalEntityProcessing(), 
+			isEnableExternalEntityProcessing(),
 			getEncoding(),
 			getSchemaLanguage(),
 			getGrammars(),
@@ -1668,36 +1670,36 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		);
 		return optionsConfiguration;
 	}
-	
+
 	// Note: javax.xml.catalog.CatalogResolverImpl.resolveEntity(String, String)
 	//       handles {@link CatalogFeature}
 
 	/**
 	 * Resolve a list of {@link URI}(s) by delegation to the <code>resolveEntity(String, String)</code>
 	 * method in the class <code>CatalogResolverImpl</code> in the <code>javax.xml.catalog</code> package.
-	 * 
+	 *
 	 * <p>The delegated method handles the {@link CatalogFeatures.Feature} <code>RESOLVE</code> option:</p>
-	 * 
+	 *
 	 * <ul>
 	 * <li><b>strict</b> - Throws CatalogException if there is no match.</li>
 	 * <li><b>continue</b> - Allows the XML parser to continue as if there is no match.</li>
 	 * <li><b>ignored</b> - Tells the XML parser to skip the external references if there no match.</li>
 	 * </ul>
-	 * 
+	 *
 	 * <p>When the delegated method does not find a matching {@link Catalog} entry to resolve
 	 * a {@link URI} then is refers to the <code>RESOLVE</code> option to return one of the following
 	 * values:
 	 * </p>
-	 * 
+	 *
 	 * <ul>
 	 * <li><b>strict</b> - Throws {@link CatalogException}</li>
 	 * <li><b>continue</b> - Returns a <em>null</em> {@link InputSource}.</li>
 	 * <li><b>ignored</b> - Returns an {@link InputSource} with <em>null</em> <code>systemId</code>
 	 *                      and an empty {@link Reader}.</li>
 	 * </ul>
-	 * 
+	 *
 	 * @param systemIds A list of {@link URI}(s) to be resolved.
-	 * 
+	 *
 	 * @return The list of resolved {@link URI}(s).
 	 */
 	private List<URI> resolveURIs(final List<URI> systemIds)
@@ -1707,7 +1709,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		{
 			InputSource resolveEntitySource =
 				getCatalogResolverInstance().resolveEntity(null, systemId.toString());
-			
+
 			// Handle resolveEntitySource return value: strict, continue, ignore.
 			if ( resolveEntitySource == null )
 			{

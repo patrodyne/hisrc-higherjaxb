@@ -50,3 +50,5 @@ fi
 # ./build-JXX.sh -DskipTests=true -Dxml.catalog.ignoreMissing=true -DdryRun=false release:clean
 # ./build-JXX.sh -DskipTests=true -Dxml.catalog.ignoreMissing=true -DdryRun=false release:prepare
 # ./build-JXX.sh -DskipTests=true -Dxml.catalog.ignoreMissing=true -DdryRun=false release:perform
+#
+# NEW: https://central.sonatype.org/publish/publish-portal-guide/

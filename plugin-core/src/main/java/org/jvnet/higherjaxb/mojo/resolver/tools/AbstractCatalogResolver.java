@@ -2,6 +2,7 @@ package org.jvnet.higherjaxb.mojo.resolver.tools;
 
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.jvnet.higherjaxb.mojo.AbstractHigherjaxbBaseMojo.CATALOGS_IN_STRICT_MODE;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -29,7 +30,7 @@ import org.xml.sax.InputSource;
 
 /**
  * Abstract implementation of {@link CatalogResolver}.
- * 
+ *
  * <p>
  * This implementation delegates to an instance of {@link javax.xml.catalog.CatalogResolver}.
  * </p>
@@ -44,7 +45,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 	private Log log;
 	public Log getLog() { return log; }
 	public void setLog(Log log) { this.log = log; }
-	
+
 	private CatalogFeatures catalogFeatures = null;
 	public CatalogFeatures getCatalogFeatures()
 	{
@@ -56,7 +57,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 	{
 		this.catalogFeatures = catalogFeatures;
 	}
-	
+
 	private URI[] catalogFiles = null;
 	public URI[] getCatalogFiles()
 	{
@@ -74,17 +75,17 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 	 * When <code>catalog</code> is not set, this accessor initializes
 	 * the field using {@link CatalogManager} to create a {@link Catalog}
 	 * instance with the configured features and files.
-	 * 
+	 *
 	 * <p>The {@link Catalog} instance loads the root catalog file and
 	 * parses its entries.</p>
-	 * 
+	 *
 	 * <p>In addition to the above entry types, a catalog may define
 	 * <code>nextCatalog</code> entries to add additional catalog entry
 	 * files.</p>
-	 * 
+	 *
 	 * @return An instance of {@link Catalog} with a root catalog file and
 	 * a list of catalog entries from that root.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if either the URIs are not absolute
      *         or do not have a URL protocol handler for the URI scheme.
      * @throws CatalogException If an error occurs while parsing the catalog.
@@ -106,14 +107,14 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 	}
 	/**
 	 * Set the {@link Catalog} field with the given instance.
-	 * 
+	 *
 	 * @param catalog A {@link Catalog} instance.
 	 */
 	public void setCatalog(Catalog catalog)
 	{
 		this.catalog = catalog;
 	}
-	
+
 	private CatalogResolver delegator = null;
 	public CatalogResolver getDelegator()
 	{
@@ -125,7 +126,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 	{
 		this.delegator = delegator;
 	}
-	
+
 	private Map<String, InputSource> resolvedSources;
 	public Map<String, InputSource> getResolvedSources()
 	{
@@ -137,16 +138,16 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 	{
 		this.resolvedSources = resolvedSources;
 	}
-	
+
 	/**
 	 * Create a {@link CatalogResolver} using the current {@link Catalog} instance.
-	 * 
+	 *
 	 * <p>The {@link Catalog} instance contains entries loaded catalog file plus any
 	 * <code>nextCatalog</code> entries from optional alternative catalog file(s).
 	 * </p>
-	 * 
+	 *
 	 * @return An instance of {@link CatalogResolver}.
-	 * 
+	 *
 	 * @throws IllegalArgumentException if either the URIs are not absolute
      *         or do not have a URL protocol handler for the URI scheme.
      * @throws CatalogException If an error occurs while parsing the catalog.
@@ -171,17 +172,17 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 	{
 		super();
 	}
-	
+
 	/**
 	 * Construct an instance of {@link CatalogResolver} with the given
 	 * {@link CatalogFeatures} and catalog file {@link URI}s.
-	 * 
+	 *
 	 * <p>
      * If {@code catalogURIs} is empty, system property {@code javax.xml.catalog.files},
      * as defined in {@link CatalogFeatures}, will be read to locate the initial
      * list of catalog files.
      * </p>
-	 * 
+	 *
 	 * @param features Holds a collection of features and properties.
 	 * @param catalogURIs Identifies XML catalog files to be parsed.
 	 */
@@ -196,13 +197,13 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 	{
 		return getDelegator().resolve(href, base);
 	}
-	
+
 	@Override
 	public InputSource resolveEntity(String publicId, String systemId)
 	{
 		return delegateResolveEntity(publicId, systemId);
 	}
-	
+
 	@Override
 	public InputStream resolveEntity(String publicId, String systemId, String baseUri, String namespace)
 	{
@@ -217,17 +218,17 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 
 	/**
 	 * Resolve XML entity by delegation,
-	 * 
+	 *
 	 * <p>First, prior to delegation, internally attempt resolution of local files.</p>
-	 * 
+	 *
 	 * <p>Second, if not resolved then attempt to resolve by delegation.</p>
-	 *  
+	 *
      * @param publicId The public identifier of the external entity being
      *                 referenced, or null if none was supplied
      *
      * @param systemId The system identifier of the external entity being
      *                 referenced.
-     * 
+     *
      * @return A {@link InputSource} object if a mapping is found.
      *         If no mapping is found, returns a {@link InputSource} object
      *         containing an empty {@link Reader} if the {@code javax.xml.catalog.resolve}
@@ -240,7 +241,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 		inputSource.setPublicId(publicId);
 		inputSource.setSystemId(systemId);
 		inputSource.setEncoding(UTF_8.name());
-		
+
 		// First, prior to delegation, internally resolve local files.
 		try
 		{
@@ -259,12 +260,21 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 		// The delegator result infers how it managed the ResolveType.
 		// It its ResolveType is "strict" then it may throw an exception.
 		ResolveType resolveType = ResolveType.UNKNOWN;
-		
+
 		// Second, if not resolved then attempt to resolve by delegation.
 		if ( inputSource.getByteStream() == null )
 		{
-			InputSource delegateSource =
-				getDelegator().resolveEntity(inputSource.getPublicId(), inputSource.getSystemId());
+			InputSource delegateSource = null;
+			try
+			{
+				delegateSource = getDelegator()
+					.resolveEntity(inputSource.getPublicId(), inputSource.getSystemId());
+			}
+			catch ( CatalogException ex)
+			{
+				throw new CatalogException("\n"+CATALOGS_IN_STRICT_MODE, ex);
+			}
+
 			if ( delegateSource != null )
 			{
 				if ( delegateSource.getEncoding() == null )
@@ -295,11 +305,11 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 									if ( charset != null )
 										delegateSource.setEncoding(charset);
 								}
-								
+
 								ResetableStringReader resetableReader =
 									toResetableStringReader(reader);
 								delegateSource.setCharacterStream(resetableReader);
-								
+
 								ByteArrayInputStream inputStream = toByteArrayInputStream(resetableReader);
 								if ( delegateSource.getByteStream() == null )
 									delegateSource.setByteStream(inputStream);
@@ -309,7 +319,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 								getLog().warn(format(
 									"Failed to convert reader to stream because %s.\n\tReturning delegate resolver result [%s].",
 									ex.getMessage(), delegateSource.getSystemId()));
-							}				
+							}
 						}
 					}
 				}
@@ -322,7 +332,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 				resolveType = ResolveType.CONTINUE;
 			}
 		}
-		
+
 		if ( inputSource.getByteStream() != null )
 		{
 			getResolvedSources().put(inputSource.getSystemId(), inputSource);
@@ -336,7 +346,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 					+ "\n\tReturning non-delegate resolver result [%s]."
 					+ "\n\tFor ResolveType: [%s]",
 					systemId, inputSource.getSystemId(), resolveType));
-				
+
 			}
 			else
 			{
@@ -346,10 +356,10 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 					systemId, inputSource.getSystemId(), resolveType));
 			}
 		}
-		
+
 		return inputSource;
 	}
-	
+
 	protected InputSource resolveFileStream(URI systemIdURI, InputSource inputSource)
 	{
 		InputSource resolvedSource = getResolvedSources().get(inputSource.getSystemId());
@@ -359,7 +369,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 			String systemFilename = (systemIdURI.getPath() != null)
 				? systemIdURI.getPath()
 				: systemIdURI.getSchemeSpecificPart();
-			
+
 			if ( systemFilename != null && (resolvedSource == null) )
 			{
 				File systemFile = new File(systemFilename);
@@ -369,7 +379,7 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 					{
 						try ( FileReader fileReader = new FileReader(systemFile) )
 						{
-							String charset = ((FileReader) fileReader).getEncoding();
+							String charset = fileReader.getEncoding();
 							if ( charset != null )
 								inputSource.setEncoding(charset);
 							ResetableStringReader resetableReader = toResetableStringReader(fileReader);
@@ -397,56 +407,56 @@ abstract public class AbstractCatalogResolver implements CatalogResolver
 						"Local systemId [%s] does not exist as '%s:' resource.\n\tReturning delegate resolver result.",
 						inputSource.getSystemId(), URI_SCHEME_FILE));
 				}
-				
+
 				// Default to original input source.
 				resolvedSource = inputSource;
 			}
 		}
-		
+
 		// Return resolved or original source.
 		return resolvedSource;
 	}
-	
+
 	private ResetableStringReader toResetableStringReader(Reader reader) throws IOException
     {
 		ResetableStringReader resetableReader = null;
-		
+
 		if ( reader instanceof ResetableStringReader )
 			resetableReader = (ResetableStringReader) reader;
 		else
 		{
 			char[] charBuffer = new char[8 * 1024];
 		    StringBuilder sb = new StringBuilder();
-		    
+
 		    int numCharsRead;
 		    while ( (numCharsRead = reader.read(charBuffer, 0, charBuffer.length)) != -1 )
 		        sb.append(charBuffer, 0, numCharsRead);
-		    
+
 		    resetableReader = new ResetableStringReader(sb.toString());
 		}
-	    
+
 	    return resetableReader;
     }
 
 	private ByteArrayInputStream toByteArrayInputStream(ResetableStringReader resetableReader) throws IOException
 	{
 		ByteArrayInputStream byteArrayInputStream = null;
-		
+
 		char[] charBuffer = new char[8 * 1024];
 	    StringBuilder sb = new StringBuilder();
-	    
+
 	    int numCharsRead;
 	    while ( (numCharsRead = resetableReader.read(charBuffer, 0, charBuffer.length)) != -1 )
 	        sb.append(charBuffer, 0, numCharsRead);
-	    
+
 	    // Reset to mark position (normally the mark position is 0).
 	    resetableReader.reset();
-	    
+
 	    byteArrayInputStream =  new ByteArrayInputStream(sb.toString().getBytes(UTF_8));
-	    
+
 	    return byteArrayInputStream;
 	}
-	
+
 	protected ByteArrayInputStream toByteArrayInputStream(InputStream inputStream)
 		throws IOException
 	{

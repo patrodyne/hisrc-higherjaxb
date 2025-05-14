@@ -32,6 +32,7 @@
 		<module>jaxbplugins</module>
 		<module>po</module>
 		<module>publisher</module>
+		<module>visitation</module>
 		<module>workday</module>
 	</modules>
 </project>

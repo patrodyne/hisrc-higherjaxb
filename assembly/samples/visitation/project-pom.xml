@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.patrodyne.jvnet</groupId>
+	<artifactId>${project.artifactId}</artifactId>
+	<version>${hisrc-higherjaxb-maven-plugin.version}</version>
+	<packaging>jar</packaging>
+	<name>${project.name}</name>
+
+	<properties>
+		<maven.compiler.release>${maven.compiler.release}</maven.compiler.release>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!--
+		Use latest version of the HiSrc BasicJAXB and HigherJAXB plugins.
+		The HiSrc plugins suport both the current and previous JAXB namespaces.
+		-->
+		<hisrc-basicjaxb.version>${hisrc-basicjaxb.version}</hisrc-basicjaxb.version>
+		<hisrc-higherjaxb-maven-plugin.version>${hisrc-higherjaxb-maven-plugin.version}</hisrc-higherjaxb-maven-plugin.version>
+
+		<!--
+		Declare both '23' and '40' JAXB releasees;
+		but, only one is selected in the next section.
+		-->
+		<jaxb-api23.version>2.3.1</jaxb-api23.version>
+		<jaxb-imp23.version>2.3.1</jaxb-imp23.version>
+		<jaxb-api40.version>4.0.2</jaxb-api40.version>
+		<jaxb-imp40.version>4.0.5</jaxb-imp40.version>
+
+		<!--
+		Direct HiSrc to use either the older or newer JAXB namespace.
+		Change '23' to '40' in the next properties to switch from
+		the 'javax.xml.bind' to the 'jakarta.xml.bind' packages.
+		-->
+		<jaxb-api.version>\${jaxb-api23.version}</jaxb-api.version>
+		<jaxb-imp.version>\${jaxb-imp23.version}</jaxb-imp.version>
+		<hisrc-higherjaxb-maven-plugin>hisrc-higherjaxb23-maven-plugin</hisrc-higherjaxb-maven-plugin>
+
+		<!--
+		Change the next properties to use the appropriate
+		JAXB group and artifact,
+
+		Use 'javax' group and artifact for '23':
+		<jaxb-api.group>javax.xml.bind</jaxb-api.group>
+		<jaxb-api.artifact>jaxb-api</jaxb-api.artifact>
+
+		Use 'jakarta' group and artifact for '40':
+		<jaxb-api.group>jakarta.xml.bind</jaxb-api.group>
+		<jaxb-api.artifact>jakarta.xml.bind-api</jaxb-api.artifact>
+		-->
+		<jaxb-api.group>javax.xml.bind</jaxb-api.group>
+		<jaxb-api.artifact>jaxb-api</jaxb-api.artifact>
+
+		<slf4j.version>${slf4j.version}</slf4j.version>
+	</properties>
+
+	<dependencies>
+		<!-- JAXB Runtime -->
+		<dependency>
+			<groupId>\${jaxb-api.group}</groupId>
+			<artifactId>\${jaxb-api.artifact}</artifactId>
+			<version>\${jaxb-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>\${jaxb-imp.version}</version>
+		</dependency>
+		<!-- HiSrc BasicJAXB -->
+		<dependency>
+			<groupId>org.patrodyne.jvnet</groupId>
+			<artifactId>hisrc-basicjaxb-testing</artifactId>
+			<version>\${hisrc-basicjaxb.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<defaultGoal>package</defaultGoal>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<compilerArgs>
+						<arg>-proc:full</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<argLine>\${env.JVM_SYS_ARGS}</argLine>
+					<systemPropertiesFile>\${basedir}/src/test/resources/jvmsystem.properties</systemPropertiesFile>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${exec-maven-plugin.version}</version>
+				<configuration>
+					<mainClass>org.example.visitation.Main</mainClass>
+				</configuration>
+			</plugin>
+			<!-- mvn hisrc-higherjaxb:help -Ddetail=true -->
+			<!-- mvn hisrc-higherjaxb:generate -->
+			<plugin>
+				<groupId>org.patrodyne.jvnet</groupId>
+				<artifactId>\${hisrc-higherjaxb-maven-plugin}</artifactId>
+				<version>\${hisrc-higherjaxb-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<noFileHeader>true</noFileHeader>
+
+					<!--
+					Set strict to false to recover from
+					CatalogException on schema import
+					and continue to resolve entities.
+					-->
+					<strict>false</strict>
+
+					<!--
+					Uncomment to use additional catalog entries.
+					<catalog>src/main/resources/catalog.xml</catalog>
+					-->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<!-- All modules for testing, etc. -->
+		<profile>
+			<id>all</id>
+			<modules>
+			</modules>
+		</profile>
+
+		<!-- Execution mode -->
+		<profile>
+			<id>exec</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<version>\${slf4j.version}</version>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<resources>
+					<resource>
+						<directory>\${basedir}/src/main/resources</directory>
+					</resource>
+					<resource>
+						<directory>\${basedir}/src/test/resources</directory>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+
+		<!-- Test mode -->
+		<profile>
+			<id>test</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+					<version>\${slf4j.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+</project>
+<!-- vi:set tabstop=4 hardtabs=4 shiftwidth=4 noexpandtab:-->

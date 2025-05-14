@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:in="http://in.mynet.visitation"
+	xmlns:mmd="http://mynet.in/MMDSLServices"
+	targetNamespace="http://in.mynet.visitation"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+>
+
+	<xs:import namespace="http://mynet.in/MMDSLServices" schemaLocation="NodeAnalysisListRequest.xsd"/>
+
+	<xs:complexType name="getNodeAnalysisListType">
+		<xs:sequence>
+			<xs:element name="nodeAnalysisListRequest" type="mmd:NodeAnalysisListRequest"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="getNodeAnalysisList" type="in:getNodeAnalysisListType"/>
+
+</xs:schema>

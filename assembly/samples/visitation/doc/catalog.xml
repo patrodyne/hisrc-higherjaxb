@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- See https://www.oasis-open.org/committees/entity/spec.html -->
+<!-- xmlcatalog -v catalog.xml [publicId|systemId] -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:entity:xmlns:xml:catalog ../../doc/catalog.xsd"
+>
+	<!--
+        PUBLIC entries are only considered if prefer is public (default) and
+        system entries are not found. A system entry is	always used if found.
+	-->
+	<!--
+		This entry is not needed to resolve the publicId to a local URI;
+		instead, set strict to false to direct the SAX parser to use
+		other catalog resolvers to identify the base directory and to
+		resolve the local file.
+	-->
+    <public publicId="http://mynet.in/MMDSLServices" uri="NodeAnalysisListRequest.xsd" />
+</catalog>

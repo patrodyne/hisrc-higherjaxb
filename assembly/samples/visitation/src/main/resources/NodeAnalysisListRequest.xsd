@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	targetNamespace="http://mynet.in/MMDSLServices"
+	xmlns="http://mynet.in/MMDSLServices"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+>
+
+	<xs:complexType name="NodeAnalysisListRequest">
+		<xs:sequence>
+			<xs:element name="requestInfo" type="NodeAnalysisListSoaRequest" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nodeAnalysisReq" type="NodeAnalysisReq" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="NodeAnalysisListSoaRequest">
+		<xs:sequence>
+			<xs:element name="userId" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="trackingId" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="versionId" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="companyId" type="xs:string" minOccurs="1"
+				maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="NodeAnalysisReq">
+				<xs:sequence>
+					<xs:element name="zipCode" type="xs:string" nillable="true"/>
+					<xs:element name="locality" type="xs:string" nillable="true"/>
+					<xs:element name="streetName" type="xs:string" nillable="true"/>
+					<xs:element name="houseNo" type="xs:string" nillable="true"/>
+					<xs:element name="letter" type="xs:string" nillable="true"/>
+					<xs:element name="floor" type="xs:string" nillable="true"/>
+					<xs:element name="side" type="xs:string" nillable="true"/>
+					<xs:element name="appartment" type="xs:string" nillable="true"/>
+					<xs:element name="municipalityCode" type="xs:string" minOccurs="0"/>
+					<xs:element name="streetCode" type="xs:string" minOccurs="0"/>
+					<xs:element name="addressOwner" type="xs:string" nillable="true" minOccurs="0"/>
+					<xs:element name="location" type="xs:string" nillable="true" minOccurs="0"/>
+					<xs:element name="ispId" type="xs:string" nillable="true" minOccurs="0" />
+					<xs:element name="existingCustomerCopperLIDs" type="lidList" nillable="true" minOccurs="0" />
+					<xs:element name="existingCustomerFiberLIDs" type="lidList" nillable="true" minOccurs="0" />
+					<!-- Added for 88438 Mawis copper stop -->
+					<xs:element name="madId" type="xs:string" nillable="true" minOccurs="0"/>
+					<!-- Only needed for Copper and Fiber -->
+					<!--  <xs:element name="existingCustomerCoaxLIDs" type="lidList" nillable="true" minOccurs="0" />	-->
+				</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="lidList">
+		<xs:sequence>
+			<xs:element name="lid" type="xs:string" minOccurs="1"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="nodeAnalysisListRequest" type="NodeAnalysisListRequest"/>
+
+</xs:schema>

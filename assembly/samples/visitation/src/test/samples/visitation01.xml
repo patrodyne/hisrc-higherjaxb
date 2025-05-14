@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vis:getNodeAnalysisList
+	xmlns="http://mynet.in/MMDSLServices"
+	xmlns:vis="http://in.mynet.visitation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://in.mynet.visitation ../../main/resources/GetNodeAnalysisList.xsd"
+>
+	<vis:nodeAnalysisListRequest>
+		<requestInfo>
+			<userId>USER_ID</userId>
+			<trackingId>TRACKING_ID</trackingId>
+			<versionId>VERSION_ID</versionId>
+			<companyId>COMPANY_ID</companyId>
+		</requestInfo>
+		<nodeAnalysisReq>
+			<zipCode>ZIP_CODE</zipCode>
+			<locality>LOCALITY</locality>
+			<streetName>STREET_NAME</streetName>
+			<houseNo>HOUSE_NO</houseNo>
+			<letter>LETTER</letter>
+			<floor>FLOOR</floor>
+			<side>SIDE</side>
+			<appartment>APPARTMENT</appartment>
+			<municipalityCode>MUNICIPALITY_CODE</municipalityCode>
+			<streetCode>STREET_CODE</streetCode>
+			<addressOwner>ADDRESS_OWNER</addressOwner>
+			<location>LOCATION</location>
+			<ispId>ISP_ID</ispId>
+			<existingCustomerCopperLIDs>
+				<lid>LID</lid>
+			</existingCustomerCopperLIDs>
+			<existingCustomerFiberLIDs>
+				<lid>LID</lid>
+			</existingCustomerFiberLIDs>
+			<madId>MAD_ID</madId>
+		</nodeAnalysisReq>
+	</vis:nodeAnalysisListRequest>
+</vis:getNodeAnalysisList>
