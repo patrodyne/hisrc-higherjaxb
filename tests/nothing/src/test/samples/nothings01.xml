@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<no:Nothings
+	xmlns:no="urn:example.org:nothing"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:example.org:nothing ../../main/resources/nothing.xsd"
+>
+	<no:Nothing id="101">
+		<optionalNillableString xsi:nil="true"/>
+		<requiredNillableString xsi:nil="true"/>
+		<optionalNillableStrings xsi:nil="true"/>
+		<optionalNillableStrings xsi:nil="true"/>
+		<requiredNillableStrings xsi:nil="true"/>
+		<requiredNillableStrings xsi:nil="true"/>
+	</no:Nothing>
+	<no:Nothing id="102">
+		<optionalNillableString xsi:nil="false"/>
+		<requiredNillableString xsi:nil="false"/>
+		<optionalNillableStrings xsi:nil="false"/>
+		<optionalNillableStrings xsi:nil="false"/>
+		<requiredNillableStrings xsi:nil="false"/>
+		<requiredNillableStrings xsi:nil="false"/>
+	</no:Nothing>
+	<no:Nothing id="103">
+		<optionalNillableString/>
+		<requiredNillableString/>
+		<optionalNillableStrings/>
+		<optionalNillableStrings/>
+		<requiredNillableStrings/>
+		<requiredNillableStrings/>
+	</no:Nothing>
+	<no:Nothing id="104">
+		<requiredNillableString/>
+		<requiredNillableStrings/>
+	</no:Nothing>
+	<no:Nothing id="105">
+		<optionalNillableString>ONS01</optionalNillableString>
+		<requiredNillableString>RNS01</requiredNillableString>
+		<optionalNillableStrings>ONSS01</optionalNillableStrings>
+		<optionalNillableStrings>ONSS02</optionalNillableStrings>
+		<optionalNillableStrings xsi:nil="true"/>
+		<optionalNillableStrings xsi:nil="false"/>
+		<requiredNillableStrings>RNSS01</requiredNillableStrings>
+		<requiredNillableStrings>RNSS02</requiredNillableStrings>
+		<requiredNillableStrings xsi:nil="true"/>
+		<requiredNillableStrings xsi:nil="false"/>
+	</no:Nothing>
+</no:Nothings>

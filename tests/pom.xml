@@ -22,6 +22,7 @@
 		<module>episodes</module>
 		<module>genpkgs</module>
 		<module>onvif</module>
+		<module>nothing</module>
 		<module>p o</module>
 		<module>po</module>
 		<module>po-scd</module>

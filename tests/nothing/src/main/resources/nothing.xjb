@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings jaxb:version="3.0"
+	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+	<!--  Global Bindings -->
+	<jaxb:globalBindings generateElementProperty="true" generateIsSetMethod="true" localScoping="toplevel" >
+		<jaxb:serializable uid="20250501" />
+	</jaxb:globalBindings>
+</jaxb:bindings>
