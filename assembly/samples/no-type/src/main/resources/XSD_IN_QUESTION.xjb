@@ -5,7 +5,7 @@
 	xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
 	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 	xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
-	xmlns:anx="http://jvnet.org/basicjaxb/xjc/annox" 
+	xmlns:anx="urn:jvnet.org:basicjaxb:xjc:annox" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://jakarta.ee/xml/ns/jaxb https://jakarta.ee/xml/ns/jaxb/bindingschema_3_0.xsd"
 >
