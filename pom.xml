@@ -92,24 +92,24 @@
 		<plantuml-generator-maven-plugin.version>2.0.0</plantuml-generator-maven-plugin.version>
 		<versions-maven-plugin.version>2.14.2</versions-maven-plugin.version>
 
-		<activation-api.version>2.1.3</activation-api.version>
-		<activation-imp.version>2.0.2</activation-imp.version>
-		<annotation.version>2.1.1</annotation.version>
+		<activation-api.version>2.1.4</activation-api.version>
+		<activation-imp.version>2.0.3</activation-imp.version>
+		<annotation.version>3.0.0</annotation.version>
 		<dtd-parser.version>1.5.1</dtd-parser.version>
 		<hisrc-basicjaxb.version>3.0.0-SNAPSHOT</hisrc-basicjaxb.version>
 		<guice.version>5.1.0</guice.version> <!-- provided by Maven -->
 		<jaxb-api23.version>2.3.1</jaxb-api23.version>
 		<jaxb-api30.version>3.0.1</jaxb-api30.version>
-		<jaxb-api40.version>4.0.2</jaxb-api40.version>
+		<jaxb-api40.version>4.0.4</jaxb-api40.version>
 		<jaxb-api.version>${jaxb-api40.version}</jaxb-api.version>
 		<jaxb-imp23.version>2.3.1</jaxb-imp23.version>
 		<jaxb-core-imp23.version>2.3.0.1</jaxb-core-imp23.version>
 		<jaxb-imp30.version>3.0.2</jaxb-imp30.version>
 		<jaxb-imp40.version>4.0.5</jaxb-imp40.version>
 		<jaxb-imp.version>${jaxb-imp40.version}</jaxb-imp.version>
-		<junit-jupiter.version>5.10.2</junit-jupiter.version>
-		<junit-platform.version>1.10.2</junit-platform.version>
-		<maven.compiler.release>11</maven.compiler.release>
+		<junit-jupiter.version>6.0.1</junit-jupiter.version>
+		<junit-platform.version>6.0.1</junit-platform.version>
+		<maven.compiler.release>17</maven.compiler.release>
 		<maven-plugin-plugin.version>3.11.0</maven-plugin-plugin.version>
 		<maven-plugin-testing.version>3.3.0</maven-plugin-testing.version>
 		<maven-api.version>3.9.6</maven-api.version>
@@ -120,7 +120,7 @@
 		<plexus-utils.version>4.0.0</plexus-utils.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<slf4j.version>2.0.12</slf4j.version>
+		<slf4j.version>2.0.17</slf4j.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -374,7 +374,7 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.14.0</version>
+				<version>3.20.0</version>
 			</dependency>
 
 			<!-- SLF4J -->
@@ -424,12 +424,12 @@
 						<dependency>
 							<groupId>org.apache.ant</groupId>
 							<artifactId>ant-junitlauncher</artifactId>
-							<version>1.10.14</version>
+							<version>1.10.15</version>
 						</dependency>
 						<dependency>
 							<groupId>org.apache.ant</groupId>
 							<artifactId>ant-apache-xalan2</artifactId>
-							<version>1.10.14</version>
+							<version>1.10.15</version>
 						</dependency>
 						<dependency>
 							<groupId>ant</groupId>
@@ -542,15 +542,30 @@
                                     <type>regex</type>
                                     <version>(.+\.Alpha\d|.+-alpha(\d|-\d+))</version>
                                 </ignoreVersion>
+                                <ignoreVersion>
+                                    <type>regex</type>
+                                    <version>(.+\.Beta\d|.+-beta(\d|-\d+))</version>
+                                </ignoreVersion>
 								<ignoreVersion>
 									<type>regex</type>
 									<version>.+-M\d</version>
 								</ignoreVersion>
 								<ignoreVersion>
 									<type>regex</type>
-									<version>.+[\.-](CR|RC)\d</version>
+									<version>.+[\.-](CR|[Rr][Cc])(\d|-\d+)</version>
 								</ignoreVersion>
 							</ignoreVersions>
+							<rules>
+								<rule>
+									<groupId>org.glassfish.jaxb</groupId>
+									<ignoreVersions>
+										<ignoreVersion>
+											<type>exact</type>
+											<version>4.0.6</version>
+										</ignoreVersion>
+									</ignoreVersions>
+								</rule>
+							</rules>
 						</ruleSet>
 					</configuration>
 				</plugin>
