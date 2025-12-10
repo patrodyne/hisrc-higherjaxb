@@ -789,7 +789,7 @@ public abstract class AbstractHigherjaxbBaseMojo<O> extends AbstractHigherjaxbPa
 		"The plugin is configured to use catalogs and strict mode at the same time.\n"
 		+ "Using catalogs to resolve schema URIs in strict mode is known to be problematic \n"
 		+ "and may fail. Please refer to the following link for more information:\n"
-		+ "https://github.com/highsource/maven-jaxb2-plugin/wiki/Catalogs-in-Strict-Mode\n"
+		+ "https://github.com/patrodyne/hisrc-higherjaxb/blob/master/Catalogs-in-Strict-Mode.md\n"
 		+ "Consider setting <strict>false</strict> in your plugin configuration.\n";
 
 	private void checkCatalogsInStrictMode()
