@@ -5,7 +5,7 @@ There is a potential conflict when the **XJC** binding compiler is configured to
 + **XJC** (Jakarta XML Binding / JAXB Binding Compiler) is a tool that generates Java classes from XML schemas (XSDs).
 + By default, **XJC** performs a strict validation of the source schema.
 + Catalog files are used to map external entity references (like DTDs or imported schemas) to local files, helping resolve them offline or in specific environments.
-+ **XJC** now uses the new XML Catalog API to support the Organization for the Advancement of Structured Information Standards (OASIS) introduced in Java SE 9.
++ **XJC** now uses the new built-in XML Catalog API to support the Organization for the Advancement of Structured Information Standards (OASIS) introduced in Java SE 9.
 
 #### The Conflict
 
