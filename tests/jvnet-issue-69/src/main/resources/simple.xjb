@@ -3,8 +3,8 @@
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
 	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	jaxb:extensionBindingPrefixes="xjc"
 >
+
 	<!--  Global Bindings
 		* JPA section 2.1, entities must be top-level classes.
 		* JPA section 2.1, entities must implement the serializable interface.
@@ -12,16 +12,9 @@
 		  generateElementProperty customization be set to 'false' in globalBindings.
 		* Hint: Increase EnumMemberSizeCap above 256 with typesafeEnumMaxMembers="512".
 	-->
-	<jaxb:globalBindings localScoping="toplevel" fixedAttributeAsConstantProperty="true">
-		<jaxb:serializable uid="20240201" />
-		<xjc:javaType xmlType="xs:date" name="java.time.LocalDate" adapter="io.github.threetenjaxb.core.LocalDateXmlAdapter"/>
+	<jaxb:globalBindings localScoping="toplevel">
+		<jaxb:serializable uid="20260124" />
 		<xjc:javaType xmlType="xs:dateTime" name="java.time.OffsetDateTime" adapter="io.github.threetenjaxb.core.LenientOffsetDateTimeXmlAdapter"/>
 	</jaxb:globalBindings>
-
-	<jaxb:bindings schemaLocation="purchaseorder.xsd" node="/xs:schema">
-		<jaxb:schemaBindings>
-			<jaxb:package name="org.jvnet.higherjaxb.tests.po"/>
-		</jaxb:schemaBindings>
-	</jaxb:bindings>
 
 </jaxb:bindings>

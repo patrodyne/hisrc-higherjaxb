@@ -33,6 +33,10 @@
 			<artifactId>hisrc-higherjaxb-maven-plugin-testing</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.github.threeten-jaxb</groupId>
+			<artifactId>threeten-jaxb-core</artifactId>
+		</dependency>
 		<!-- HiSrc BasicJAXB Testing -->
 		<dependency>
 			<groupId>org.patrodyne.jvnet</groupId>

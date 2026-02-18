@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <jaxb:bindings jaxb:version="3.0"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
 	xmlns:inh="urn:jvnet.org:basicjaxb:xjc:inheritance"
 	extensionBindingPrefixes="inh"
@@ -14,6 +15,7 @@
 	-->
 	<jaxb:globalBindings localScoping="nested">
 		<jaxb:serializable uid="20231001" />
+		<xjc:javaType xmlType="xs:dateTime" name="java.time.OffsetDateTime" adapter="io.github.threetenjaxb.core.LenientOffsetDateTimeXmlAdapter"/>
 	</jaxb:globalBindings>
 
 	<!-- Warning: Bindings in the XSD override bindings defined here! -->

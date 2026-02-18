@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jaxb:bindings jaxb:version="3.0"
 	xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:inh="urn:jvnet.org:basicjaxb:xjc:inheritance"
 	jaxb:extensionBindingPrefixes="inh"
@@ -12,8 +13,26 @@
 		  generateElementProperty customization be set to 'false' in globalBindings.
 		* Hint: Increase EnumMemberSizeCap above 256 with typesafeEnumMaxMembers="512".
 	-->
-	<jaxb:globalBindings choiceContentProperty="true" generateIsSetMethod="true" generateElementProperty="true" generateElementClass="true" localScoping="toplevel">
+	<jaxb:globalBindings
+		choiceContentProperty="true"
+		generateIsSetMethod="true"
+		generateElementProperty="false"
+		generateElementClass="true"
+		localScoping="toplevel"
+	>
 		<jaxb:serializable uid="20221201" />
+
+		<xjc:javaType xmlType="xs:date" name="java.time.LocalDate" adapter="io.github.threetenjaxb.core.LocalDateXmlAdapter"/>
+		<xjc:javaType xmlType="xs:time" name="java.time.OffsetTime" adapter="io.github.threetenjaxb.core.LenientOffsetTimeXmlAdapter"/>
+		<xjc:javaType xmlType="xs:dateTime" name="java.time.OffsetDateTime" adapter="io.github.threetenjaxb.core.LenientOffsetDateTimeXmlAdapter"/>
+		<xjc:javaType xmlType="xs:duration" name="java.time.Period" adapter="io.github.threetenjaxb.core.PeriodXmlAdapter"/>
+
+		<xjc:javaType xmlType="xs:gDay" name="java.lang.Integer" adapter="org.jvnet.basicjaxb.xml.bind.adapter.GDayXmlAdapter"/>
+		<xjc:javaType xmlType="xs:gMonth" name="java.time.Month" adapter="org.jvnet.basicjaxb.xml.bind.adapter.GMonthXmlAdapter"/>
+		<xjc:javaType xmlType="xs:gMonthDay" name="java.time.MonthDay" adapter="org.jvnet.basicjaxb.xml.bind.adapter.GMonthDayXmlAdapter"/>
+		<xjc:javaType xmlType="xs:gYear" name="java.time.Year" adapter="org.jvnet.basicjaxb.xml.bind.adapter.GYearXmlAdapter"/>
+		<xjc:javaType xmlType="xs:gYearMonth" name="java.time.YearMonth" adapter="org.jvnet.basicjaxb.xml.bind.adapter.GYearMonthXmlAdapter"/>
+
 		<!--
 			These customizations were valid in XJC 1.0, but in 2.0 we
 			don't use them. OTOH, we don't want to issue an error for
