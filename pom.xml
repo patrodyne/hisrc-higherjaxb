@@ -120,6 +120,7 @@
 		<plexus-utils.version>4.0.0</plexus-utils.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<threeten-jaxb.version>2.2.0</threeten-jaxb.version>
 		<slf4j.version>2.0.17</slf4j.version>
 	</properties>
 	<dependencyManagement>
@@ -144,7 +145,7 @@
 			<dependency>
 				<groupId>io.github.threeten-jaxb</groupId>
 				<artifactId>threeten-jaxb-core</artifactId>
-				<version>2.2.0</version>
+				<version>${threeten-jaxb.version}</version>
 			</dependency>
 			<!-- End of jaxb-runtime dependencies -->
 
