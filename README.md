@@ -61,21 +61,18 @@ original `maven-jaxb2-plugin` name.
 * [hisrc-higherjaxb-maven-plugin-core][44]
 * [hisrc-higherjaxb-maven-plugin-testing][45]
 
-### Goals
-
-New goals for the next release are:
-
-* Review in progress.
-
-### Status
-
-* Review in progress.
-
-#### Completed
-
-* Review in progress.
-
 ### Fork History
+
+#### Version 3.0.0
+
+* Use `java.time` instead of `XMLGregorianCalendar` in unit tests.
+* Added `XmlAdapter` implementations for `java.time` types.
+* Migrated the catalog `resolver:20050927` to the new [JEP 268 API][46].
+* Upgraded the project dependencies to the latest versions.
+* Upgraded the Maven plugin ecosystem to the latest versions.
+* Migrated distribution management from **OSSRH (Sonatype)** to a new **MCR-deploy** profile.
+* Refactored the `pom.xml` by removing legacy repository configurations and streamlining the `<scm>` and `<properties>` blocks.
+* Updated the `build-jxx.sh` script to reflect the new deployment path and ensure consistency across release goals.
 
 #### Version 2.2.1
 
@@ -195,3 +192,4 @@ New goals for the next release are:
   [43]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-maven-plugin/latest/index.html
   [44]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-maven-plugin-core/latest/index.html
   [45]: https://javadoc.io/doc/org.patrodyne.jvnet/hisrc-higherjaxb-maven-plugin-testing/latest/index.html
+  [46]: https://docs.oracle.com/en/java/javase/11/core/xml-catalog-api1.html#GUID-96D2C9AC-641A-4BDB-BB08-9FA04358A6F4
