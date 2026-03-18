@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 	<name>HiSrc HigherJAXB Assembly</name>
 	<properties>
-		<hisrc-basicjaxb.version>3.0.0-SNAPSHOT</hisrc-basicjaxb.version>
+		<hisrc-basicjaxb.version>3.0.0</hisrc-basicjaxb.version>
 		<hisrc-higherjaxb.version>3.0.0-SNAPSHOT</hisrc-higherjaxb.version>
 		<hisrc-higherjaxb-maven-plugin.version>3.0.0-SNAPSHOT</hisrc-higherjaxb-maven-plugin.version>
 		<hisrc-hyperjaxb-annox-plugin.version>3.0.0-SNAPSHOT</hisrc-hyperjaxb-annox-plugin.version>
