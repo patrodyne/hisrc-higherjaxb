@@ -94,7 +94,7 @@
 		<jaxb-imp23.version>2.3.1</jaxb-imp23.version>
 		<jaxb-core-imp23.version>2.3.0.1</jaxb-core-imp23.version>
 		<jaxb-imp30.version>3.0.2</jaxb-imp30.version>
-		<jaxb-imp40.version>4.0.6</jaxb-imp40.version>
+		<jaxb-imp40.version>4.0.7</jaxb-imp40.version>
 		<jaxb-imp.version>${jaxb-imp40.version}</jaxb-imp.version>
 		<junit-jupiter.version>6.0.3</junit-jupiter.version>
 		<junit-platform.version>6.0.3</junit-platform.version>
@@ -107,7 +107,7 @@
 		<maven-resolver-http.version>1.9.27</maven-resolver-http.version>
 		<plexus-build-api.version>0.0.7</plexus-build-api.version>
 		<plexus-testing.version>2.1.0</plexus-testing.version>
-		<plexus-utils.version>4.0.2</plexus-utils.version>
+		<plexus-utils.version>4.0.3</plexus-utils.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<threeten-jaxb.version>2.2.0</threeten-jaxb.version>
