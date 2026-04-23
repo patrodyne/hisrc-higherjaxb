@@ -17,6 +17,8 @@ original `maven-jaxb2-plugin` name.
 > GitHub personal account (i.e. 1 tab = 4 spaces) when viewing files in this
 > repository. [Here's how][3].
 
+> **See also:** [Code Style Guide][4].
+
 ### List of repositories in this family
 
 | Patrodyne                   | Highsource                  | Purpose                                                |
@@ -170,6 +172,7 @@ original `maven-jaxb2-plugin` name.
   [1]: https://raw.githubusercontent.com/patrodyne/hisrc-hyperjaxb/master/etc/hisrc-repositories.svg
   [2]: https://github.com/highsource
   [3]: https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-user-account-settings/managing-your-tab-size-rendering-preference
+  [4]: https://github.com/patrodyne/hisrc-hyperjaxb/blob/master/etc/CODE_STYLE_GUIDE.md
   [11]: https://github.com/patrodyne/hisrc-basicjaxb-annox#readme
   [12]: https://github.com/patrodyne/hisrc-basicjaxb#readme
   [13]: https://github.com/patrodyne/hisrc-higherjaxb#readme
